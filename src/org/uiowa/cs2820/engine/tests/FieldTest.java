@@ -13,7 +13,7 @@ public class FieldTest
 {
 
     @Test
-    public void test0()
+    public void testEmptyDatabaseReturnsNothing()
     {
         Database database = new LinearMemoryDatabase();
         FieldSearch fieldSearch = new FieldSearch(database);
@@ -22,18 +22,21 @@ public class FieldTest
     }
 
     @Test
-    public void test1()
+    public void testSameFieldDifferentIdentifiers()
     {
         Database database = new LinearMemoryDatabase();
         FieldSearch search = new FieldSearch(database);
         Indexer indexer = new Indexer(database, "abc");
+        
         Field F1 = new Field("1", new Integer(45));
         Field F2 = new Field("part", "bolt");
-        Field F3 = new Field("part", "bolt");
         indexer.addField(F1);
         indexer.addField(F2);
+        
         indexer = new Indexer(database, "def");
+        Field F3 = new Field("part", "bolt");
         indexer.addField(F3);
+        
         String[] S = search.findEquals(F3);
         assertEquals(S.length, 2);
         assertEquals(S[0], "abc");
@@ -41,7 +44,7 @@ public class FieldTest
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test2()
+    public void testErrorIsThrownForTooLongFieldValue()
     {
         Database database = new LinearMemoryDatabase();
         Indexer indexer = new Indexer(database, "data");
