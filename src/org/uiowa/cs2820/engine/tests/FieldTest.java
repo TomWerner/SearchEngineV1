@@ -1,8 +1,13 @@
-package org.uiowa.cs2820.engine;
+package org.uiowa.cs2820.engine.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.uiowa.cs2820.engine.Database;
+import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.FieldSearch;
+import org.uiowa.cs2820.engine.Indexer;
+import org.uiowa.cs2820.engine.LinearMemoryDatabase;
 
 public class FieldTest
 {

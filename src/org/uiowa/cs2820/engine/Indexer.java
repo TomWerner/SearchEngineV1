@@ -5,7 +5,7 @@ public class Indexer
     private Database database;
     private String identifier;
 
-    Indexer(Database d, String id)
+    public Indexer(Database d, String id)
     {
         // constructor does nothing now, but someday
         // may need to set up database for doing things

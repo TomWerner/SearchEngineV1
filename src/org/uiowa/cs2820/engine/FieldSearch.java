@@ -5,7 +5,7 @@ public class FieldSearch
 
     private Database database;
 
-    FieldSearch(Database database)
+    public FieldSearch(Database database)
     {
         this.database = database;
     }

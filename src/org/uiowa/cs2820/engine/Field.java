@@ -13,7 +13,7 @@ public class Field implements Serializable
     private Object FieldValue;
 
     // constructor for Fields with String
-    Field(String FieldName, Object Value) throws IllegalArgumentException
+    public Field(String FieldName, Object Value) throws IllegalArgumentException
     {
         this.FieldName = FieldName;
         this.FieldValue = Value;
@@ -36,10 +36,5 @@ public class Field implements Serializable
     {
         byte[] wholeField = Utilities.convert(this);
         return wholeField;
-        // byte[] ByteFieldName = FieldName.getBytes();
-        // byte[] R = new byte[ByteFieldName.length + FieldValue.length];
-        // System.arraycopy(ByteFieldName,0,R,0,ByteFieldName.length);
-        // System.arraycopy(FieldValue,0,R,ByteFieldName.length,FieldValue.length);
-        // return R;
     }
 }

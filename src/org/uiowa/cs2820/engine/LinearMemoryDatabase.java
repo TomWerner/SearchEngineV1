@@ -7,7 +7,7 @@ public class LinearMemoryDatabase implements Database
 {
     private ArrayList<Node> memoryArray = null;
 
-    LinearMemoryDatabase()
+    public LinearMemoryDatabase()
     {
         this.memoryArray = new ArrayList<Node>(); // empty list
     }
