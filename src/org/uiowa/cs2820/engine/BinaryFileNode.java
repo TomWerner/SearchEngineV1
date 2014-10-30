@@ -41,5 +41,9 @@ public class BinaryFileNode implements Serializable
             return ((BinaryFileNode)other).field.equals(field);
         return false;
     }
-
+    
+    public String toString()
+    {
+        return field.toString() + " -> " + addrOfIdentifierStart;
+    }
 }

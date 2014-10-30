@@ -181,4 +181,19 @@ public class IdentifierDatabaseTest
         assertEquals("other thing", results.get(0));
     }
 
+    @Test
+    public void testRemovingIdentifierNotThere()
+    {
+        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        
+        IdentifierDatabase identDB = new IdentifierDatabase(file);
+        int location = identDB.addIdentifier("filename1");
+        
+        ArrayList<String> results = identDB.getAllIdentifiers(location);
+        assertEquals(1, results.size());
+        assertEquals("filename1", results.get(0));
+        
+        identDB.removeIdentifier(location, "filename3");
+    }
+
 }

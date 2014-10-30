@@ -28,7 +28,9 @@ public class IntegratedFileDatabase implements Database
         int position = fieldDB.getIdentifierPosition(field);
         if (position == -1)
             return;
-        identDB.removeIdentifier(position, identifier);
+        int location = identDB.removeIdentifier(position, identifier);
+        if (location != ValueFileNode.NULL_ADDRESS)
+            fieldDB.setIdentifierPosition(field, location);
     }
 
     @Override

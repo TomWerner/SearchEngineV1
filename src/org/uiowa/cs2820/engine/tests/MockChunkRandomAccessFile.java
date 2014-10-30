@@ -1,34 +1,26 @@
 package org.uiowa.cs2820.engine.tests;
 
 import org.uiowa.cs2820.engine.ChunkedAccess;
-import org.uiowa.cs2820.engine.utilities.Utilities;
 
-public class MockChunkRandomAccessFile implements ChunkedAccess
+public class MockChunkRandomAccessFile extends ChunkedAccess
 {
     private byte[] mockFile;
-    private int chunkSize;
     
-    public MockChunkRandomAccessFile(int initialSize, int chunkSize)
+    public MockChunkRandomAccessFile(int initialNumChunks, int chunkSize)
     {
-        mockFile = new byte[initialSize * chunkSize];
-        this.chunkSize = chunkSize;
+        super(initialNumChunks, chunkSize);
+        mockFile = new byte[numberOfChunks * chunkSize];
     }
     
     @Override
-    public Object get(int chunkPosition)
+    protected void getChunk(byte[] result, int chunkPosition)
     {
-        byte[] result = new byte[chunkSize];
-        if (chunkPosition >= mockFile.length / chunkSize)
-            return null;
         System.arraycopy(mockFile, chunkPosition * chunkSize, result, 0, chunkSize);
-        return Utilities.revert(result);
     }
 
     @Override
-    public void set(byte[] objectByteRepr, int chunkPosition)
+    protected void setChunk(byte[] objectByteRepr, int chunkPosition)
     {
-        if (chunkPosition >= mockFile.length / chunkSize)
-            doubleCapacity();
         System.arraycopy(objectByteRepr, 0, mockFile, chunkPosition * chunkSize, objectByteRepr.length);
     }
 
@@ -51,6 +43,7 @@ public class MockChunkRandomAccessFile implements ChunkedAccess
     {
         byte[] newArray = new byte[mockFile.length * 2];
         System.arraycopy(mockFile, 0, newArray, 0, mockFile.length);
+        numberOfChunks *= 2;
         mockFile = newArray;
     }
 
@@ -59,6 +52,16 @@ public class MockChunkRandomAccessFile implements ChunkedAccess
     {
         byte[] zeros = new byte[chunkSize];
         System.arraycopy(zeros, 0, mockFile, chunkPosition * chunkSize, zeros.length);
+    }
+    
+    public String toString()
+    {
+        String result = "";
+        for (int i = 0; i * chunkSize < mockFile.length; i++)
+        {
+            result += i + " : " + get(i) + "\n";
+        }
+        return result;
     }
     
     

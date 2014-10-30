@@ -188,17 +188,43 @@ public class IntegratedDatabaseTest
         Field field = new Field("name", "value");
         String identifier1 = "filename1";
         database.store(field, identifier1);
-        
+
         ArrayList<String> results = database.fetch(field);
         assertEquals(1, results.size());
         assertEquals(identifier1, results.get(0));
-        
+
         database.delete(field, identifier1);
         results = database.fetch(field);
         assertEquals(null, results);
-        
+
         database.delete(field, identifier1);
         results = database.fetch(field);
         assertEquals(null, results);
+    }
+    
+    @Test
+    public void testRemovingFirstIdentifier()
+    {
+        MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new FieldDatabase(file1);
+        MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        IdentifierDatabase identDB = new IdentifierDatabase(file2);
+
+        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
+        Field field = new Field("name", "value");
+        String identifier1 = "filename1";
+        String identifier2 = "filename2";
+        database.store(field, identifier1);
+        database.store(field, identifier2);
+        
+        ArrayList<String> results = database.fetch(field);
+        assertEquals(2, results.size());
+        assertEquals(identifier2, results.get(0));
+        assertEquals(identifier1, results.get(1));
+        
+        database.delete(field, identifier2);
+        results = database.fetch(field);
+        assertEquals(1, results.size());
+        assertEquals(identifier1, results.get(0));
     }
 }

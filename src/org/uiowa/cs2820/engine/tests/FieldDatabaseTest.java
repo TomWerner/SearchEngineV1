@@ -93,7 +93,8 @@ public class FieldDatabaseTest
         fieldDB.add(node8);
         fieldDB.add(node9);
         fieldDB.add(node10);
-
+        
+        
         assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "a")));
         assertEquals(1, fieldDB.getIdentifierPosition(new Field("name", "b")));
         assertEquals(2, fieldDB.getIdentifierPosition(new Field("name", "c")));
