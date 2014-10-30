@@ -1,6 +1,5 @@
 package org.uiowa.cs2820.engine;
 
-import org.uiowa.cs2820.engine.utilities.Utilities;
 
 
 public class FieldDatabase
@@ -19,10 +18,10 @@ public class FieldDatabase
     
     private void recursiveAdd(int rootIndex, BinaryFileNode node)
     {
-        BinaryFileNode root = (BinaryFileNode) fileHandle.get(rootIndex);
+        BinaryFileNode root = (BinaryFileNode) fileHandle.get(rootIndex, new BinaryFileNode(new Field("",""),0));
         if (root == null)
         {
-            fileHandle.set(Utilities.convert(node), rootIndex);
+            fileHandle.set(node.convert(), rootIndex);
         }
         else if (node.getField().compareTo(root.getField()) < 0)
             recursiveAdd(rootIndex * 2 + 1, node);
@@ -33,7 +32,7 @@ public class FieldDatabase
     public int getIdentifierPosition(Field field)
     {
         int index = 0;
-        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index);
+        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index, new BinaryFileNode(new Field("",""),0));
         if (currentNode == null)
             return -1;
         while (currentNode != null)
@@ -44,7 +43,7 @@ public class FieldDatabase
                 index = index * 2 + 1;
             else
                 index = index * 2 + 2;
-            currentNode = (BinaryFileNode) fileHandle.get(index);
+            currentNode = (BinaryFileNode) fileHandle.get(index, new BinaryFileNode(new Field("",""),0));
         }
         
         return -1;
@@ -53,7 +52,7 @@ public class FieldDatabase
     public void setIdentifierPosition(Field field, int identPos)
     {
         int index = 0;
-        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index);
+        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index, new BinaryFileNode(new Field("",""),0));
         if (currentNode == null)
             return;
         while (currentNode != null)
@@ -61,14 +60,14 @@ public class FieldDatabase
             if (currentNode.getField().equals(field))
             {
                 currentNode.setAddrOfIdentifierStart(identPos);
-                fileHandle.set(Utilities.convert(currentNode), index);
+                fileHandle.set(currentNode.convert(), index);
                 return;
             }
             else if (field.compareTo(currentNode.getField()) < 0)
                 index = index * 2 + 1;
             else
                 index = index * 2 + 2;
-            currentNode = (BinaryFileNode) fileHandle.get(index);
+            currentNode = (BinaryFileNode) fileHandle.get(index, new BinaryFileNode(new Field("",""),0));
         }
     }
 }

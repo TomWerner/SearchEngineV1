@@ -31,25 +31,15 @@ public class IntegrationTests
         Field F1 = new Field("1", new Integer(45));
         Field F2 = new Field("part", "bolt");
         indexer.addField(F1);
-        indexer.addField(F2);
+        indexer.addField(F2); 
         
         indexer = new Indexer(database, "def");
         Field F3 = new Field("part", "bolt");
         indexer.addField(F3);
-        
+         
         String[] S = search.findEquals(F3);
         assertEquals(2, S.length);
         assertEquals(S[0], "abc");
         assertEquals(S[1], "def");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testErrorIsThrownForTooLongFieldValue()
-    {
-        Database database = new LinearMemoryDatabase();
-        Indexer indexer = new Indexer(database, "data");
-        Field F = new Field("Iowa", "some very long string that should not" + "be allowed as part of a lookup value" + "because there is a size limit in the"
-                + "code for creating a Field");
-        indexer.addField(F);
     }
 }

@@ -127,7 +127,7 @@ public class IntegratedDatabaseTest
         assertEquals(identifier2, results.get(6));
         assertEquals(identifier1, results.get(7));
     }
-    
+
     @Test
     public void testRemovingIdentifierBasicCase()
     {
@@ -140,17 +140,17 @@ public class IntegratedDatabaseTest
         Field field = new Field("name", "value");
         String identifier1 = "filename1";
         database.store(field, identifier1);
-        
+
         ArrayList<String> results = database.fetch(field);
         assertEquals(1, results.size());
         assertEquals(identifier1, results.get(0));
-        
+
         database.delete(field, identifier1);
-        
+
         results = database.fetch(field);
         assertEquals(null, results);
     }
-    
+
     @Test
     public void testRemovingIdentifierNotThere()
     {
@@ -164,18 +164,18 @@ public class IntegratedDatabaseTest
         String identifier1 = "filename1";
         String identifier2 = "filename2";
         database.store(field, identifier1);
-        
+
         ArrayList<String> results = database.fetch(field);
         assertEquals(1, results.size());
         assertEquals(identifier1, results.get(0));
-        
+
         database.delete(field, identifier2);
-        
+
         results = database.fetch(field);
         assertEquals(1, results.size());
         assertEquals(identifier1, results.get(0));
     }
-    
+
     @Test
     public void testRemovingIdentifierTwice()
     {
@@ -201,7 +201,7 @@ public class IntegratedDatabaseTest
         results = database.fetch(field);
         assertEquals(null, results);
     }
-    
+
     @Test
     public void testRemovingFirstIdentifier()
     {
@@ -216,12 +216,12 @@ public class IntegratedDatabaseTest
         String identifier2 = "filename2";
         database.store(field, identifier1);
         database.store(field, identifier2);
-        
+
         ArrayList<String> results = database.fetch(field);
         assertEquals(2, results.size());
         assertEquals(identifier2, results.get(0));
         assertEquals(identifier1, results.get(1));
-        
+
         database.delete(field, identifier2);
         results = database.fetch(field);
         assertEquals(1, results.size());

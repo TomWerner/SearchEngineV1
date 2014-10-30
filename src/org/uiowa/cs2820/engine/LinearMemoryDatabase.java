@@ -2,8 +2,6 @@ package org.uiowa.cs2820.engine;
 
 import java.util.ArrayList;
 
-import org.uiowa.cs2820.engine.utilities.Utilities;
-
 public class LinearMemoryDatabase implements Database
 {
     private ArrayList<Node> memoryArray = null;
@@ -16,22 +14,22 @@ public class LinearMemoryDatabase implements Database
     public ArrayList<String> fetch(Field key)
     {
         for (Node node : memoryArray)
-            if (Utilities.revert(node.nodeKey).equals(key))
+            if (((Field)key.revert(node.nodeKey)).equals(key))
                 return node.nodeIdentifiers;
         return null;
     } 
-
+ 
     public void store(Field key, String id)
     {
         for (Node node : memoryArray)
         {
-            if (Utilities.revert(node.nodeKey).equals(key))
+            if (((Field)key.revert(node.nodeKey)).equals(key))
             {
                 node.add(id);
                 return;
             }
         }
-        Node newNode = new Node(key.toBytes(), id);
+        Node newNode = new Node(key.convert(), id);
         memoryArray.add(newNode);
     }
 

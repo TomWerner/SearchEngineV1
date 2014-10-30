@@ -9,12 +9,20 @@ public class FieldTest
 {
 
     @Test(expected = IllegalArgumentException.class)
-    public void testConstructorThrowsForTooLong()
+    public void testConstructorThrowsForTooLongOnValue()
     {
-        new Field("Iowa", "some very long string that should not" + "be allowed as part of a lookup value" + "because there is a size limit in the"
-                + "code for creating a Field");
+        new Field("Iowa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     }
-    
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorThrowsForTooLongOnName()
+    {
+        new Field("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Iowa");
+    }
+
     @Test
     public void testComparisonMatchingFieldName()
     {
@@ -25,7 +33,7 @@ public class FieldTest
         assertTrue(field1.compareTo(field2) == -1);
         assertTrue(field2.compareTo(field1) == 1);
     }
-    
+
     @Test
     public void testComparisonDifferentFieldName()
     {
@@ -35,5 +43,14 @@ public class FieldTest
         assertTrue(field1.compareTo(field1) == 0);
         assertTrue(field1.compareTo(field2) == -1);
         assertTrue(field2.compareTo(field1) == 1);
+    }
+
+    @Test
+    public void testToAndFromByteArray()
+    {
+        Field field1 = new Field("value", "name");
+        byte[] byteRepr = field1.convert();
+        Field revertedField = (Field) (field1.revert(byteRepr));
+        assertEquals(field1, revertedField);
     }
 }

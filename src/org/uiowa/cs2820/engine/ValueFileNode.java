@@ -50,7 +50,7 @@ public class ValueFileNode implements Serializable
     public void setIdentifier(String identifier)
     {
         this.identifier = identifier;
-        if (toBytes().length >= Field.MAXSIZE)
+        if (toBytes().length >= MAX_SIZE)
             throw new IllegalArgumentException("Identifier size exceeded: " + identifier);
     }
 

@@ -1,15 +1,21 @@
 package org.uiowa.cs2820.engine;
 
-import java.io.Serializable;
+import java.nio.ByteBuffer;
 
+import org.uiowa.cs2820.engine.utilities.ByteConvertable;
 import org.uiowa.cs2820.engine.utilities.Utilities;
 
-@SuppressWarnings( {"serial", "rawtypes" })
-public class Field implements Serializable, Comparable<Field>
+@SuppressWarnings( { "rawtypes" })
+public class Field implements ByteConvertable, Comparable<Field>
 {
-    // Its 256 - integer size so that the integer can point to the first
-    // node in the file of identifiers and still be a power of two
-    public static final int MAXSIZE = 256 - Integer.SIZE;
+    private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
+    private static final int MAX_NAME_SIZE = BinaryFileNode.MAX_FIELD_SIZE / 4 - INTEGER_SIZE;
+    private static final int MAX_VALUE_SIZE = BinaryFileNode.MAX_FIELD_SIZE / 2 * 3 - INTEGER_SIZE;
+    private static final int NAME_LENGTH_POSITION = 0;
+    private static final int NAME_POSITION = INTEGER_SIZE;
+    private static final int VALUE_LENGTH_POSITION = NAME_POSITION + MAX_NAME_SIZE;
+    private static final int VALUE_POSITION = VALUE_LENGTH_POSITION + INTEGER_SIZE;
+    
     private String fieldName;
     private Comparable value;
 
@@ -18,8 +24,7 @@ public class Field implements Serializable, Comparable<Field>
     { 
         this.fieldName = fieldName;
         this.value = value;
-        if (toBytes().length >= Field.MAXSIZE)
-            throw new IllegalArgumentException("Field Size exceeded: " + fieldName);
+        convert();
         return;
     }
 
@@ -27,16 +32,10 @@ public class Field implements Serializable, Comparable<Field>
     {
         return fieldName;
     }
-
+ 
     public Comparable getFieldValue()
     {
         return value;
-    }
-
-    public byte[] toBytes()
-    {
-        byte[] wholeField = Utilities.convert(this);
-        return wholeField;
     }
     
     @SuppressWarnings("unchecked")
@@ -61,4 +60,53 @@ public class Field implements Serializable, Comparable<Field>
     {
         return "(" + fieldName + " : " + value + ")";
     }
+
+    @Override
+    public byte[] convert()
+    {
+        byte[] result = new byte[BinaryFileNode.MAX_FIELD_SIZE];
+        byte[] nameSection = fieldName.getBytes();
+        byte[] nameSectionLength = ByteBuffer.allocate(INTEGER_SIZE).putInt(nameSection.length).array();
+        byte[] valueSection = Utilities.convert(value);
+        byte[] valueSectionLength = ByteBuffer.allocate(INTEGER_SIZE).putInt(valueSection.length).array();
+        
+        if (valueSection.length > MAX_VALUE_SIZE)
+            throw new IllegalArgumentException("Value is too large");
+        if (nameSection.length > MAX_NAME_SIZE)
+            throw new IllegalArgumentException("Name is too large");
+        
+        System.arraycopy(nameSectionLength, 0, result, NAME_LENGTH_POSITION, nameSectionLength.length);
+        System.arraycopy(nameSection, 0, result, NAME_POSITION, nameSection.length);
+        System.arraycopy(valueSectionLength, 0, result, VALUE_LENGTH_POSITION, valueSectionLength.length);
+        System.arraycopy(valueSection, 0, result, VALUE_POSITION, valueSection.length);
+        return result;
+    }
+
+    @Override
+    public Object revert(byte[] byteArray)
+    {
+        byte[] nameSectionLength = new byte[INTEGER_SIZE];
+        System.arraycopy(byteArray, NAME_LENGTH_POSITION, nameSectionLength, 0, INTEGER_SIZE);
+        ByteBuffer wrapped = ByteBuffer.wrap(nameSectionLength);
+        int nameLength = wrapped.getInt();
+        
+        byte[] nameSection = new byte[nameLength];
+        System.arraycopy(byteArray, NAME_POSITION, nameSection, 0, nameSection.length);
+        String fieldName = new String(nameSection);
+        
+        
+        
+        byte[] valueSectionLength = new byte[INTEGER_SIZE];
+        System.arraycopy(byteArray, VALUE_LENGTH_POSITION, valueSectionLength, 0, INTEGER_SIZE);
+        wrapped = ByteBuffer.wrap(valueSectionLength);
+        int valueLength = wrapped.getInt();
+        
+        byte[] valueSection = new byte[valueLength];
+        System.arraycopy(byteArray, VALUE_POSITION, valueSection, 0, valueSection.length);
+        Comparable comp = (Comparable) Utilities.revert(valueSection);
+        
+        return new Field(fieldName, comp);
+    }
+    
+    
 }

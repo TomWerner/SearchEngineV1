@@ -1,5 +1,6 @@
 package org.uiowa.cs2820.engine;
 
+import org.uiowa.cs2820.engine.utilities.ByteConvertable;
 import org.uiowa.cs2820.engine.utilities.Utilities;
 
 public abstract class ChunkedAccess
@@ -22,6 +23,15 @@ public abstract class ChunkedAccess
             return null;
         getChunk(result, chunkPosition);
         return Utilities.revert(result);
+    }
+    
+    public ByteConvertable get(int chunkPosition, ByteConvertable obj)
+    {
+        byte[] result = new byte[chunkSize];
+        if (isChunkPositionOutOfBounds(chunkPosition))
+            return null;
+        getChunk(result, chunkPosition);
+        return (ByteConvertable) obj.revert(result);
     }
 
     protected abstract void getChunk(byte[] result, int chunkPosition);
