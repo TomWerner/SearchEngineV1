@@ -18,7 +18,7 @@ public class FieldDatabase
     
     private void recursiveAdd(int rootIndex, BinaryFileNode node)
     {
-        BinaryFileNode root = (BinaryFileNode) fileHandle.get(rootIndex, new BinaryFileNode(new Field("",""),0));
+        BinaryFileNode root = (BinaryFileNode) fileHandle.get(rootIndex);
         if (root == null)
         {
             fileHandle.set(node.convert(), rootIndex);
@@ -32,7 +32,7 @@ public class FieldDatabase
     public int getIdentifierPosition(Field field)
     {
         int index = 0;
-        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index, new BinaryFileNode(new Field("",""),0));
+        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index);
         if (currentNode == null)
             return -1;
         while (currentNode != null)
@@ -43,7 +43,7 @@ public class FieldDatabase
                 index = index * 2 + 1;
             else
                 index = index * 2 + 2;
-            currentNode = (BinaryFileNode) fileHandle.get(index, new BinaryFileNode(new Field("",""),0));
+            currentNode = (BinaryFileNode) fileHandle.get(index);
         }
         
         return -1;
@@ -52,7 +52,7 @@ public class FieldDatabase
     public void setIdentifierPosition(Field field, int identPos)
     {
         int index = 0;
-        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index, new BinaryFileNode(new Field("",""),0));
+        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index);
         if (currentNode == null)
             return;
         while (currentNode != null)
@@ -67,7 +67,7 @@ public class FieldDatabase
                 index = index * 2 + 1;
             else
                 index = index * 2 + 2;
-            currentNode = (BinaryFileNode) fileHandle.get(index, new BinaryFileNode(new Field("",""),0));
+            currentNode = (BinaryFileNode) fileHandle.get(index);
         }
     }
 }

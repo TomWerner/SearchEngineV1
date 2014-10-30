@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.uiowa.cs2820.engine.BinaryFileNode;
 import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
 public class BinaryFileNodeTest
 {
@@ -13,7 +14,8 @@ public class BinaryFileNodeTest
     {
         BinaryFileNode node = new BinaryFileNode(new Field("value", "name"), 5);
         byte[] byteRepr = node.convert();
-        BinaryFileNode revertedNode = (BinaryFileNode)(node.revert(byteRepr));
+        BinaryFileNode revertedNode = (BinaryFileNode)ByteConverter.revert(byteRepr);
         assertEquals(node, revertedNode);
+        assertEquals(node.getAddrOfIdentifierStart(), revertedNode.getAddrOfIdentifierStart());
     }
 }

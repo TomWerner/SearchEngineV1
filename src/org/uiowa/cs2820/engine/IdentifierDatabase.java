@@ -2,8 +2,6 @@ package org.uiowa.cs2820.engine;
 
 import java.util.ArrayList;
 
-import org.uiowa.cs2820.engine.utilities.Utilities;
-
 public class IdentifierDatabase
 {
     private ChunkedAccess fileHandle;
@@ -21,15 +19,15 @@ public class IdentifierDatabase
         // Then find the next available spot to stick our new node and change
         // the address to that, then add normally.
         if (existingNode != null)
-        {
+        { 
             if (node.getNextNode() != ValueFileNode.NULL_ADDRESS)
                 throw new IllegalAccessError();
             node.setNextNode(existingNode.getAddress());
             addrOfIdentifier = fileHandle.nextAvailableChunk();
-        }
+        } 
 
         node.setAddress(addrOfIdentifier);
-        fileHandle.set(Utilities.convert(node), addrOfIdentifier);
+        fileHandle.set(node.convert(), addrOfIdentifier);
 
         return addrOfIdentifier;
     }
@@ -39,7 +37,7 @@ public class IdentifierDatabase
         int addrOfIdentifier = fileHandle.nextAvailableChunk();
         ValueFileNode node = new ValueFileNode(identifier);
         node.setAddress(addrOfIdentifier);
-        fileHandle.set(Utilities.convert(node), addrOfIdentifier);
+        fileHandle.set(node.convert(), addrOfIdentifier);
 
         return addrOfIdentifier;
     }
@@ -72,7 +70,7 @@ public class IdentifierDatabase
             }
             // Node is now the node to remove, previous is the one before it
             previous.setNextNode(node.getNextNode());
-            fileHandle.set(Utilities.convert(previous), previous.getAddress());
+            fileHandle.set(previous.convert(), previous.getAddress());
             fileHandle.free(node.getAddress());
 
             return ValueFileNode.NULL_ADDRESS;

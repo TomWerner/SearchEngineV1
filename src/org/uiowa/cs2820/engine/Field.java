@@ -3,16 +3,17 @@ package org.uiowa.cs2820.engine;
 import java.nio.ByteBuffer;
 
 import org.uiowa.cs2820.engine.utilities.ByteConvertable;
+import org.uiowa.cs2820.engine.utilities.ByteConverter;
 import org.uiowa.cs2820.engine.utilities.Utilities;
 
 @SuppressWarnings( { "rawtypes" })
 public class Field implements ByteConvertable, Comparable<Field>
 {
     private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
-    private static final int MAX_NAME_SIZE = BinaryFileNode.MAX_FIELD_SIZE / 4 - INTEGER_SIZE;
+    private static final int MAX_NAME_SIZE = BinaryFileNode.MAX_FIELD_SIZE / 4 - INTEGER_SIZE - ByteConverter.EXISTS_SIZE;
     private static final int MAX_VALUE_SIZE = BinaryFileNode.MAX_FIELD_SIZE / 2 * 3 - INTEGER_SIZE;
-    private static final int NAME_LENGTH_POSITION = 0;
-    private static final int NAME_POSITION = INTEGER_SIZE;
+    private static final int NAME_LENGTH_POSITION = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
+    private static final int NAME_POSITION = NAME_LENGTH_POSITION + INTEGER_SIZE;
     private static final int VALUE_LENGTH_POSITION = NAME_POSITION + MAX_NAME_SIZE;
     private static final int VALUE_POSITION = VALUE_LENGTH_POSITION + INTEGER_SIZE;
     
@@ -21,7 +22,7 @@ public class Field implements ByteConvertable, Comparable<Field>
 
     // constructor for Fields with String
     public Field(String fieldName, Comparable value) throws IllegalArgumentException
-    { 
+    {
         this.fieldName = fieldName;
         this.value = value;
         convert();
@@ -65,6 +66,10 @@ public class Field implements ByteConvertable, Comparable<Field>
     public byte[] convert()
     {
         byte[] result = new byte[BinaryFileNode.MAX_FIELD_SIZE];
+        
+        for (int i = 0; i < ByteConverter.EXISTS_SIZE; i++)
+            result[i + ByteConverter.EXISTS_POSITION] = ByteConverter.FIELD[i];
+        
         byte[] nameSection = fieldName.getBytes();
         byte[] nameSectionLength = ByteBuffer.allocate(INTEGER_SIZE).putInt(nameSection.length).array();
         byte[] valueSection = Utilities.convert(value);
@@ -82,8 +87,7 @@ public class Field implements ByteConvertable, Comparable<Field>
         return result;
     }
 
-    @Override
-    public Object revert(byte[] byteArray)
+    public static Object revert(byte[] byteArray)
     {
         byte[] nameSectionLength = new byte[INTEGER_SIZE];
         System.arraycopy(byteArray, NAME_LENGTH_POSITION, nameSectionLength, 0, INTEGER_SIZE);

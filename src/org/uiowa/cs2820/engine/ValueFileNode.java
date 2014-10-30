@@ -1,13 +1,19 @@
 package org.uiowa.cs2820.engine;
 
-import java.io.Serializable;
+import java.nio.ByteBuffer;
 
-import org.uiowa.cs2820.engine.utilities.Utilities;
+import org.uiowa.cs2820.engine.utilities.ByteConvertable;
+import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
-@SuppressWarnings("serial")
-public class ValueFileNode implements Serializable
+public class ValueFileNode implements ByteConvertable
 {
     public static final int MAX_SIZE = 256;
+    private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
+    private static final int ADDRESS_POSITION = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
+    private static final int NEXT_NODE_POSITION = ADDRESS_POSITION + INTEGER_SIZE;
+    private static final int IDENTIFIER_SIZE_POSITION = NEXT_NODE_POSITION + INTEGER_SIZE;
+    private static final int IDENTIFIER_POSITION = IDENTIFIER_SIZE_POSITION + INTEGER_SIZE;
+    private static final int MAX_IDENTIFIER_SIZE = MAX_SIZE - INTEGER_SIZE * 3 - ByteConverter.EXISTS_SIZE;
     public static final int NULL_ADDRESS = -1;
 
     private int nextNode;
@@ -24,12 +30,6 @@ public class ValueFileNode implements Serializable
     {
         this.nextNode = nextNode;
         setIdentifier(identifier);
-    }
-
-    public byte[] toBytes()
-    {
-        byte[] result = Utilities.convert(this);
-        return result;
     }
 
     public int getNextNode()
@@ -50,8 +50,7 @@ public class ValueFileNode implements Serializable
     public void setIdentifier(String identifier)
     {
         this.identifier = identifier;
-        if (toBytes().length >= MAX_SIZE)
-            throw new IllegalArgumentException("Identifier size exceeded: " + identifier);
+        convert();
     }
 
     public int getAddress()
@@ -68,4 +67,70 @@ public class ValueFileNode implements Serializable
     {
         return identifier + "@ chunk " + address + ". Points to " + nextNode;
     }
+
+    @Override
+    public byte[] convert()
+    {
+        byte[] result = new byte[MAX_SIZE];
+
+        for (int i = 0; i < ByteConverter.EXISTS_SIZE; i++)
+            result[i + ByteConverter.EXISTS_POSITION] = ByteConverter.VALUE_FILE_NODE[i];
+        
+        byte[] addrSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(address).array();
+        byte[] nextNodeSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(nextNode).array();
+        byte[] identSection = identifier.getBytes();
+        byte[] identSectionLength = ByteBuffer.allocate(INTEGER_SIZE).putInt(identSection.length).array(); 
+        
+        if (identSection.length > MAX_IDENTIFIER_SIZE)
+            throw new IllegalArgumentException("Identifier is too long");
+        
+        System.arraycopy(addrSection, 0, result, ADDRESS_POSITION, addrSection.length);
+        System.arraycopy(nextNodeSection, 0, result, NEXT_NODE_POSITION, nextNodeSection.length);
+        System.arraycopy(identSectionLength, 0, result, IDENTIFIER_SIZE_POSITION, identSectionLength.length);
+        System.arraycopy(identSection, 0, result, IDENTIFIER_POSITION, identSection.length);
+        
+        return result;
+    }
+
+    public static Object revert(byte[] byteArray)
+    {
+        if (byteArray.length != MAX_SIZE)
+            throw new IllegalArgumentException("Byte array is not the correct size");
+        
+        byte[] addressSection = new byte[INTEGER_SIZE];
+        System.arraycopy(byteArray, ADDRESS_POSITION, addressSection, 0, INTEGER_SIZE);
+        ByteBuffer wrapped = ByteBuffer.wrap(addressSection);
+        int address = wrapped.getInt();
+        
+        byte[] nextNodeSection = new byte[INTEGER_SIZE];
+        System.arraycopy(byteArray, NEXT_NODE_POSITION, nextNodeSection, 0, INTEGER_SIZE);
+        wrapped = ByteBuffer.wrap(nextNodeSection);
+        int nextNode = wrapped.getInt();
+        
+        byte[] identSectionLength = new byte[INTEGER_SIZE];
+        System.arraycopy(byteArray, IDENTIFIER_SIZE_POSITION, identSectionLength, 0, INTEGER_SIZE);
+        wrapped = ByteBuffer.wrap(identSectionLength);
+        int identLength = wrapped.getInt();
+        
+        byte[] identSection = new byte[identLength];
+        System.arraycopy(byteArray, IDENTIFIER_POSITION, identSection, 0, identSection.length);
+        String ident = new String(identSection);
+        
+        ValueFileNode node = new ValueFileNode(ident, nextNode);
+        node.setAddress(address);
+        
+        return node;
+    }
+    
+    public boolean equals(Object other)
+    {
+        if (other instanceof ValueFileNode)
+        {
+            ValueFileNode o = (ValueFileNode)other;
+            return identifier.equals(o.identifier) && address == o.address && nextNode == o.nextNode;
+        }
+        return false;
+    }
+    
+    
 }
