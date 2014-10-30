@@ -127,4 +127,78 @@ public class IntegratedDatabaseTest
         assertEquals(identifier2, results.get(6));
         assertEquals(identifier1, results.get(7));
     }
+    
+    @Test
+    public void testRemovingIdentifierBasicCase()
+    {
+        MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new FieldDatabase(file1);
+        MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        IdentifierDatabase identDB = new IdentifierDatabase(file2);
+
+        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
+        Field field = new Field("name", "value");
+        String identifier1 = "filename1";
+        database.store(field, identifier1);
+        
+        ArrayList<String> results = database.fetch(field);
+        assertEquals(1, results.size());
+        assertEquals(identifier1, results.get(0));
+        
+        database.delete(field, identifier1);
+        
+        results = database.fetch(field);
+        assertEquals(null, results);
+    }
+    
+    @Test
+    public void testRemovingIdentifierNotThere()
+    {
+        MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new FieldDatabase(file1);
+        MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        IdentifierDatabase identDB = new IdentifierDatabase(file2);
+
+        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
+        Field field = new Field("name", "value");
+        String identifier1 = "filename1";
+        String identifier2 = "filename2";
+        database.store(field, identifier1);
+        
+        ArrayList<String> results = database.fetch(field);
+        assertEquals(1, results.size());
+        assertEquals(identifier1, results.get(0));
+        
+        database.delete(field, identifier2);
+        
+        results = database.fetch(field);
+        assertEquals(1, results.size());
+        assertEquals(identifier1, results.get(0));
+    }
+    
+    @Test
+    public void testRemovingIdentifierTwice()
+    {
+        MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new FieldDatabase(file1);
+        MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        IdentifierDatabase identDB = new IdentifierDatabase(file2);
+
+        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
+        Field field = new Field("name", "value");
+        String identifier1 = "filename1";
+        database.store(field, identifier1);
+        
+        ArrayList<String> results = database.fetch(field);
+        assertEquals(1, results.size());
+        assertEquals(identifier1, results.get(0));
+        
+        database.delete(field, identifier1);
+        results = database.fetch(field);
+        assertEquals(null, results);
+        
+        database.delete(field, identifier1);
+        results = database.fetch(field);
+        assertEquals(null, results);
+    }
 }

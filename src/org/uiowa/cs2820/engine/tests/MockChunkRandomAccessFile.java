@@ -18,8 +18,8 @@ public class MockChunkRandomAccessFile implements ChunkedAccess
     public Object get(int chunkPosition)
     {
         byte[] result = new byte[chunkSize];
-        if (chunkPosition > mockFile.length / chunkSize)
-            doubleCapacity();
+        if (chunkPosition >= mockFile.length / chunkSize)
+            return null;
         System.arraycopy(mockFile, chunkPosition * chunkSize, result, 0, chunkSize);
         return Utilities.revert(result);
     }
@@ -27,6 +27,8 @@ public class MockChunkRandomAccessFile implements ChunkedAccess
     @Override
     public void set(byte[] objectByteRepr, int chunkPosition)
     {
+        if (chunkPosition >= mockFile.length / chunkSize)
+            doubleCapacity();
         System.arraycopy(objectByteRepr, 0, mockFile, chunkPosition * chunkSize, objectByteRepr.length);
     }
 

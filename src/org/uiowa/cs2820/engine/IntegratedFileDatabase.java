@@ -25,8 +25,10 @@ public class IntegratedFileDatabase implements Database
     @Override
     public void delete(Field field, String identifier)
     {
-        // TODO Auto-generated method stub
-
+        int position = fieldDB.getIdentifierPosition(field);
+        if (position == -1)
+            return;
+        identDB.removeIdentifier(position, identifier);
     }
 
     @Override
@@ -39,7 +41,6 @@ public class IntegratedFileDatabase implements Database
         if (identPos == -1)
         {
             identPos = identDB.addIdentifier(identifier);
-            System.out.println("Position " + identPos);
             fieldDB.add(new BinaryFileNode(field, identPos));
         }
         else

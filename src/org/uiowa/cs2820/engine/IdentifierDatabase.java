@@ -58,6 +58,8 @@ public class IdentifierDatabase
         else
         {
             int next = start.getNextNode();
+            if (next == ValueFileNode.NULL_ADDRESS)
+                return ValueFileNode.NULL_ADDRESS;
             ValueFileNode node = (ValueFileNode) fileHandle.get(next);
             ValueFileNode previous = start;
             while (!node.getIdentifier().equals(identifier))
