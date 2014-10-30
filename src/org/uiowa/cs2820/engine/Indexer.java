@@ -5,20 +5,19 @@ public class Indexer
     private Database database;
     private String identifier;
 
-    public Indexer(Database d, String id)
+    public Indexer(Database database, String identifier)
     {
         // constructor does nothing now, but someday
         // may need to set up database for doing things
-        this.database = d;
-        this.identifier = id;
-    }
+        this.database = database;
+        this.identifier = identifier;
+    } 
 
-    public void addField(Field f)
+    public void addField(Field field)
     {
         // Field has (name,value) which is used as key for
         // the database operations
-        byte[] key = f.toBytes();
-        database.store(key, identifier);
+        database.store(field, identifier);
     }
 
 }

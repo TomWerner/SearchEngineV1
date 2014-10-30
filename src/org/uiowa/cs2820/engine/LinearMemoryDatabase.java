@@ -1,7 +1,8 @@
 package org.uiowa.cs2820.engine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import org.uiowa.cs2820.engine.utilities.Utilities;
 
 public class LinearMemoryDatabase implements Database
 {
@@ -10,35 +11,35 @@ public class LinearMemoryDatabase implements Database
     public LinearMemoryDatabase()
     {
         this.memoryArray = new ArrayList<Node>(); // empty list
-    }
+    } 
 
-    public Node fetch(byte[] key)
+    public ArrayList<String> fetch(Field key)
     {
         for (Node node : memoryArray)
-            if (Arrays.equals(node.nodeKey, key))
-                return node;
+            if (Utilities.revert(node.nodeKey).equals(key))
+                return node.nodeIdentifiers;
         return null;
-    }
+    } 
 
-    public void store(byte[] key, String id)
+    public void store(Field key, String id)
     {
         for (Node node : memoryArray)
         {
-            if (Arrays.equals(node.nodeKey, key))
+            if (Utilities.revert(node.nodeKey).equals(key))
             {
                 node.add(id);
                 return;
             }
         }
-        Node newNode = new Node(key, id);
+        Node newNode = new Node(key.toBytes(), id);
         memoryArray.add(newNode);
     }
 
-    public void delete(byte[] key, String id)
+    public void delete(Field key, String id)
     {
         for (Node node : memoryArray)
         {
-            if (Arrays.equals(node.nodeKey, key))
+            if (node.nodeKey.equals(key))
             {
                 node.nodeIdentifiers.remove(id);
                 return;
