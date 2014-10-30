@@ -39,11 +39,10 @@ public class MockChunkRandomAccessFile extends ChunkedAccess
         return newAvailableChunk;
     }
 
-    public void doubleCapacity()
+    protected void internalDoubleCapacity()
     {
         byte[] newArray = new byte[mockFile.length * 2];
         System.arraycopy(mockFile, 0, newArray, 0, mockFile.length);
-        numberOfChunks *= 2;
         mockFile = newArray;
     }
 

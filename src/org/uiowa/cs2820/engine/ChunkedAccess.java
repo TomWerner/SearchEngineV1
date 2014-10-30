@@ -45,7 +45,16 @@ public abstract class ChunkedAccess
 
     public abstract int nextAvailableChunk();
 
-    public abstract void doubleCapacity();
+    public void doubleCapacity()
+    {
+        numberOfChunks *= 2;
+        internalDoubleCapacity();
+    }
+    
+    // This exists because we need to make sure the number of chunks
+    // is doubled in numberOfChunks, it shouldn't be the responsibility
+    // of the child to do that, just to double their file structure.
+    protected abstract void internalDoubleCapacity();
 
     protected boolean isChunkPositionOutOfBounds(int chunkPosition)
     {
