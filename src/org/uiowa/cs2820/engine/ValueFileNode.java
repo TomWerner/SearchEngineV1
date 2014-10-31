@@ -7,6 +7,9 @@ import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
 public class ValueFileNode implements ByteConvertable
 {
+    /*
+     * Constants used to conversion to a byte array
+     */
     public static final int MAX_SIZE = 256;
     private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
     private static final int ADDRESS_POSITION = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
@@ -14,18 +17,42 @@ public class ValueFileNode implements ByteConvertable
     private static final int IDENTIFIER_SIZE_POSITION = NEXT_NODE_POSITION + INTEGER_SIZE;
     private static final int IDENTIFIER_POSITION = IDENTIFIER_SIZE_POSITION + INTEGER_SIZE;
     private static final int MAX_IDENTIFIER_SIZE = MAX_SIZE - INTEGER_SIZE * 3 - ByteConverter.EXISTS_SIZE;
+    
+    /**
+     * Null address - this node doesn't point anywhere
+     */
     public static final int NULL_ADDRESS = -1;
 
+    /**
+     * The position of the next ValueFileNode
+     */
     private int nextNode;
+    
+    /**
+     * The string identifier of this node
+     */
     private String identifier;
+    
+    /**
+     * The chunk position of this node in the database
+     */
     private int address;
 
+    /**
+     * Create a new ValueFileNode with a given identifier
+     * @param identifier the identifer for the node
+     */
     public ValueFileNode(String identifier)
     {
         nextNode = NULL_ADDRESS;
         setIdentifier(identifier);
     }
 
+    /**
+     * Create a new ValueFileNode with a given identifier that points to a given position
+     * @param identifier The idntifier for the node
+     * @param nextNode The location of the next node in the linked list
+     */
     public ValueFileNode(String identifier, int nextNode)
     {
         this.nextNode = nextNode;
@@ -68,6 +95,9 @@ public class ValueFileNode implements ByteConvertable
         return identifier + "@ chunk " + address + ". Points to " + nextNode;
     }
 
+    /**
+     * Convert this object to a byte array
+     */
     @Override
     public byte[] convert()
     {
@@ -92,6 +122,11 @@ public class ValueFileNode implements ByteConvertable
         return result;
     }
 
+    /**
+     * Convert a given byte array to a new ValueFileNode
+     * @param byteArray The byte array to revert
+     * @return The new ValueFileNode
+     */
     public static Object revert(byte[] byteArray)
     {
         if (byteArray.length != MAX_SIZE)
