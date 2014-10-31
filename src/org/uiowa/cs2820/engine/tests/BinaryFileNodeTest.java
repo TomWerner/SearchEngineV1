@@ -16,6 +16,6 @@ public class BinaryFileNodeTest
         byte[] byteRepr = node.convert();
         BinaryFileNode revertedNode = (BinaryFileNode)ByteConverter.revert(byteRepr);
         assertEquals(node, revertedNode);
-        assertEquals(node.getAddrOfIdentifierStart(), revertedNode.getAddrOfIdentifierStart());
+        assertEquals(node.getHeadOfLinkedListPosition(), revertedNode.getHeadOfLinkedListPosition());
     }
 }

@@ -7,29 +7,50 @@ import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
 public class BinaryFileNode implements ByteConvertable
 {
+    /*
+     * Constants used for serialization
+     */
     public static final int MAX_SIZE = 256;
     private static final int ADDRESS_SIZE = Integer.SIZE / Byte.SIZE;;
     public static final int MAX_FIELD_SIZE = MAX_SIZE - ADDRESS_SIZE - ByteConverter.EXISTS_SIZE;
     private static final int ADDRESS_POSITION = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
     private static final int FIELD_POSITION = ADDRESS_POSITION + ADDRESS_SIZE;
     
+    /*
+     * Fields used by the node
+     */
     private Field field;
-    private int addrOfIdentifierStart;
+    private int headOfLinkedListPosition;
 
-    public BinaryFileNode(Field field, int addrOfIdentifierStart)
+    /**
+     * Construct a new BinaryFileNode that contains a field and a pointer to the start of
+     * and identifier linked list.
+     * @param field The field of the node
+     * @param headOfLinkedListPosition the position of the head node of the identifier linked list in the IdentifierDatabase
+     */
+    public BinaryFileNode(Field field, int headOfLinkedListPosition)
     {
         this.field = field;
-        this.addrOfIdentifierStart = addrOfIdentifierStart;
+        this.headOfLinkedListPosition = headOfLinkedListPosition;
     }
 
-    public int getAddrOfIdentifierStart()
+    /**
+     * 
+     * @return the position of the start of the identifier linked list
+     */
+    public int getHeadOfLinkedListPosition()
     {
-        return addrOfIdentifierStart;
+        return headOfLinkedListPosition;
     }
 
-    public void setAddrOfIdentifierStart(int addrOfIdentifierStart)
+    /**
+     * Set the location of the linked list head node
+     * NOTE: You need to save the node for it persist.
+     * @param headOfLinkedListPosition the new location of the head node
+     */
+    public void setHeadOfLinkedListPosition(int headOfLinkedListPosition)
     {
-        this.addrOfIdentifierStart = addrOfIdentifierStart;
+        this.headOfLinkedListPosition = headOfLinkedListPosition;
     }
 
     public Field getField()
@@ -51,9 +72,12 @@ public class BinaryFileNode implements ByteConvertable
     
     public String toString()
     {
-        return field.toString() + " -> " + addrOfIdentifierStart;
+        return field.toString() + " -> " + headOfLinkedListPosition;
     }
 
+    /**
+     * Convert this object into a byte array
+     */
     @Override
     public byte[] convert()
     {
@@ -62,13 +86,18 @@ public class BinaryFileNode implements ByteConvertable
         for (int i = 0; i < ByteConverter.EXISTS_SIZE; i++)
             result[i + ByteConverter.EXISTS_POSITION] = ByteConverter.BINARY_FILE_NODE[i];
         
-        byte[] addrSection = ByteBuffer.allocate(ADDRESS_SIZE).putInt(addrOfIdentifierStart).array();
+        byte[] addrSection = ByteBuffer.allocate(ADDRESS_SIZE).putInt(headOfLinkedListPosition).array();
         byte[] fieldSection = field.convert();
         System.arraycopy(addrSection, 0, result, ADDRESS_POSITION, addrSection.length);
         System.arraycopy(fieldSection, 0, result, FIELD_POSITION, fieldSection.length);
         return result;
     }
 
+    /**
+     * Create a new object from a given byte array
+     * @param byteArray the byte array the object is in
+     * @return the new object, a BinaryFileNode
+     */
     public static Object revert(byte[] byteArray)
     {
         if (byteArray.length != MAX_SIZE)

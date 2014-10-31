@@ -2,6 +2,9 @@ package org.uiowa.cs2820.engine;
 
 
 
+/**
+ * 
+ */
 public class FieldDatabase
 {
     private ChunkedAccess fileHandle;
@@ -38,7 +41,7 @@ public class FieldDatabase
         while (currentNode != null)
         {
             if (currentNode.getField().equals(field))
-                return currentNode.getAddrOfIdentifierStart();
+                return currentNode.getHeadOfLinkedListPosition();
             else if (field.compareTo(currentNode.getField()) < 0)
                 index = index * 2 + 1;
             else
@@ -59,7 +62,7 @@ public class FieldDatabase
         {
             if (currentNode.getField().equals(field))
             {
-                currentNode.setAddrOfIdentifierStart(identPos);
+                currentNode.setHeadOfLinkedListPosition(identPos);
                 fileHandle.set(currentNode.convert(), index);
                 return;
             }
