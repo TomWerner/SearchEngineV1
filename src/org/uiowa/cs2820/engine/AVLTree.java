@@ -15,16 +15,16 @@ public class AVLTree
     public static void main(String[] args)
     {
         AVLTree tree = new AVLTree();
-        tree.insert(new BinaryFileNode(new Field("value", "a"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "b"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "c"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "d"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "e"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "f"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "g"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "h"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "i"), 0));
-        tree.insert(new BinaryFileNode(new Field("value", "j"), 0));
+        tree.insert(new BinaryFileNode(new Field("value", "a"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "b"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "c"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "d"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "e"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "f"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "g"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "h"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "i"), 0,0,0));
+        tree.insert(new BinaryFileNode(new Field("value", "j"), 0,0,0));
         tree.PrintTree();
     }
 
@@ -55,7 +55,7 @@ public class AVLTree
         if (node == null)
             return 0;
         return node.getDepth();
-        // 1 + Math.max(depth(node.getLeft()), depth(node.getRight()));
+        //0 1 + Math.max(depth(node.getLeft()), depth(node.getRight()));
     }
 
     public AVLNode<BinaryFileNode> insert(BinaryFileNode data)

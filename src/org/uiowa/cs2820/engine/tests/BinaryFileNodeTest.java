@@ -14,11 +14,13 @@ public class BinaryFileNodeTest
     @Test
     public void testToAndFromByteArray()
     {
-        BinaryFileNode node = new BinaryFileNode(new Field("value", "name"), 5);
+        BinaryFileNode node = new BinaryFileNode(new Field("value", "name"), 5, 0, 0);
         byte[] byteRepr = node.convert();
         BinaryFileNode revertedNode = (BinaryFileNode)ByteConverter.revert(byteRepr);
         assertEquals(node, revertedNode);
         assertEquals(node.getHeadOfLinkedListPosition(), revertedNode.getHeadOfLinkedListPosition());
+        assertEquals(node.getLeftPosition(), revertedNode.getLeftPosition());
+        assertEquals(node.getRightPosition(), revertedNode.getRightPosition());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -31,9 +33,9 @@ public class BinaryFileNodeTest
     @Test
     public void testEquals()
     {
-        BinaryFileNode node1 = new BinaryFileNode(new Field("value", "name"), 5);
-        BinaryFileNode node2 = new BinaryFileNode(new Field("value", "name"), 5);
-        BinaryFileNode node3 = new BinaryFileNode(new Field("value", "name2"), 5);
+        BinaryFileNode node1 = new BinaryFileNode(new Field("value", "name"), 5, 0, 0);
+        BinaryFileNode node2 = new BinaryFileNode(new Field("value", "name"), 5, 0, 0);
+        BinaryFileNode node3 = new BinaryFileNode(new Field("value", "name2"), 5, 0, 0);
 
         assertTrue(node1.equals(node1));
         assertTrue(node1.equals(node2));

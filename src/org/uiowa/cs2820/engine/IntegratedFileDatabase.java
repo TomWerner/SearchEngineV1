@@ -59,7 +59,7 @@ public class IntegratedFileDatabase implements Database
         if (linkedListHeadPosition == -1)
         {
             linkedListHeadPosition = identDB.addIdentifier(identifier);
-            fieldDB.add(new BinaryFileNode(field, linkedListHeadPosition));
+            fieldDB.add(new BinaryFileNode(field, linkedListHeadPosition, 0, 0));
         }
         else
         {

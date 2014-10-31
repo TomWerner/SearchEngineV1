@@ -21,9 +21,8 @@ public class RAFile extends ChunkedAccess
 		RandomAccessFile file;
 		try {
 			file = new RandomAccessFile(FILE, "r");
-			file.seek(chunkPosition);
-			byte[] bytes = new byte[chunkSize];
-			file.read(bytes);
+			file.seek(chunkPosition * chunkSize);
+			file.read(result);
 			file.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -37,7 +36,7 @@ public class RAFile extends ChunkedAccess
 		RandomAccessFile file;
 		try {
 			file = new RandomAccessFile(FILE, "rw");
-			file.seek(chunkPosition);
+			file.seek(chunkPosition * chunkSize);
 			file.write(objectByteRepr);
 		    file.close();	
 		} catch (IOException e) {

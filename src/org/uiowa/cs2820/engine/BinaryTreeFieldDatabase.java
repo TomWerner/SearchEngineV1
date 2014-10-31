@@ -82,18 +82,13 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
     {
         BinaryFileNode root = (BinaryFileNode) getFileHandle().get(rootIndex);
         if (root == null)
-        {
             getFileHandle().set(node.convert(), rootIndex);
-        }
         else if (node.getField().compareTo(root.getField()) < 0)
             recursiveAdd(rootIndex * 2 + 1, node);
         else if (node.getField().compareTo(root.getField()) > 0)
             recursiveAdd(rootIndex * 2 + 2, node);
     }
     
-    /* (non-Javadoc)
-     * @see org.uiowa.cs2820.engine.FieldDatabase#getIdentifierPosition(org.uiowa.cs2820.engine.Field)
-     */
     @Override
     public int getIdentifierPosition(Field field)
     {
@@ -115,9 +110,6 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
         return -1;
     }
 
-    /* (non-Javadoc)
-     * @see org.uiowa.cs2820.engine.FieldDatabase#setIdentifierPosition(org.uiowa.cs2820.engine.Field, int)
-     */
     @Override
     public void setIdentifierPosition(Field field, int headOfLinkedListPosition)
     {
