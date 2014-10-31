@@ -1,7 +1,11 @@
 package org.uiowa.cs2820.engine;
 
-public class AVLFieldDatabase implements FieldDatabase
+public class AVLFieldDatabase extends FieldDatabase
 {
+    public AVLFieldDatabase(ChunkedAccess file)
+    {
+        super(file);
+    }
 
     @Override
     public void add(BinaryFileNode node)
@@ -23,5 +27,10 @@ public class AVLFieldDatabase implements FieldDatabase
         // TODO Auto-generated method stub
         
     }
-
+    
+    
+    private BinaryFileNode getLeft(int index)
+    {
+        return null;
+    }
 }

@@ -56,18 +56,11 @@ package org.uiowa.cs2820.engine;
  * the head of its linked list.
  * 
  */
-public class BinaryTreeFieldDatabase implements FieldDatabase
+public class BinaryTreeFieldDatabase extends FieldDatabase
 {
-    private ChunkedAccess fileHandle;
-
-    /**
-     * Create a new FieldDatabase with a given ChunkedAccess file.
-     * It stores fields using a binary tree.
-     * @param fileHandle The file to store fields in
-     */
     public BinaryTreeFieldDatabase(ChunkedAccess fileHandle)
     {
-        this.fileHandle = fileHandle;
+        super(fileHandle);
     }
 
     /* (non-Javadoc)
@@ -87,10 +80,10 @@ public class BinaryTreeFieldDatabase implements FieldDatabase
      */
     private void recursiveAdd(int rootIndex, BinaryFileNode node)
     {
-        BinaryFileNode root = (BinaryFileNode) fileHandle.get(rootIndex);
+        BinaryFileNode root = (BinaryFileNode) getFileHandle().get(rootIndex);
         if (root == null)
         {
-            fileHandle.set(node.convert(), rootIndex);
+            getFileHandle().set(node.convert(), rootIndex);
         }
         else if (node.getField().compareTo(root.getField()) < 0)
             recursiveAdd(rootIndex * 2 + 1, node);
@@ -105,7 +98,7 @@ public class BinaryTreeFieldDatabase implements FieldDatabase
     public int getIdentifierPosition(Field field)
     {
         int index = 0;
-        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index);
+        BinaryFileNode currentNode = (BinaryFileNode) getFileHandle().get(index);
         if (currentNode == null)
             return -1;
         while (currentNode != null)
@@ -116,7 +109,7 @@ public class BinaryTreeFieldDatabase implements FieldDatabase
                 index = index * 2 + 1;
             else
                 index = index * 2 + 2;
-            currentNode = (BinaryFileNode) fileHandle.get(index);
+            currentNode = (BinaryFileNode) getFileHandle().get(index);
         }
         
         return -1;
@@ -129,7 +122,7 @@ public class BinaryTreeFieldDatabase implements FieldDatabase
     public void setIdentifierPosition(Field field, int headOfLinkedListPosition)
     {
         int index = 0;
-        BinaryFileNode currentNode = (BinaryFileNode) fileHandle.get(index);
+        BinaryFileNode currentNode = (BinaryFileNode) getFileHandle().get(index);
         if (currentNode == null)
             return;
         while (currentNode != null)
@@ -137,14 +130,14 @@ public class BinaryTreeFieldDatabase implements FieldDatabase
             if (currentNode.getField().equals(field))
             {
                 currentNode.setHeadOfLinkedListPosition(headOfLinkedListPosition);
-                fileHandle.set(currentNode.convert(), index);
+                getFileHandle().set(currentNode.convert(), index);
                 return;
             }
             else if (field.compareTo(currentNode.getField()) < 0)
                 index = index * 2 + 1;
             else
                 index = index * 2 + 2;
-            currentNode = (BinaryFileNode) fileHandle.get(index);
+            currentNode = (BinaryFileNode) getFileHandle().get(index);
         }
     }
 }
