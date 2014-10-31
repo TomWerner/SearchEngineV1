@@ -1,7 +1,8 @@
 package org.uiowa.cs2820.engine.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.ValueFileNode;
@@ -40,11 +41,26 @@ public class ValueFileNodeTest
         ValueFileNode node2 = new ValueFileNode("Identifier", 0);
         node2.setAddress(2);
         
-        ValueFileNode node3 = new ValueFileNode("Identifier2", 1);
+        ValueFileNode node3 = new ValueFileNode("Identifier", 1);
+        node3.setAddress(2);
+        
+        ValueFileNode node4 = new ValueFileNode("Identifier", 1);
         node3.setAddress(3);
         
-        assertEquals(node1, node2);
-        assertNotSame(node1, node3);
+        ValueFileNode node5 = new ValueFileNode("Identifier2", 1);
+        node3.setAddress(2);
         
+        assertTrue(node1.equals(node2));
+        assertFalse(node1.equals(node3));
+        assertFalse(node1.equals(node4));
+        assertFalse(node1.equals(node5));
+        assertFalse(node1.equals(new Object()));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooLongByteArrayError()
+    {
+        byte[] byteArray = new byte[ValueFileNode.MAX_SIZE + 1];
+        ValueFileNode.revert(byteArray);
     }
 }

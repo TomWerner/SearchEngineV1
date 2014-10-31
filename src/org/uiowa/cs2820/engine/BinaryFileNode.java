@@ -57,11 +57,6 @@ public class BinaryFileNode implements ByteConvertable
     { 
         return field;
     }
-
-    public void setField(Field field)
-    {
-        this.field = field;
-    }
     
     public boolean equals(Object other)
     { 

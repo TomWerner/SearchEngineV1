@@ -1,6 +1,8 @@
 package org.uiowa.cs2820.engine.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.BinaryFileNode;
@@ -17,5 +19,25 @@ public class BinaryFileNodeTest
         BinaryFileNode revertedNode = (BinaryFileNode)ByteConverter.revert(byteRepr);
         assertEquals(node, revertedNode);
         assertEquals(node.getHeadOfLinkedListPosition(), revertedNode.getHeadOfLinkedListPosition());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTooLongByteArrayError()
+    {
+        byte[] byteArray = new byte[BinaryFileNode.MAX_SIZE + 1];
+        BinaryFileNode.revert(byteArray);
+    }
+    
+    @Test
+    public void testEquals()
+    {
+        BinaryFileNode node1 = new BinaryFileNode(new Field("value", "name"), 5);
+        BinaryFileNode node2 = new BinaryFileNode(new Field("value", "name"), 5);
+        BinaryFileNode node3 = new BinaryFileNode(new Field("value", "name2"), 5);
+
+        assertTrue(node1.equals(node1));
+        assertTrue(node1.equals(node2));
+        assertFalse(node1.equals(node3));
+        assertFalse(node1.equals(new Object()));
     }
 }
