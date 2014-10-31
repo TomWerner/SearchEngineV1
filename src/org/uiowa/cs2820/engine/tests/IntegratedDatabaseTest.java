@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.uiowa.cs2820.engine.BinaryFileNode;
 import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.BinaryTreeFieldDatabase;
 import org.uiowa.cs2820.engine.FieldDatabase;
 import org.uiowa.cs2820.engine.IdentifierDatabase;
 import org.uiowa.cs2820.engine.IntegratedFileDatabase;
@@ -18,7 +19,7 @@ public class IntegratedDatabaseTest
     public void testSingleAddRetrieveCycle()
     {
         MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new FieldDatabase(file1);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
@@ -37,7 +38,7 @@ public class IntegratedDatabaseTest
     public void testMultipleFieldsOneIdentifier()
     {
         MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new FieldDatabase(file1);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
@@ -92,7 +93,7 @@ public class IntegratedDatabaseTest
     public void testSingleFieldMultipleIdentifiers()
     {
         MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new FieldDatabase(file1);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
@@ -132,7 +133,7 @@ public class IntegratedDatabaseTest
     public void testRemovingIdentifierBasicCase()
     {
         MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new FieldDatabase(file1);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
@@ -155,7 +156,7 @@ public class IntegratedDatabaseTest
     public void testRemovingIdentifierNotThere()
     {
         MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new FieldDatabase(file1);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
@@ -180,7 +181,7 @@ public class IntegratedDatabaseTest
     public void testRemovingIdentifierTwice()
     {
         MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new FieldDatabase(file1);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
@@ -206,7 +207,7 @@ public class IntegratedDatabaseTest
     public void testRemovingFirstIdentifier()
     {
         MockChunkRandomAccessFile file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new FieldDatabase(file1);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         MockChunkRandomAccessFile file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 

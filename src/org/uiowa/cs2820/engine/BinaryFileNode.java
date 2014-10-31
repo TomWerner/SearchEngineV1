@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import org.uiowa.cs2820.engine.utilities.ByteConvertable;
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
-public class BinaryFileNode implements ByteConvertable
+public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNode>
 {
     /*
      * Constants used for serialization
@@ -108,6 +108,12 @@ public class BinaryFileNode implements ByteConvertable
         Field field = (Field) ByteConverter.revert(fieldSection);
         
         return new BinaryFileNode(field, address);
+    }
+
+    @Override
+    public int compareTo(BinaryFileNode o)
+    {
+        return field.compareTo(o.field);
     }
     
     

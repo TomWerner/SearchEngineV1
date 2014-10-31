@@ -5,16 +5,17 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.uiowa.cs2820.engine.BinaryFileNode;
 import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.BinaryTreeFieldDatabase;
 import org.uiowa.cs2820.engine.FieldDatabase;
 
-public class FieldDatabaseTest
+public class BinaryTreeFieldDatabaseTest
 {
     @Test
     public void testInitialAddGetCycle()
     {
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
-        FieldDatabase fieldDB = new FieldDatabase(file);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
         BinaryFileNode node = new BinaryFileNode(new Field("name", "value"), 0);
         fieldDB.add(node);
 
@@ -26,7 +27,7 @@ public class FieldDatabaseTest
     {
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
-        FieldDatabase fieldDB = new FieldDatabase(file);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
         BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1);
         fieldDB.add(node1);
@@ -41,7 +42,7 @@ public class FieldDatabaseTest
     {
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
-        FieldDatabase fieldDB = new FieldDatabase(file);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "b"), 0);
         BinaryFileNode node2 = new BinaryFileNode(new Field("name", "a"), 1);
         fieldDB.add(node1);
@@ -56,7 +57,7 @@ public class FieldDatabaseTest
     {
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
-        FieldDatabase fieldDB = new FieldDatabase(file);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
         BinaryFileNode node2 = new BinaryFileNode(new Field("name", "a"), 1);
         fieldDB.add(node1);
@@ -72,7 +73,7 @@ public class FieldDatabaseTest
     {
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
-        FieldDatabase fieldDB = new FieldDatabase(file);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
         BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1);
         BinaryFileNode node3 = new BinaryFileNode(new Field("name", "c"), 2);
@@ -112,7 +113,7 @@ public class FieldDatabaseTest
     {
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
-        FieldDatabase fieldDB = new FieldDatabase(file);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "e"), 0);
         BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1);
         BinaryFileNode node3 = new BinaryFileNode(new Field("name", "j"), 2);
