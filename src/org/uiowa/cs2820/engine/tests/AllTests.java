@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ BinaryFileNodeTest.class, BinaryTreeFieldDatabaseTest.class, FieldTest.class, IdentifierDatabaseTest.class, IntegratedDatabaseTest.class,
-        IntegrationTests.class, ValueFileNodeTest.class })
+@SuiteClasses({ AVLFieldDatabaseTest.class, BinaryFileNodeTest.class, BinaryTreeFieldDatabaseTest.class, FieldTest.class, IdentifierDatabaseTest.class,
+        IntegratedDatabaseTest.class, IntegratedDatabaseWithAVLTest.class, IntegrationTests.class, ValueFileNodeTest.class })
 public class AllTests
 {
 

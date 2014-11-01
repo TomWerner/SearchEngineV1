@@ -16,7 +16,7 @@ public class BinaryTreeFieldDatabaseTest
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
-        BinaryFileNode node = new BinaryFileNode(new Field("name", "value"), 0, 0, 0);
+        BinaryFileNode node = new BinaryFileNode(new Field("name", "value"), 0);
         fieldDB.add(node);
 
         assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "value")));
@@ -28,8 +28,8 @@ public class BinaryTreeFieldDatabaseTest
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
-        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0, 0, 0);
-        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1, 0, 0);
+        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
+        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1);
         fieldDB.add(node1);
         fieldDB.add(node2);
 
@@ -43,8 +43,8 @@ public class BinaryTreeFieldDatabaseTest
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
-        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "b"), 0, 0, 0);
-        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "a"), 1, 0, 0);
+        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "b"), 0);
+        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "a"), 1);
         fieldDB.add(node1);
         fieldDB.add(node2);
 
@@ -58,8 +58,8 @@ public class BinaryTreeFieldDatabaseTest
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
-        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0, 0, 0);
-        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "a"), 1, 0, 0);
+        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
+        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "a"), 1);
         fieldDB.add(node1);
         fieldDB.add(node2);
 
@@ -74,16 +74,16 @@ public class BinaryTreeFieldDatabaseTest
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
-        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0, 0, 0);
-        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1, 0, 0);
-        BinaryFileNode node3 = new BinaryFileNode(new Field("name", "c"), 2, 0, 0);
-        BinaryFileNode node4 = new BinaryFileNode(new Field("name", "d"), 3, 0, 0);
-        BinaryFileNode node5 = new BinaryFileNode(new Field("name", "e"), 4, 0, 0);
-        BinaryFileNode node6 = new BinaryFileNode(new Field("name", "f"), 5, 0, 0);
-        BinaryFileNode node7 = new BinaryFileNode(new Field("name", "g"), 6, 0, 0);
-        BinaryFileNode node8 = new BinaryFileNode(new Field("name", "h"), 7, 0, 0);
-        BinaryFileNode node9 = new BinaryFileNode(new Field("name", "i"), 8, 0, 0);
-        BinaryFileNode node10 = new BinaryFileNode(new Field("name", "j"), 9, 0, 0);
+        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
+        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1);
+        BinaryFileNode node3 = new BinaryFileNode(new Field("name", "c"), 2);
+        BinaryFileNode node4 = new BinaryFileNode(new Field("name", "d"), 3);
+        BinaryFileNode node5 = new BinaryFileNode(new Field("name", "e"), 4);
+        BinaryFileNode node6 = new BinaryFileNode(new Field("name", "f"), 5);
+        BinaryFileNode node7 = new BinaryFileNode(new Field("name", "g"), 6);
+        BinaryFileNode node8 = new BinaryFileNode(new Field("name", "h"), 7);
+        BinaryFileNode node9 = new BinaryFileNode(new Field("name", "i"), 8);
+        BinaryFileNode node10 = new BinaryFileNode(new Field("name", "j"), 9);
         fieldDB.add(node1);
         fieldDB.add(node2);
         fieldDB.add(node3);
@@ -114,16 +114,16 @@ public class BinaryTreeFieldDatabaseTest
         MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file);
-        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "e"), 0, 0, 0);
-        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1, 0, 0);
-        BinaryFileNode node3 = new BinaryFileNode(new Field("name", "j"), 2, 0, 0);
-        BinaryFileNode node4 = new BinaryFileNode(new Field("name", "d"), 3, 0, 0);
-        BinaryFileNode node5 = new BinaryFileNode(new Field("name", "c"), 4, 0, 0);
-        BinaryFileNode node6 = new BinaryFileNode(new Field("name", "i"), 5, 0, 0);
-        BinaryFileNode node7 = new BinaryFileNode(new Field("name", "a"), 6, 0, 0);
-        BinaryFileNode node8 = new BinaryFileNode(new Field("name", "h"), 7, 0, 0);
-        BinaryFileNode node9 = new BinaryFileNode(new Field("name", "g"), 8, 0, 0);
-        BinaryFileNode node10 = new BinaryFileNode(new Field("name", "f"), 9, 0, 0);
+        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "e"), 0);
+        BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1);
+        BinaryFileNode node3 = new BinaryFileNode(new Field("name", "j"), 2);
+        BinaryFileNode node4 = new BinaryFileNode(new Field("name", "d"), 3);
+        BinaryFileNode node5 = new BinaryFileNode(new Field("name", "c"), 4);
+        BinaryFileNode node6 = new BinaryFileNode(new Field("name", "i"), 5);
+        BinaryFileNode node7 = new BinaryFileNode(new Field("name", "a"), 6);
+        BinaryFileNode node8 = new BinaryFileNode(new Field("name", "h"), 7);
+        BinaryFileNode node9 = new BinaryFileNode(new Field("name", "g"), 8);
+        BinaryFileNode node10 = new BinaryFileNode(new Field("name", "f"), 9);
         fieldDB.add(node1);
         fieldDB.add(node2);
         fieldDB.add(node3);

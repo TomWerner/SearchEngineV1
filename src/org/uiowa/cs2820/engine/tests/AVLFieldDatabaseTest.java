@@ -1,6 +1,7 @@
 package org.uiowa.cs2820.engine.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.AVLFieldDatabase;
@@ -21,7 +22,7 @@ public class AVLFieldDatabaseTest
 
         assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "value")));
     }
-    
+
     @Test
     public void testAddRootAndLeft()
     {
@@ -36,7 +37,7 @@ public class AVLFieldDatabaseTest
         assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "a")));
         assertEquals(1, fieldDB.getIdentifierPosition(new Field("name", "b")));
     }
-    
+
     @Test
     public void testAddRootAndRight()
     {
@@ -51,7 +52,7 @@ public class AVLFieldDatabaseTest
         assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "b")));
         assertEquals(1, fieldDB.getIdentifierPosition(new Field("name", "a")));
     }
-    
+
     @Test
     public void testAddingADuplicate()
     {
@@ -67,7 +68,7 @@ public class AVLFieldDatabaseTest
         // We won't overwrite data
         assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "a")));
     }
-    
+
     @Test
     public void testAddingMultipleValuesWorstCase()
     {
@@ -75,7 +76,7 @@ public class AVLFieldDatabaseTest
 
         FieldDatabase fieldDB = new AVLFieldDatabase(file);
         assertEquals(8, file.getNumberOfChunks());
-        
+
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
         BinaryFileNode node2 = new BinaryFileNode(new Field("name", "b"), 1);
         BinaryFileNode node3 = new BinaryFileNode(new Field("name", "c"), 2);
@@ -96,8 +97,7 @@ public class AVLFieldDatabaseTest
         fieldDB.add(node8);
         fieldDB.add(node9);
         fieldDB.add(node10);
-        
-        
+
         assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "a")));
         assertEquals(1, fieldDB.getIdentifierPosition(new Field("name", "b")));
         assertEquals(2, fieldDB.getIdentifierPosition(new Field("name", "c")));
@@ -108,8 +108,11 @@ public class AVLFieldDatabaseTest
         assertEquals(7, fieldDB.getIdentifierPosition(new Field("name", "h")));
         assertEquals(8, fieldDB.getIdentifierPosition(new Field("name", "i")));
         assertEquals(9, fieldDB.getIdentifierPosition(new Field("name", "j")));
+
+        // BENEFIT OF THE AVL TREE. With the standard tree it'd be a depth of 10
+        assertTrue(((AVLFieldDatabase) fieldDB).depth(0) <= 5);
     }
-    
+
     @Test
     public void testAddingMultipleValuesNormalCase()
     {
@@ -147,5 +150,8 @@ public class AVLFieldDatabaseTest
         assertEquals(7, fieldDB.getIdentifierPosition(new Field("name", "h")));
         assertEquals(8, fieldDB.getIdentifierPosition(new Field("name", "g")));
         assertEquals(9, fieldDB.getIdentifierPosition(new Field("name", "f")));
+        
+        // BENEFIT OF THE AVL TREE. With the standard tree it'd be a depth of 10
+        assertTrue(((AVLFieldDatabase) fieldDB).depth(0) <= 5);
     }
 }

@@ -1,6 +1,6 @@
 package org.uiowa.cs2820.engine;
 
-import com.sun.xml.internal.ws.api.pipe.NextAction;
+
 
 
 public class AVLFieldDatabase extends FieldDatabase
@@ -16,17 +16,75 @@ public class AVLFieldDatabase extends FieldDatabase
     public void add(BinaryFileNode data)
     {
         int root = insert(0, data);
-//        switch (balanceNumber(root))
-//        {
-//        case 1:
-//            root = rotateLeft(root);
-//            break;
-//        case -1:
-//            root = rotateRight(root);
-//            break;
-//        default:
-//            break;
-//        }
+        switch (balanceNumber(root))
+        {
+        case 1:
+            rotateLeft(root);
+            break;
+        case -1:
+            rotateRight(root);
+            break;
+        default:
+            break;
+        }
+    }
+    
+    private int balanceNumber(int index)
+    {
+        BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
+        int leftDepth = depth(node.getLeftPosition());
+        int rightDepth = depth(node.getRightPosition());
+        
+        if (leftDepth - rightDepth >= 2)
+            return -1;
+        else if (leftDepth - rightDepth <= -2)
+            return 1;
+        return 0;
+    }
+    
+    private void rotateLeft(int index)
+    {
+        BinaryFileNode q = (BinaryFileNode) getFileHandle().get(index);
+        BinaryFileNode p = (BinaryFileNode) getFileHandle().get(q.getRightPosition());
+        BinaryFileNode c = (BinaryFileNode) getFileHandle().get(q.getLeftPosition());
+        BinaryFileNode a = (BinaryFileNode) getFileHandle().get(p.getLeftPosition());
+        BinaryFileNode b = (BinaryFileNode) getFileHandle().get(p.getRightPosition());
+        
+        q.setAddress(p.getAddress());
+        p.setAddress(index);
+        p.setLeftPosition(rotateAddress(q));
+        p.setRightPosition(rotateAddress(b));
+        q.setLeftPosition(rotateAddress(c));
+        q.setRightPosition(rotateAddress(a));
+
+        getFileHandle().set(q.convert(), q.getAddress());
+        getFileHandle().set(p.convert(), p.getAddress());
+    }
+    
+    private void rotateRight(int index)
+    {
+        BinaryFileNode q = (BinaryFileNode) getFileHandle().get(index);
+        BinaryFileNode p = (BinaryFileNode) getFileHandle().get(q.getLeftPosition());
+        BinaryFileNode c = (BinaryFileNode) getFileHandle().get(q.getRightPosition());
+        BinaryFileNode a = (BinaryFileNode) getFileHandle().get(p.getLeftPosition());
+        BinaryFileNode b = (BinaryFileNode) getFileHandle().get(p.getRightPosition());
+        
+        q.setAddress(p.getAddress());
+        p.setAddress(index);
+        p.setLeftPosition(rotateAddress(a));
+        p.setRightPosition(rotateAddress(q));
+        q.setLeftPosition(rotateAddress(b));
+        q.setRightPosition(rotateAddress(c));
+        
+        getFileHandle().set(q.convert(), q.getAddress());
+        getFileHandle().set(p.convert(), p.getAddress());
+    }
+    
+    private int rotateAddress(BinaryFileNode node)
+    {
+        if (node == null)
+            return -1;
+        return node.getAddress();
     }
     
     private int insert(int rootIndex, BinaryFileNode node)
@@ -62,15 +120,28 @@ public class AVLFieldDatabase extends FieldDatabase
                 insert(root.getRightPosition(), node);
         }
         
+        switch (balanceNumber(rootIndex))
+        {
+        case 1:
+            rotateLeft(rootIndex);
+            break;
+        case -1:
+            rotateRight(rootIndex);
+            break;
+        default:
+            break;
+        }
+        
         return rootIndex;
     }
     
-    private int depth(BinaryFileNode node)
+    public int depth(int index)
     {
+        BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
         if (node == null)
             return 0;
-        BinaryFileNode left = (BinaryFileNode) getFileHandle().get(node.getLeftPosition());
-        BinaryFileNode right = (BinaryFileNode) getFileHandle().get(node.getRightPosition());
+        int left = node.getLeftPosition();
+        int right = node.getRightPosition();
         return 1 + Math.max(depth(left), depth(right));
     }
 
@@ -98,7 +169,34 @@ public class AVLFieldDatabase extends FieldDatabase
     @Override
     public void setIdentifierPosition(Field field, int headOfLinkedListPosition)
     {
-        // TODO Auto-generated method stub
-
+        int index = 0;
+        BinaryFileNode currentNode = (BinaryFileNode) getFileHandle().get(index);
+        if (currentNode == null)
+            return;
+        while (currentNode != null)
+        {
+            if (currentNode.getField().equals(field))
+            {
+                currentNode.setHeadOfLinkedListPosition(headOfLinkedListPosition);
+                getFileHandle().set(currentNode.convert(), index);
+                return;
+            }
+            else if (field.compareTo(currentNode.getField()) < 0)
+                index = currentNode.getLeftPosition();
+            else
+                index = currentNode.getRightPosition();
+            currentNode = (BinaryFileNode) getFileHandle().get(index);
+        }
+    }
+    
+    public void printTree(int index, int level)
+    {
+        BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
+        if (node != null)
+        {
+            printTree(node.getLeftPosition(), level + 1);
+            System.out.println("Level " + level + ". " + node.getField());
+            printTree(node.getRightPosition(), level + 1);
+        }
     }
 }

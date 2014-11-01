@@ -44,14 +44,6 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
         this.headOfLinkedListPosition = headOfLinkedListPosition;
     }
     
-    public BinaryFileNode(Field field, int headOfLinkedListPosition, int leftChildPosition, int rightChildPosition)
-    {
-        this.field = field;
-        this.headOfLinkedListPosition = headOfLinkedListPosition;
-        this.leftChildPosition = leftChildPosition;
-        this.rightChildPosition = rightChildPosition;
-    }
-    
     public void setAddress(int newAddress)
     {
         address = newAddress;
@@ -156,8 +148,10 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
         System.arraycopy(byteArray, FIELD_POSITION, fieldSection, 0, MAX_FIELD_SIZE);
         Field field = (Field) ByteConverter.revert(fieldSection);
         
-        BinaryFileNode result = new BinaryFileNode(field, address, left, right);
+        BinaryFileNode result = new BinaryFileNode(field, address);
         result.setAddress(addr);
+        result.setLeftPosition(left);
+        result.setRightPosition(right);
         
         return result;
     }

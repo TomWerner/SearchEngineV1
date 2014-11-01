@@ -14,7 +14,9 @@ public class BinaryFileNodeTest
     @Test
     public void testToAndFromByteArray()
     {
-        BinaryFileNode node = new BinaryFileNode(new Field("value", "name"), 5, 1, 1);
+        BinaryFileNode node = new BinaryFileNode(new Field("value", "name"), 5);
+        node.setLeftPosition(1);
+        node.setRightPosition(-1);
         byte[] byteRepr = node.convert();
         BinaryFileNode revertedNode = (BinaryFileNode)ByteConverter.revert(byteRepr);
         assertEquals(node, revertedNode);
@@ -35,9 +37,9 @@ public class BinaryFileNodeTest
     @Test
     public void testEquals()
     {
-        BinaryFileNode node1 = new BinaryFileNode(new Field("value", "name"), 5, 0, 0);
-        BinaryFileNode node2 = new BinaryFileNode(new Field("value", "name"), 5, 0, 0);
-        BinaryFileNode node3 = new BinaryFileNode(new Field("value", "name2"), 5, 0, 0);
+        BinaryFileNode node1 = new BinaryFileNode(new Field("value", "name"), 5);
+        BinaryFileNode node2 = new BinaryFileNode(new Field("value", "name"), 5);
+        BinaryFileNode node3 = new BinaryFileNode(new Field("value", "name2"), 5);
 
         assertTrue(node1.equals(node1));
         assertTrue(node1.equals(node2));
