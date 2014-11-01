@@ -13,12 +13,13 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
     public static final int MAX_SIZE = 256;
     private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
     
-    public static final int MAX_FIELD_SIZE = MAX_SIZE - ByteConverter.EXISTS_SIZE - INTEGER_SIZE * 3;
+    public static final int MAX_FIELD_SIZE = MAX_SIZE - ByteConverter.EXISTS_SIZE - INTEGER_SIZE * 4;
     
-    private static final int ADDRESS_POSITION = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
-    private static final int LEFT_CHILD_POSITION = ADDRESS_POSITION + INTEGER_SIZE;
+    private static final int IDENT_POINTER_POS = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
+    private static final int LEFT_CHILD_POSITION = IDENT_POINTER_POS + INTEGER_SIZE;
     private static final int RIGHT_CHILD_POSITION = LEFT_CHILD_POSITION + INTEGER_SIZE;
-    private static final int FIELD_POSITION = RIGHT_CHILD_POSITION + INTEGER_SIZE;
+    private static final int ADDRESS_POSITION = RIGHT_CHILD_POSITION + INTEGER_SIZE;
+    private static final int FIELD_POSITION = ADDRESS_POSITION + INTEGER_SIZE;
     
     public static final int NULL_ADDRESS = -1;
     
@@ -27,8 +28,9 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
      */
     private Field field;
     private int headOfLinkedListPosition;
-    private int leftChildPosition;
-    private int rightChildPosition;
+    private int leftChildPosition = NULL_ADDRESS;
+    private int rightChildPosition = NULL_ADDRESS;
+    private int address = NULL_ADDRESS;
 
     /**
      * Construct a new BinaryFileNode that contains a field and a pointer to the start of
@@ -36,10 +38,28 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
      * @param field The field of the node
      * @param headOfLinkedListPosition the position of the head node of the identifier linked list in the IdentifierDatabase
      */
+    public BinaryFileNode(Field field, int headOfLinkedListPosition)
+    {
+        this.field = field;
+        this.headOfLinkedListPosition = headOfLinkedListPosition;
+    }
+    
     public BinaryFileNode(Field field, int headOfLinkedListPosition, int leftChildPosition, int rightChildPosition)
     {
         this.field = field;
         this.headOfLinkedListPosition = headOfLinkedListPosition;
+        this.leftChildPosition = leftChildPosition;
+        this.rightChildPosition = rightChildPosition;
+    }
+    
+    public void setAddress(int newAddress)
+    {
+        address = newAddress;
+    }
+    
+    public int getAddress()
+    {
+        return address;
     }
 
     /**
@@ -89,13 +109,15 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
         for (int i = 0; i < ByteConverter.EXISTS_SIZE; i++)
             result[i + ByteConverter.EXISTS_POSITION] = ByteConverter.BINARY_FILE_NODE[i];
 
-        byte[] addrSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(headOfLinkedListPosition).array();
+        byte[] identPointSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(headOfLinkedListPosition).array();
         byte[] leftSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(leftChildPosition).array();
         byte[] rightSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(rightChildPosition).array();
+        byte[] addrSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(address).array();
         byte[] fieldSection = field.convert();
-        System.arraycopy(addrSection, 0, result, ADDRESS_POSITION, addrSection.length);
+        System.arraycopy(identPointSection, 0, result, IDENT_POINTER_POS, identPointSection.length);
         System.arraycopy(leftSection, 0, result, LEFT_CHILD_POSITION, leftSection.length);
         System.arraycopy(rightSection, 0, result, RIGHT_CHILD_POSITION, rightSection.length);
+        System.arraycopy(addrSection, 0, result, ADDRESS_POSITION, addrSection.length);
         System.arraycopy(fieldSection, 0, result, FIELD_POSITION, fieldSection.length);
         return result;
     }
@@ -111,7 +133,7 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
             throw new IllegalArgumentException("Byte array is not the correct size");
         
         byte[] addressSection = new byte[INTEGER_SIZE];
-        System.arraycopy(byteArray, ADDRESS_POSITION, addressSection, 0, INTEGER_SIZE);
+        System.arraycopy(byteArray, IDENT_POINTER_POS, addressSection, 0, INTEGER_SIZE);
         ByteBuffer wrapped = ByteBuffer.wrap(addressSection);
         int address = wrapped.getInt();
         
@@ -125,11 +147,19 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
         wrapped = ByteBuffer.wrap(rightSection);
         int right = wrapped.getInt();
         
+        byte[] addrSection = new byte[INTEGER_SIZE];
+        System.arraycopy(byteArray, ADDRESS_POSITION, addrSection, 0, INTEGER_SIZE);
+        wrapped = ByteBuffer.wrap(addrSection);
+        int addr = wrapped.getInt();
+        
         byte[] fieldSection = new byte[MAX_FIELD_SIZE];
         System.arraycopy(byteArray, FIELD_POSITION, fieldSection, 0, MAX_FIELD_SIZE);
         Field field = (Field) ByteConverter.revert(fieldSection);
         
-        return new BinaryFileNode(field, address, left, right);
+        BinaryFileNode result = new BinaryFileNode(field, address, left, right);
+        result.setAddress(addr);
+        
+        return result;
     }
 
     @Override
@@ -146,6 +176,16 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
     public int getRightPosition()
     {
         return rightChildPosition;
+    }
+
+    public void setLeftPosition(int left)
+    {
+        this.leftChildPosition = left;
+    }
+    
+    public void setRightPosition(int right)
+    {
+        this.rightChildPosition = right;
     }
     
 }

@@ -133,6 +133,11 @@ public abstract class ChunkedAccess
         internalDoubleCapacity();
     }
     
+    public int getNumberOfChunks()
+    {
+        return numberOfChunks;
+    }
+    
     /**
      * Check the validity of a given chunk position. If its negative throw an ArrayIndexOutOfBoundsException
      * @param chunkPosition the chunk position to check
@@ -140,8 +145,6 @@ public abstract class ChunkedAccess
      */
     protected boolean isChunkPositionOutOfBounds(int chunkPosition)
     {
-        if (chunkPosition < 0)
-            throw new ArrayIndexOutOfBoundsException("Tried to access " + chunkPosition + ". Currently we only have " + numberOfChunks + " chunks");
-        return chunkPosition >= numberOfChunks;
+        return chunkPosition >= numberOfChunks || chunkPosition < 0;
     }
 }

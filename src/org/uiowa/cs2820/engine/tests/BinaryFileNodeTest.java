@@ -14,13 +14,15 @@ public class BinaryFileNodeTest
     @Test
     public void testToAndFromByteArray()
     {
-        BinaryFileNode node = new BinaryFileNode(new Field("value", "name"), 5, 0, 0);
+        BinaryFileNode node = new BinaryFileNode(new Field("value", "name"), 5, 1, 1);
         byte[] byteRepr = node.convert();
         BinaryFileNode revertedNode = (BinaryFileNode)ByteConverter.revert(byteRepr);
         assertEquals(node, revertedNode);
         assertEquals(node.getHeadOfLinkedListPosition(), revertedNode.getHeadOfLinkedListPosition());
         assertEquals(node.getLeftPosition(), revertedNode.getLeftPosition());
         assertEquals(node.getRightPosition(), revertedNode.getRightPosition());
+        assertEquals(node.getAddress(), revertedNode.getAddress());
+        
     }
 
     @Test(expected = IllegalArgumentException.class)
