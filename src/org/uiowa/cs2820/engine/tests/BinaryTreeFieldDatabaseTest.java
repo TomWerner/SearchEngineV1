@@ -1,6 +1,7 @@
 package org.uiowa.cs2820.engine.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.BinaryFileNode;

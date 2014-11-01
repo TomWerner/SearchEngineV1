@@ -12,14 +12,17 @@ package org.uiowa.cs2820.engine;
  *      nextAvailableChunk()                - get the next open chunk
  *  These are the methods that this class will use to store field.
  *  
- *  Fields are stored using BinaryFileNode's, a class which holdes 2 things:
+ *  Fields are stored using BinaryFileNode's, a class which holds 5 things:
  *      field                       - the field of the node
  *      headOfLinkedListPosition    - the location identifier linked list head
+ *      position                    - the location of this node in the database
+ *      leftChildPosition           - the position of the left child node
+ *      rightChildPosition          - the position of the right child node
  *      
  *  When a new node is added using
  *          add(node)
  *      it adds the node to the database, which is structured as a binary tree.
- *      It using the formula left child at (2i + 1) and right at (2i + 2)
+ *      Each node has 3 values, its own position, its left child position, and the right child position.
  *      
  *  If there is a duplicate added, the duplicate is ignored.
  *  
@@ -58,37 +61,65 @@ package org.uiowa.cs2820.engine;
  */
 public class BinaryTreeFieldDatabase extends FieldDatabase
 {
-    public BinaryTreeFieldDatabase(ChunkedAccess fileHandle)
+    /*
+     * ONE RULE. The ROOT MUST ALWAYS BE AT 0
+     */
+    public BinaryTreeFieldDatabase(ChunkedAccess file)
     {
-        super(fileHandle);
+        super(file);
     }
 
-    /* (non-Javadoc)
-     * @see org.uiowa.cs2820.engine.FieldDatabase#add(org.uiowa.cs2820.engine.BinaryFileNode)
-     */
-    @Override
-    public void add(BinaryFileNode node)
+    public void add(BinaryFileNode data)
     {
-        recursiveAdd(0, node);
+        insert(0, data);
     }
     
-    /**
-     * Using the standard method for adding nodes to a binary tree stored in an array, add a given node
-     * with a root index
-     * @param rootIndex Index of the "root". This changes as it recurses
-     * @param node the node to add
-     */
-    private void recursiveAdd(int rootIndex, BinaryFileNode node)
+    private int insert(int rootIndex, BinaryFileNode node)
     {
         BinaryFileNode root = (BinaryFileNode) getFileHandle().get(rootIndex);
         if (root == null)
+        {
+            rootIndex = getFileHandle().nextAvailableChunk();
+            node.setAddress(rootIndex);
             getFileHandle().set(node.convert(), rootIndex);
+            return rootIndex;
+        }
         else if (node.getField().compareTo(root.getField()) < 0)
-            recursiveAdd(rootIndex * 2 + 1, node);
+        {
+            if (root.getLeftPosition() == BinaryFileNode.NULL_ADDRESS)
+            {
+                rootIndex = insert(root.getLeftPosition(), node);
+                root.setLeftPosition(rootIndex);
+                getFileHandle().set(root.convert(), root.getAddress());
+            }
+            else
+                insert(root.getLeftPosition(), node);
+        }
         else if (node.getField().compareTo(root.getField()) > 0)
-            recursiveAdd(rootIndex * 2 + 2, node);
+        {
+            if (root.getRightPosition() == BinaryFileNode.NULL_ADDRESS)
+            {
+                rootIndex = insert(root.getRightPosition(), node);
+                root.setRightPosition(rootIndex);
+                getFileHandle().set(root.convert(), root.getAddress());
+            }
+            else
+                insert(root.getRightPosition(), node);
+        }
+        
+        return rootIndex;
     }
     
+    public int depth(int index)
+    {
+        BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
+        if (node == null)
+            return 0;
+        int left = node.getLeftPosition();
+        int right = node.getRightPosition();
+        return 1 + Math.max(depth(left), depth(right));
+    }
+
     @Override
     public int getIdentifierPosition(Field field)
     {
@@ -101,9 +132,9 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
             if (currentNode.getField().equals(field))
                 return currentNode.getHeadOfLinkedListPosition();
             else if (field.compareTo(currentNode.getField()) < 0)
-                index = index * 2 + 1;
+                index = currentNode.getLeftPosition();
             else
-                index = index * 2 + 2;
+                index = currentNode.getRightPosition();
             currentNode = (BinaryFileNode) getFileHandle().get(index);
         }
         
@@ -126,20 +157,21 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
                 return;
             }
             else if (field.compareTo(currentNode.getField()) < 0)
-                index = index * 2 + 1;
+                index = currentNode.getLeftPosition();
             else
-                index = index * 2 + 2;
+                index = currentNode.getRightPosition();
             currentNode = (BinaryFileNode) getFileHandle().get(index);
         }
     }
     
-    public int depth(int index)
+    public void printTree(int index, int level)
     {
         BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
-        if (node == null)
-            return 0;
-        int left = index * 2 + 1;
-        int right = index * 2 + 2;
-        return 1 + Math.max(depth(left), depth(right));
+        if (node != null)
+        {
+            printTree(node.getLeftPosition(), level + 1);
+            System.out.println("Level " + level + ". " + node.getField());
+            printTree(node.getRightPosition(), level + 1);
+        }
     }
 }
