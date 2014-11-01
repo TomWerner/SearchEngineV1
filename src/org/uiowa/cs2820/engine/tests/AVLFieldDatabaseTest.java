@@ -150,8 +150,40 @@ public class AVLFieldDatabaseTest
         assertEquals(7, fieldDB.getIdentifierPosition(new Field("name", "h")));
         assertEquals(8, fieldDB.getIdentifierPosition(new Field("name", "g")));
         assertEquals(9, fieldDB.getIdentifierPosition(new Field("name", "f")));
-        
+
         // BENEFIT OF THE AVL TREE. With the standard tree it'd be a depth of 10
         assertTrue(((AVLFieldDatabase) fieldDB).depth(0) <= 5);
+    }
+
+    @Test
+    public void testHeightOfTreeStructureRandomData()
+    {
+        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+
+        FieldDatabase fieldDB = new AVLFieldDatabase(file);
+
+        int number = 100;
+        for (int i = 0; i < number; i++)
+            fieldDB.add(new BinaryFileNode(new Field("name", Math.random()), 0));
+
+        int theoretical = (int) (Math.log(number) / Math.log(2) + .5);
+        int actual = ((AVLFieldDatabase) fieldDB).depth(0);
+        assertTrue(Math.abs(theoretical - actual) <= 2);
+    }
+    
+    @Test
+    public void testHeightOfTreeStructureSortedData()
+    {
+        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+
+        FieldDatabase fieldDB = new AVLFieldDatabase(file);
+
+        int number = 100;
+        for (int i = 0; i < number; i++)
+            fieldDB.add(new BinaryFileNode(new Field("name", i), 0));
+
+        int theoretical = (int) (Math.log(number) / Math.log(2) + .5);
+        int actual = ((AVLFieldDatabase) fieldDB).depth(0);
+        assertTrue(Math.abs(theoretical - actual) <= 2);
     }
 }

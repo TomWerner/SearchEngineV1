@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.BinaryFileNode;
-import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.BinaryTreeFieldDatabase;
+import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.FieldDatabase;
 
 public class BinaryTreeFieldDatabaseTest

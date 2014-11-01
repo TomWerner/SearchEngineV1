@@ -13,7 +13,7 @@ import org.uiowa.cs2820.engine.IdentifierDatabase;
 import org.uiowa.cs2820.engine.IntegratedFileDatabase;
 import org.uiowa.cs2820.engine.ValueFileNode;
 
-public class IntegratedDatabaseTest
+public class IntegratedDatabaseWithBinaryTreeTest
 {
     @Test
     public void testSingleAddRetrieveCycle()

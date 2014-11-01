@@ -132,4 +132,14 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
             currentNode = (BinaryFileNode) getFileHandle().get(index);
         }
     }
+    
+    public int depth(int index)
+    {
+        BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
+        if (node == null)
+            return 0;
+        int left = index * 2 + 1;
+        int right = index * 2 + 2;
+        return 1 + Math.max(depth(left), depth(right));
+    }
 }
