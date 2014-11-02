@@ -4,3 +4,42 @@ Implement actual disk I/O with RandomAccessFile - Austin
 Implement end to end integration and testing - Brandon
 File database integration and testing with other integration efforts - Zack
 Finish custom serialization, documentation, and storage optimization - Tom
+
+
+Tests remaining for 100% coverage:
+	LinearMemoryDatabase
+		- delete 
+			- isn't tested at all. This is probably optional
+	BinaryFileNode
+		- compareTo
+		- toString
+	ValueFileNode
+		- toString
+	Field
+		- getFieldName
+		- getFieldValue
+		- equals 
+			- doesn't test if "other" isn't a Field object
+	RAFile
+		- still being developed
+	ChunkedAccess
+		- set
+			- doesn't check if the byte array is too long
+			- doesn't check if the capacity has to double
+		- isChunkPositionOutOfBounds
+			- doesn't check all the paths
+	IdentifierDatabase
+		- addIdentifier
+			- IllegalAccessError never checked
+		- removeIdentifier
+			- doesn't check the quick loop break
+		- getAllIdentifiers
+			- doesn't check the quick loop break
+	Node
+		- delete
+			- doesn't check it at all, probably optional
+	IntegratedFileDatabase
+		- fetch
+			- if the field isn't in the database
+		- delete
+			- if the field isn't in the database

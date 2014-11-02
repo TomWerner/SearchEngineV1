@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 
 public class Utilities
 {
@@ -35,10 +36,11 @@ public class Utilities
             ObjectInputStream N = new ObjectInputStream(M);
             O = N.readObject();
         }
-        catch (Exception e)
+        catch (IOException | ClassNotFoundException e)
         {
-        }
-        ;
+            System.err.println("Error reverting byte array");
+            System.err.println(Arrays.toString(e.getStackTrace()));
+        };
         return O;
     }
 }

@@ -145,6 +145,8 @@ public class IdentifierDatabase
             while (!node.getIdentifier().equals(identifier))
             {
                 previous = node;
+                
+                // Break out of quick loop
                 if (node.getNextNode() == next)
                     break;
                 next = node.getNextNode();

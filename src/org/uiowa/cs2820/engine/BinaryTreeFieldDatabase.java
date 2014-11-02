@@ -109,16 +109,6 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
         
         return rootIndex;
     }
-    
-    public int depth(int index)
-    {
-        BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
-        if (node == null)
-            return 0;
-        int left = node.getLeftPosition();
-        int right = node.getRightPosition();
-        return 1 + Math.max(depth(left), depth(right));
-    }
 
     @Override
     public int getIdentifierPosition(Field field)
@@ -161,17 +151,6 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
             else
                 index = currentNode.getRightPosition();
             currentNode = (BinaryFileNode) getFileHandle().get(index);
-        }
-    }
-    
-    public void printTree(int index, int level)
-    {
-        BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
-        if (node != null)
-        {
-            printTree(node.getLeftPosition(), level + 1);
-            System.out.println("Level " + level + ". " + node.getField());
-            printTree(node.getRightPosition(), level + 1);
         }
     }
 }

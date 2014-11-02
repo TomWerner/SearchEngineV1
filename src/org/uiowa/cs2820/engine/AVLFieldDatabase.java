@@ -188,15 +188,4 @@ public class AVLFieldDatabase extends FieldDatabase
             currentNode = (BinaryFileNode) getFileHandle().get(index);
         }
     }
-    
-    public void printTree(int index, int level)
-    {
-        BinaryFileNode node = (BinaryFileNode) getFileHandle().get(index);
-        if (node != null)
-        {
-            printTree(node.getLeftPosition(), level + 1);
-            System.out.println("Level " + level + ". " + node.getField());
-            printTree(node.getRightPosition(), level + 1);
-        }
-    }
 }

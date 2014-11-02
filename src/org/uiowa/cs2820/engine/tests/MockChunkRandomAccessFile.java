@@ -1,6 +1,7 @@
 package org.uiowa.cs2820.engine.tests;
 
 import org.uiowa.cs2820.engine.ChunkedAccess;
+import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
 public class MockChunkRandomAccessFile extends ChunkedAccess
 {
@@ -34,7 +35,7 @@ public class MockChunkRandomAccessFile extends ChunkedAccess
     @Override
     public void free(int chunkPosition)
     {
-        byte[] zeros = new byte[chunkSize];
+        byte[] zeros = new byte[ByteConverter.EXISTS_SIZE];
         System.arraycopy(zeros, 0, mockFile, chunkPosition * chunkSize, zeros.length);
     }
     
@@ -47,7 +48,4 @@ public class MockChunkRandomAccessFile extends ChunkedAccess
         }
         return result;
     }
-    
-    
-    
 }
