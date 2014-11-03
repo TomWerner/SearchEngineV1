@@ -1,10 +1,11 @@
 package org.uiowa.cs2820.engine.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
+import org.uiowa.cs2820.engine.ChunkedAccess;
 import org.uiowa.cs2820.engine.IdentifierDatabase;
 import org.uiowa.cs2820.engine.ValueFileNode;
 
@@ -13,7 +14,7 @@ public class IdentifierDatabaseTest
     @Test
     public void testSingleAddGetCycle()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
 
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename");
@@ -26,7 +27,7 @@ public class IdentifierDatabaseTest
     @Test
     public void testTwoIdentifiers()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
 
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename1");
@@ -42,7 +43,7 @@ public class IdentifierDatabaseTest
     public void testIdentifierExpandingFile()
     {
         // We set the size to 2, put 3 elements in it
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(2, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(2, ValueFileNode.MAX_SIZE);
 
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename1");
@@ -58,7 +59,7 @@ public class IdentifierDatabaseTest
     @Test
     public void testRemovingSingleIdentifier()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
 
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename1");
@@ -77,7 +78,7 @@ public class IdentifierDatabaseTest
     @Test
     public void testRemovingFirstIdentifier()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
 
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename1");
@@ -102,7 +103,7 @@ public class IdentifierDatabaseTest
     @Test
     public void testRemovingLastIdentifier()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
 
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename1");
@@ -126,7 +127,7 @@ public class IdentifierDatabaseTest
     @Test
     public void testRemovingMiddleIdentifier()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
 
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename1");
@@ -150,7 +151,7 @@ public class IdentifierDatabaseTest
     @Test
     public void testRemovingThenAddingSeparateIdentifier()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
 
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename1");
@@ -184,7 +185,7 @@ public class IdentifierDatabaseTest
     @Test
     public void testRemovingIdentifierNotThere()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
         
         IdentifierDatabase identDB = new IdentifierDatabase(file);
         int location = identDB.addIdentifier("filename1");

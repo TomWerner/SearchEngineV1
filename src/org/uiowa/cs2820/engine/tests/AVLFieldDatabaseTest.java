@@ -5,13 +5,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.uiowa.cs2820.engine.AVLFieldDatabase;
 import org.uiowa.cs2820.engine.BinaryFileNode;
+import org.uiowa.cs2820.engine.ChunkedAccess;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.FieldDatabase;
 
 public class AVLFieldDatabaseTest extends FieldDatabaseTest
 {
     @Override
-    public FieldDatabase getDatabase(MockChunkRandomAccessFile file)
+    public FieldDatabase getDatabase(ChunkedAccess file)
     {
         return new AVLFieldDatabase(file);
     }

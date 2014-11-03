@@ -4,18 +4,19 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.BinaryFileNode;
+import org.uiowa.cs2820.engine.ChunkedAccess;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.FieldDatabase;
 
 public abstract class FieldDatabaseTest
 {
     protected FieldDatabase fieldDB;
-    public abstract FieldDatabase getDatabase(MockChunkRandomAccessFile file);
+    public abstract FieldDatabase getDatabase(ChunkedAccess file);
     
     @Test
     public void testInitialAddGetCycle()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
         BinaryFileNode node = new BinaryFileNode(new Field("name", "value"), 0);
@@ -27,7 +28,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testAddRootAndLeft()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
@@ -42,7 +43,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testAddRootAndRight()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "b"), 0);
@@ -57,7 +58,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testAddingADuplicate()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
@@ -73,7 +74,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testAddingMultipleValuesWorstCase()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
         assertEquals(8, file.getNumberOfChunks());
@@ -114,7 +115,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testAddingMultipleValuesWorstCaseReversed()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
         assertEquals(8, file.getNumberOfChunks());
@@ -155,7 +156,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testAddingMultipleValuesNormalCase()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "e"), 0);
@@ -194,7 +195,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testEdgeCasesOnGetIdentifier()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
         fieldDB = getDatabase(file);
         
         // Check if nothing is in the database
@@ -210,7 +211,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testSetIdentifier()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
         BinaryFileNode node1 = new BinaryFileNode(new Field("name", "e"), 0);
@@ -274,7 +275,7 @@ public abstract class FieldDatabaseTest
     @Test
     public void testEdgeCasesOnSetIdentifier()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
         fieldDB = getDatabase(file);
         
         // Check if nothing is in the database
