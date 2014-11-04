@@ -25,7 +25,6 @@ public class RAFile extends ChunkedAccess
 			file.read(result);
 			file.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -40,17 +39,33 @@ public class RAFile extends ChunkedAccess
 			file.write(objectByteRepr);
 		    file.close();	
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 
 	@Override
+	// Only need to write first two bytes at chunkPosition to 0. Because of the way
+	// ByteConverter utility works, if it reads [0,0] for first two bytes, that content will
+	// be ignored, and overwritten if needed.
 	public void free(int chunkPosition)
 	{
+		RandomAccessFile file;
+		try {
+			file = new RandomAccessFile(FILE, "rw");
+			file.seek(chunkPosition*chunkSize); // seek chunkPosition
+			byte[] erase = convert(0);
+			file.write(erase); 					// only write first two bytes?
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
+	}
+
+	private byte[] convert(int i) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 	@Override
