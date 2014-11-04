@@ -6,6 +6,14 @@ File database integration and testing with other integration efforts - Zack
 Finish custom serialization, documentation, and storage optimization - Tom
 
 
+4 Nov: comments by Ted Herman: looks good, but the labor assignments
+are not clear regarding who will do what and where.  For instance, 
+what modules will Austin be doing, what specific things will Brandon 
+do (test suites, specific activities), and how does Brandon's end-to-end
+integration differ from Zack's integration and testing? I would like to 
+see more details on the plans and activities.
+
+
 Tests remaining for 100% coverage:
 	LinearMemoryDatabase
 		- delete 
