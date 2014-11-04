@@ -56,7 +56,7 @@ public class RAFile extends ChunkedAccess
 			file = new RandomAccessFile(FILE, "rws");
 			tempFile = file;
 			tempFile.seek(chunkPosition*chunkSize);
-			tempFile.write(0);
+			tempFile.write(0); // you could do write(new byte[2]). write(0) just sets the first byte
 			file = tempFile;
 			file.close();
 			tempFile.close();
