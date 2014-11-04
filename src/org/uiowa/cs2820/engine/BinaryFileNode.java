@@ -2,10 +2,9 @@ package org.uiowa.cs2820.engine;
 
 import java.nio.ByteBuffer;
 
-import org.uiowa.cs2820.engine.utilities.ByteConvertable;
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
-public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNode>
+public class BinaryFileNode implements Comparable<BinaryFileNode>
 {
     /*
      * Constants used for serialization
@@ -93,7 +92,6 @@ public class BinaryFileNode implements ByteConvertable, Comparable<BinaryFileNod
     /**
      * Convert this object into a byte array
      */
-    @Override
     public byte[] convert()
     {
         byte[] result = new byte[MAX_SIZE];

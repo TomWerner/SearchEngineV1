@@ -2,10 +2,9 @@ package org.uiowa.cs2820.engine;
 
 import java.nio.ByteBuffer;
 
-import org.uiowa.cs2820.engine.utilities.ByteConvertable;
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
-public class ValueFileNode implements ByteConvertable
+public class ValueFileNode
 {
     /*
      * Constants used to conversion to a byte array
@@ -98,7 +97,6 @@ public class ValueFileNode implements ByteConvertable
     /**
      * Convert this object to a byte array
      */
-    @Override
     public byte[] convert()
     {
         byte[] result = new byte[MAX_SIZE];

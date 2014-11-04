@@ -2,12 +2,11 @@ package org.uiowa.cs2820.engine;
 
 import java.nio.ByteBuffer;
 
-import org.uiowa.cs2820.engine.utilities.ByteConvertable;
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 import org.uiowa.cs2820.engine.utilities.Utilities;
 
 @SuppressWarnings( { "rawtypes" })
-public class Field implements ByteConvertable, Comparable<Field>
+public class Field implements Comparable<Field>
 {
     private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
     private static final int MAX_NAME_SIZE = BinaryFileNode.MAX_FIELD_SIZE / 4 - INTEGER_SIZE - ByteConverter.EXISTS_SIZE;
@@ -62,7 +61,6 @@ public class Field implements ByteConvertable, Comparable<Field>
         return "(" + fieldName + " : " + value + ")";
     }
 
-    @Override
     public byte[] convert()
     {
         byte[] result = new byte[BinaryFileNode.MAX_FIELD_SIZE];
