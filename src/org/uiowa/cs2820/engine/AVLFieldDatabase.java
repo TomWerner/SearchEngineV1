@@ -52,10 +52,10 @@ public class AVLFieldDatabase extends FieldDatabase
         
         q.setAddress(p.getAddress());
         p.setAddress(index);
-        p.setLeftPosition(rotateAddress(q));
-        p.setRightPosition(rotateAddress(b));
-        q.setLeftPosition(rotateAddress(c));
-        q.setRightPosition(rotateAddress(a));
+        p.setLeftPosition(getAddressOfNodeWithDefault(q));
+        p.setRightPosition(getAddressOfNodeWithDefault(b));
+        q.setLeftPosition(getAddressOfNodeWithDefault(c));
+        q.setRightPosition(getAddressOfNodeWithDefault(a));
 
         getFileHandle().set(q.convert(), q.getAddress());
         getFileHandle().set(p.convert(), p.getAddress());
@@ -71,16 +71,16 @@ public class AVLFieldDatabase extends FieldDatabase
         
         q.setAddress(p.getAddress());
         p.setAddress(index);
-        p.setLeftPosition(rotateAddress(a));
-        p.setRightPosition(rotateAddress(q));
-        q.setLeftPosition(rotateAddress(b));
-        q.setRightPosition(rotateAddress(c));
+        p.setLeftPosition(getAddressOfNodeWithDefault(a));
+        p.setRightPosition(getAddressOfNodeWithDefault(q));
+        q.setLeftPosition(getAddressOfNodeWithDefault(b));
+        q.setRightPosition(getAddressOfNodeWithDefault(c));
         
         getFileHandle().set(q.convert(), q.getAddress());
         getFileHandle().set(p.convert(), p.getAddress());
     }
     
-    private int rotateAddress(BinaryFileNode node)
+    private int getAddressOfNodeWithDefault(BinaryFileNode node)
     {
         if (node == null)
             return -1;
