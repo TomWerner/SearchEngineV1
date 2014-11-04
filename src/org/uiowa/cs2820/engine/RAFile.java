@@ -49,7 +49,7 @@ public class RAFile extends ChunkedAccess
 		RandomAccessFile file;
 		try {
 			file = new RandomAccessFile(FILE, "rws"); // "rws" synchronizes underlying storage device
-			file.seek(chunkPosition*chunkSize);
+			file.seek(chunkPosition * chunkSize);
 			file.write(new byte[2]); 
 			file.close();
 		} catch (IOException e) {
@@ -60,5 +60,14 @@ public class RAFile extends ChunkedAccess
 	@Override
 	protected void internalDoubleCapacity() 
 	{
+		try {
+			RandomAccessFile file = new RandomAccessFile(FILE, "rw");
+			// numberOfChunks is already doubled, so product will be double current length
+			file.setLength(chunkSize * numberOfChunks); 
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
