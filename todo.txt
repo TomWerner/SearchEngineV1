@@ -1,7 +1,7 @@
 Todo:
 
 Implement actual disk I/O with RandomAccessFile - Austin
-Implement end to end integration and testing - Brandon
+Test RandomAccessFile disk I/O with Austin - Brandon
 File database integration and testing with other integration efforts - Zack
 Finish custom serialization, documentation, and storage optimization - Tom
 
