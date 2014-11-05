@@ -36,58 +36,58 @@ Example Diagrams
 ----------------
 
 AVLFieldDatabase example
-> +---------------------------------------------------------------------------+
++---------------------------------------------------------------------------+
 
-> |  Root Node                         | Empty chunk, address 1               |
+|  Root Node                         | Empty chunk, address 1               |
 
-> |  Address: 0                        | It could be empty because someone    |
+|  Address: 0                        | It could be empty because someone    |
 
-> |  Left Child: 2                     | deleted this chunk                   |
+|  Left Child: 2                     | deleted this chunk                   |
 
-> |  Right Child: -1 (no child)        |                                      |
+|  Right Child: -1 (no child)        |                                      |
 
-> |  Identifier Linked List Head: 0    |                                      |
+|  Identifier Linked List Head: 0    |                                      |
 
-> |  Field("field name", "value")      |                                      |
+|  Field("field name", "value")      |                                      |
 
-> +---------------------------------------------------------------------------+
++---------------------------------------------------------------------------+
 
-> |  Left Child of Root                | Empty chunk, address 3               |
+|  Left Child of Root                | Empty chunk, address 3               |
 
-> |  Address: 2                        | It is empty because nothing has      |
+|  Address: 2                        | It is empty because nothing has      |
 
-> |  Left Child: -1 (no child)         | been written to it yet               |
+|  Left Child: -1 (no child)         | been written to it yet               |
 
-> |  Right Child: -1 (no child)        |                                      |
+|  Right Child: -1 (no child)        |                                      |
 
-> |  Identifier Linked List Head: 3    |                                      |
+|  Identifier Linked List Head: 3    |                                      |
 
-> |  Field("field name" "a value")     |                                      |
+|  Field("field name" "a value")     |                                      |
 
-> +---------------------------------------------------------------------------+
++---------------------------------------------------------------------------+
 
 Corresponding IndentifierDatabase example
-> +---------------------------------------------------------------------------+
++---------------------------------------------------------------------------+
 
-> | Head of linked list, address = 0   | Address = 1                          |
+| Head of linked list, address = 0   | Address = 1                          |
 
-> | Identifier: filename1.txt          | Identifier: filename2.txt            |
+| Identifier: filename1.txt          | Identifier: filename2.txt            |
 
-> | Next identifier: 1                 | Next identifier: -1 (no next)        |
+| Next identifier: 1                 | Next identifier: -1 (no next)        |
 
-> | (Pointed at by root of fields)     | (Pointed at by address 1)            |
+| (Pointed at by root of fields)     | (Pointed at by address 1)            |
 
-> +---------------------------------------------------------------------------+
++---------------------------------------------------------------------------+
 
-> | Empty chunk, could have been       | Address = 3                          |
+| Empty chunk, could have been       | Address = 3                          |
 
-> | deleted                            | Identifier: book.epub                |
+| deleted                            | Identifier: book.epub                |
 
-> |                                    | Next identifier: -1 (no next)        |
+|                                    | Next identifier: -1 (no next)        |
 
-> |                                    | (Pointed at by left child of fields) |
+|                                    | (Pointed at by left child of fields) |
 
-> +---------------------------------------------------------------------------+
++---------------------------------------------------------------------------+
 
 Other Classes
 -------------
