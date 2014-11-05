@@ -28,12 +28,33 @@ public class RAFileTest
     {
     	RAFile file = new RAFile(new File("test filename.dat"), 16, BinaryFileNode.MAX_SIZE);
     	BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"),1);
-    	
+
     	file.set(testObject.convert(), 1);
     	file.free(1);
     	BinaryFileNode result = (BinaryFileNode) file.get(1);
     	assertEquals(null, result);
     }
+
+    @Test
+    public void readLargeChunkTest()
+    {
+        RAFile file = new RAFile(new File("second test.dat"), 16, BinaryFileNode.MAX_SIZE);
+        BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
+
+        assertEquals(null,file.get(20));
+
+    }
+
+    @Test
+    public void writeLargeChunkTest()
+    {
+        RAFile file = new RAFile(new File("third test.dat"), 16, BinaryFileNode.MAX_SIZE);
+        BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
+
+        file.set(testObject.convert(), 25);
+        BinaryFileNode result = (BinaryFileNode) file.get(25);
+
+        assertEquals(result, file.get(25));
     
     @Test
     public void testOverwriteOccupiedChunk()
