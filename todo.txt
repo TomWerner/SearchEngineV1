@@ -43,9 +43,7 @@ Tests remaining for 100% coverage:
 			- doesn't check the quick loop break
 		- getAllIdentifiers
 			- doesn't check the quick loop break
-	Node
-		- delete
-			- doesn't check it at all, probably optional
+
 	IntegratedFileDatabase
 		- fetch
 			- if the field isn't in the database
