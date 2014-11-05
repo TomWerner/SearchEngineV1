@@ -35,12 +35,22 @@ public class RAFileTest
     	assertEquals(null, result);
     }
     
+    @Test
+    public void testOverwriteOccupiedChunk()
+    {
+    	RAFile file = new RAFile(new File("test filename.dat"), 16, BinaryFileNode.MAX_SIZE);
+    	BinaryFileNode testObject = new BinaryFileNode(new Field("name","value"),1);
+    	file.set(testObject.convert(), 1);
+    	
+    	BinaryFileNode overwriteObject = new BinaryFileNode(new Field("number","value"),1);
+    	file.set(overwriteObject.convert(), 1);
+
+    	BinaryFileNode result = (BinaryFileNode) file.get(1);
+    	assertEquals(overwriteObject, result);
+    }
+    
     /*
      * Other test ideas:
-     *      delete a chunk, make sure nothing is there
-     *      write to an occupied chunk, see if you get back the newest object
-     *      write to a chunk larger than the number of chunks in the file
-     *      read from a chunk larger than the number of chunks in the file
      *      test that the nextAvailableChunk method returns what would be expected
      *      etc
      */
