@@ -35,7 +35,7 @@ public class IntegratedDatabaseWithAVLTest
         assertEquals(identifier, results.get(0));
     }
 
-//    @Test
+    @Test
     public void testMultipleFieldsOneIdentifier()
     {
         ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
