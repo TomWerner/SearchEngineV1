@@ -89,7 +89,26 @@ public class IntegratedDatabaseWithAVLTest
         assertEquals(1, results.size());
         assertEquals(identifier, results.get(0));
     }
+    
+    @Test
+    public void testingFetchNullPointerCatch(){
+    	
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
+        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        IdentifierDatabase identDB = new IdentifierDatabase(file2);
+        
+        Field field1 = new Field("Hope This works","a");
+        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
+        
+         
+        assertEquals(database.fetch(field1),null);
+        
+        
+    }
 
+
+    
     @Test
     public void testSingleFieldMultipleIdentifiers()
     {
@@ -228,5 +247,19 @@ public class IntegratedDatabaseWithAVLTest
         results = database.fetch(field);
         assertEquals(1, results.size());
         assertEquals(identifier1, results.get(0));
+    }
+    
+    @Test
+    public void testRemoveFieldNullPointerCatch(){
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
+        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
+        IdentifierDatabase identDB = new IdentifierDatabase(file2);
+        String identifier1 = "filename1";
+        Field field1 = new Field("Hope This works","a");
+        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
+        
+        database.delete(field1, identifier1);
+        
     }
 }
