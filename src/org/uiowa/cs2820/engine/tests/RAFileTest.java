@@ -14,7 +14,8 @@ public class RAFileTest
     @Test
     public void testSimpleReadWriteCycle()
     {
-        RAFile file = new RAFile(new File("test filename.dat"), 16, BinaryFileNode.MAX_SIZE);
+    	File fileTest = doesFileExist();
+        RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
         BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
 
         file.set(testObject.convert(), 1);
@@ -26,7 +27,8 @@ public class RAFileTest
     @Test 
     public void testChunkDeletion()
     {
-    	RAFile file = new RAFile(new File("test filename.dat"), 16, BinaryFileNode.MAX_SIZE);
+    	File fileTest = doesFileExist();
+    	RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
     	BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"),1);
 
     	file.set(testObject.convert(), 1);
@@ -38,7 +40,8 @@ public class RAFileTest
     @Test
     public void readLargeChunkTest()
     {
-        RAFile file = new RAFile(new File("second test.dat"), 16, BinaryFileNode.MAX_SIZE);
+    	File fileTest = doesFileExist();
+        RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
         //BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
         // ^^ shouldn't need this line since you aren't actually adding the testObject
 
@@ -49,7 +52,8 @@ public class RAFileTest
     @Test
     public void writeLargeChunkTest()
     {
-        RAFile file = new RAFile(new File("third test.dat"), 16, BinaryFileNode.MAX_SIZE);
+    	File fileTest = doesFileExist();
+        RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
         BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
 
         file.set(testObject.convert(), 25);
@@ -61,7 +65,8 @@ public class RAFileTest
     @Test
     public void testOverwriteOccupiedChunk()
     {
-    	RAFile file = new RAFile(new File("test filename.dat"), 16, BinaryFileNode.MAX_SIZE);
+    	File fileTest = doesFileExist();
+    	RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
     	BinaryFileNode testObject = new BinaryFileNode(new Field("name","value"),1);
     	file.set(testObject.convert(), 1);
     	
@@ -72,9 +77,40 @@ public class RAFileTest
     	assertEquals(overwriteObject, result);
     }
     
-    /*
-     * Other test ideas:
-     *      test that the nextAvailableChunk method returns what would be expected
-     *      etc
-     */
+    @Test
+    public void testNextAvailableChunk()
+    {
+    	File fileTest = doesFileExist();
+    	RAFile file = new RAFile(fileTest, 4, BinaryFileNode.MAX_SIZE);
+    	BinaryFileNode testObject = new BinaryFileNode(new Field("name","value"),1);
+    	file.set(testObject.convert(), 0);
+    	assertEquals(1, file.nextAvailableChunk());
+    	
+    }
+    
+    @Test
+    public void testIsFileSizeDoubled()
+    {
+    	File fileTest = doesFileExist();
+    	RAFile file = new RAFile(fileTest, 1, BinaryFileNode.MAX_SIZE);
+    	BinaryFileNode testObject = new BinaryFileNode(new Field("name","value"),1);
+    	file.set(testObject.convert(), 1);
+    	
+    	BinaryFileNode testObject2 = new BinaryFileNode(new Field("number","variable"),2);
+    	file.set(testObject2.convert(), 2);
+    	
+    	BinaryFileNode result = (BinaryFileNode) file.get(2);
+    	//assertEquals()	
+    }
+    
+    public File doesFileExist()
+    {
+    	File fileToDelete = new File("test filename.dat");
+    	if (fileToDelete.exists())
+    		fileToDelete.delete();
+    	return fileToDelete;
+    }
+     
 }
+
+	
