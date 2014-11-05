@@ -27,8 +27,8 @@ public class MockChunkRandomAccessFile extends ChunkedAccess
 
     protected void setCapacity(int length)
     {
-        byte[] newArray = new byte[length * 2];
-        System.arraycopy(mockFile, 0, newArray, 0, length);
+        byte[] newArray = new byte[length];
+        System.arraycopy(mockFile, 0, newArray, 0, mockFile.length);
         mockFile = newArray;
     }
 
