@@ -11,14 +11,14 @@ public class NodeTest {
 	public void testNodedelete() {
 		Node node1 = new Node(null, "string");
 		
-		node1.remove("string");
+		node1.delete("string");
 	}
 
     @Test
     public void testNodeadd(){
         Node node2 = new Node(null, "string2");
 
-        node2.remove("string2");
+        node2.delete("string2");
         node2.add("string2");
 
      }
