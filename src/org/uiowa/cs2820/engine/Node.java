@@ -6,9 +6,9 @@ public class Node
 {
     // Node is a basic unit in the database
     byte[] nodeKey; // Key of this node for lookup
-    ArrayList<String> nodeIdentifiers;
+    public ArrayList<String> nodeIdentifiers;
 
-    Node(byte[] f, String id)
+    public Node(byte[] f, String id)
     {
         this.nodeKey = f;
         this.nodeIdentifiers = new ArrayList<String>();
