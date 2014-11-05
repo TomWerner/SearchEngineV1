@@ -23,6 +23,18 @@ public class RAFileTest
         assertEquals(testObject, result);
     }
     
+    @Test 
+    public void testChunkDeletion()
+    {
+    	RAFile file = new RAFile(new File("test filename.dat"), 16, BinaryFileNode.MAX_SIZE);
+    	BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"),1);
+    	
+    	file.set(testObject.convert(), 1);
+    	file.free(1);
+    	BinaryFileNode result = (BinaryFileNode) file.get(1);
+    	assertEquals(null, result);
+    }
+    
     /*
      * Other test ideas:
      *      delete a chunk, make sure nothing is there

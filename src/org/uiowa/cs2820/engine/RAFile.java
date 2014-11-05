@@ -61,7 +61,7 @@ public class RAFile extends ChunkedAccess
 	protected void internalDoubleCapacity() 
 	{
 		try {
-			RandomAccessFile file = new RandomAccessFile(FILE, "rw");
+			RandomAccessFile file = new RandomAccessFile(FILE, "w");
 			// numberOfChunks is already doubled, so product will be double current length
 			file.setLength(chunkSize * numberOfChunks); 
 			file.close();
