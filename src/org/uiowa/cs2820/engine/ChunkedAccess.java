@@ -68,7 +68,7 @@ public abstract class ChunkedAccess
      * Double the size of the current file and transfer the old content to the doubled file if necessary.
      * This method DOES NOT change the value of number of chunks
      */
-    protected abstract void setCapacity();
+    protected abstract void setCapacity(int lengthOfFile);
     
     
     /*
@@ -130,7 +130,7 @@ public abstract class ChunkedAccess
     public void doubleCapacity()
     {
         numberOfChunks *= 2;
-        setCapacity();
+        setCapacity(numberOfChunks * chunkSize);
     }
     
     public int getNumberOfChunks()

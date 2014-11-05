@@ -13,7 +13,7 @@ public class RAFile extends ChunkedAccess
 		// gives me chunkSize and numberOfChunks (power of 2)
 		super(initialNumChunks, chunkSize);
 		this.FILE = fileName;
-		//FILE.setCapacity();
+		setCapacity(numberOfChunks * chunkSize);
 	}
 
 	@Override
@@ -59,13 +59,12 @@ public class RAFile extends ChunkedAccess
 	}
 
 	@Override
-	protected void setCapacity() 
+	protected void setCapacity(int length) 
 	{
 		RandomAccessFile file;
 		try {
-			file = new RandomAccessFile(FILE, "w");
-			// numberOfChunks is already doubled, so product will be double current length
-			file.setLength(chunkSize * numberOfChunks); 
+			file = new RandomAccessFile(FILE, "rw");
+			file.setLength(length); 
 			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
