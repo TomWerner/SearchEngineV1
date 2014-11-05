@@ -1,61 +1,72 @@
 Search Engine Project Version 1
 -------------------------------
 
-This is a somewhat fancy version of SearchEngine that 
-does what's needed for the first iteration, but also plans
-a bit for the future.
+Team 2: Tom, Zack, Austin, Brandon
 
-Project Files
+This iteration of the SearchEngine is designed to support
+storing data on file, rather than in memory. The implementation
+of this functionality will be described below.
+
+Broad Concept
 -------------
 
-.project
+Our "database" is structured using two different files.
+The first file contains field objects, and the second the identifiers.
 
-> This is a normally hidden file, but essential if you clone or
-> download the project and would like to import into Eclipse. 
-> Just File -> Import -> General -> Existing Java Project 
+The "IntegratedFileDatabase" class handles both databases and managing
+the relationships and data of the two sub-databases.
 
-> Notice please that all java files are in the package 
-> org.uiowa.cs2820.engine
+The "FieldDatabase" class defines a set of operations that any implementation
+for the database containing field objects must adhere to. 
+The best implementation of it is currently the "AVLFieldDatabase" class.
+It uses an AVL Tree to store the field objects on file. Each node in the 
+tree contains information needed for the tree, the field it contains, and
+a pointer to an identifier list.
 
-Field.java
+The "IdentifierDatabase" class manages the storing and retrieval of identifiers.
+They are stored as linked lists, with one node per identifer. Each node contains
+a pointer to the next node. The address of the head of each linked list is 
+stored in the corresponding field object.
 
-> This is the Field class, which users will use to index
-> and search for content. Each Field object has two components,
-> a field name (like "Color", "Part", "Title", etc) and an
-> associated value.  Since a value could be a string, a number,
-> or something more complex like an array or object, we need
-> a universal way for the value to be anything. Hence, the value
-> just has type Object (which could be String, Integer, even a
-> Map).  
+Both databases are implemented using chunked access, so the file is divided up
+into "chunks" of equal size. Each chunk contains one node. This is true
+for both databases.
 
-> Later (beyond Version 1) we will need to save things into 
-> a file, including the values can can be objects. To enable    
-> this future design, Field has two class methods "convert" 
-> and "revert", which use standard Java library methods to convert 
-> anything into a byte array. The "toBytes" method returns 
-> convert(this), that is, the Field object itself as an array 
-> of bytes.
+Example Diagrams
+----------------
 
-> The Field constructor saves name and value; Two getter 
-> methods return the field name and field value for a Field 
-> object.            
+AVLFieldDatabase example
+> +---------------------------------------------------------------------------+
+> |  Root Node                         | Empty chunk, address 1               |
+> |  Address: 0                        | It could be empty because someone    |
+> |  Left Child: 2                     | deleted this chunk                   |
+> |  Right Child: -1 (no child)        |                                      |
+> |  Identifier Linked List Head: 0    |                                      |
+> |  Field("field name", "value")      |                                      |
+> +---------------------------------------------------------------------------+
+> |  Left Child of Root                | Empty chunk, address 3               |
+> |  Address: 2                        | It is empty because nothing has      |
+> |  Left Child: -1 (no child)         | been written to it yet               |
+> |  Right Child: -1 (no child)        |                                      |
+> |  Identifier Linked List Head: 3    |                                      |
+> |  Field("field name" "a value")     |                                      |
+> +---------------------------------------------------------------------------+
 
-Node.java
+Corresponding IndentifierDatabase example
+> +---------------------------------------------------------------------------+
+> | Head of linked list, address = 0   | Address = 1                          |
+> | Identifier: filename1.txt          | Identifier: filename2.txt            |
+> | Next identifier: 1                 | Next identifier: -1 (no next)        |
+> | (Pointed at by root of fields)     | (Pointed at by address 1)            |
+> +---------------------------------------------------------------------------+
+> | Empty chunk, could have been       | Address = 3                          |
+> | deleted                            | Identifier: book.epub                |
+> |                                    | Next identifier: -1 (no next)        |
+> |                                    | (Pointed at by left child of fields) |
+> +---------------------------------------------------------------------------+
 
-> Nodes are the vertices of trees (or lists, arrays, etc) that 
-> hold the data for lookup. The Database creates nodes, copies 
-> data into nodes, stores the nodes for later operations.
-> FieldSearch also needs to know about nodes for lookup
-> operations.  Each node has two parts, a key and an associated
-> list of identifiers.  The idea is that a lookup finds content
-> by key; the list of identifiers is then enough to satisfy the 
-> user's query.  
-
-> The constructor expects a key and an identifier: new nodes 
-> have only one identifier (a string), and the key is a byte
-> array. The "add" method adds a new identifier to a node's 
-> list of identifiers. The "del" method removes an identifier
-> from the list. 
+Other Classes
+-------------
 
 Indexer.java
 
