@@ -37,6 +37,8 @@ Example Diagrams
 
 See "Example Diagrams.txt"
 
+Existing class descriptions
+---------------------------
 
 Indexer.java
 
