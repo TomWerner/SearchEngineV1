@@ -94,13 +94,14 @@ public class RAFileTest
     	File fileTest = doesFileExist();
     	RAFile file = new RAFile(fileTest, 1, BinaryFileNode.MAX_SIZE);
     	BinaryFileNode testObject = new BinaryFileNode(new Field("name","value"),1);
-    	file.set(testObject.convert(), 1);
+    	file.set(testObject.convert(), 0);
     	
     	BinaryFileNode testObject2 = new BinaryFileNode(new Field("number","variable"),2);
-    	file.set(testObject2.convert(), 2);
+    	file.set(testObject2.convert(), 1);
+    	BinaryFileNode result = (BinaryFileNode) file.get(1);
     	
-    	BinaryFileNode result = (BinaryFileNode) file.get(2);
-    	//assertEquals()	
+    	assertEquals(2, file.nextAvailableChunk());	
+    	assertEquals(testObject2, result);
     }
     
     public File doesFileExist()
