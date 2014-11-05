@@ -39,7 +39,8 @@ public class RAFileTest
     public void readLargeChunkTest()
     {
         RAFile file = new RAFile(new File("second test.dat"), 16, BinaryFileNode.MAX_SIZE);
-        BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
+        //BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
+        // ^^ shouldn't need this line since you aren't actually adding the testObject
 
         assertEquals(null,file.get(20));
 
@@ -55,6 +56,7 @@ public class RAFileTest
         BinaryFileNode result = (BinaryFileNode) file.get(25);
 
         assertEquals(result, file.get(25));
+    }
     
     @Test
     public void testOverwriteOccupiedChunk()
