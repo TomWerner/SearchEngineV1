@@ -2,6 +2,8 @@ package org.uiowa.cs2820.engine;
 
 import java.util.ArrayList;
 
+import org.uiowa.cs2820.engine.query.FieldSourcePair;
+import org.uiowa.cs2820.engine.query.Queryable;
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
 public class LinearMemoryDatabase implements Database
@@ -46,4 +48,22 @@ public class LinearMemoryDatabase implements Database
             }
         }
     }
+
+    @Override
+    public ArrayList<FieldSourcePair> fetchQueryable(Queryable query)
+    {
+        ArrayList<FieldSourcePair> result = new ArrayList<FieldSourcePair>();
+        
+        for (Node node : memoryArray)
+        {
+            Field field = ((Field)ByteConverter.revert(node.nodeKey));
+            if (query.isSatisfiedBy(field))
+                for (String identifier : node.nodeIdentifiers)
+                    result.add(new FieldSourcePair(field, identifier));
+        }
+        
+        return result;
+    }
+    
+    
 }
