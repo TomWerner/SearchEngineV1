@@ -24,8 +24,8 @@ public class Node
     public void delete(String id)
     {
 
-        .remove(id);
-        poonodeIdentifiers
+        nodeIdentifiers.remove(id);
+
     }
 
 
