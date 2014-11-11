@@ -179,5 +179,9 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
     {
         this.rightChildPosition = right;
     }
+    public int hashCode()
+    {
+    	return field.hashCode();
+    }
     
 }

@@ -13,6 +13,34 @@ do (test suites, specific activities), and how does Brandon's end-to-end
 integration differ from Zack's integration and testing? I would like to 
 see more details on the plans and activities.
 
+DONE:
+------------------------------------------------------------------------
+Austin
+----------
+Implemented RAFile class, which inherited abstract methods from Tom's code
+for ChunkedAccess.
+
+Wrote tests in RAFileTest -- testChunkDeletion, testOverwriteOccupiedChunk,
+testNextAvailableChunk, testIsFileSizeDoubled
+	Tests Use: BinaryFileNode (Tom), Utilities (Tom/ Professor Herman)
+__________
+
+Tom
+----------
+
+__________
+Brandon
+----------
+Wrote tests in RAFileTest -- readLargeChunk, writeLargeChunk
+    Tests Use: BinaryFileNode (Tom), Utilities (Tom/ Professor Herman)
+Wrote tests in NodeTest -- addNode, deleteNode
+    Tests Use: Node (Tom), Utilities (Tom/ Professor Herman)
+__________
+Zach
+----------
+
+__________
+_________________________________________________________________________
 
 Tests remaining for 100% coverage:
 	LinearMemoryDatabase
