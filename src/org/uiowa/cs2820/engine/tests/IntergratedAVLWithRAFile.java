@@ -51,6 +51,8 @@ public class IntergratedAVLWithRAFile {
 			testing.delete();
 		
 		
+		
+		
         ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
