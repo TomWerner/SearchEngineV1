@@ -1,19 +1,26 @@
 package org.uiowa.cs2820.engine.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.*;
-public class IntergratedAVLWithRAFile {
-	
-	//Integration with AVL tree and RA File
+import org.uiowa.cs2820.engine.BinaryFileNode;
+import org.uiowa.cs2820.engine.BinaryTreeFieldDatabase;
+import org.uiowa.cs2820.engine.ChunkedAccess;
+import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.FieldDatabase;
+import org.uiowa.cs2820.engine.IdentifierDatabase;
+import org.uiowa.cs2820.engine.IntegratedFileDatabase;
+import org.uiowa.cs2820.engine.RAFile;
+import org.uiowa.cs2820.engine.ValueFileNode;
 
-	@Test
-	public void testSingleAddRetrieveCycle() {
-		
+public class BinaryTreeIntergratedWithRAFile {
+    @Test
+    public void testSingleAddRetrieveCycle()
+    {
+    	
 		File testingFile = new File("testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
@@ -22,14 +29,15 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile( new File("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
+		
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
         Field field = new Field("name", "value");
-        String identifier = "FileName1";
+        String identifier = "filename1";
 
         database.store(field, identifier);
 
@@ -37,7 +45,7 @@ public class IntergratedAVLWithRAFile {
         assertEquals(1, results.size());
         assertEquals(identifier, results.get(0));
     }
-	
+
     @Test
     public void testMultipleFieldsOneIdentifier()
     {
@@ -51,9 +59,9 @@ public class IntergratedAVLWithRAFile {
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -102,35 +110,11 @@ public class IntergratedAVLWithRAFile {
         assertEquals(1, results.size());
         assertEquals(identifier, results.get(0));
     }
-    
-    @Test
-    public void testingFetchNullPointerCatch(){
-    	
-		File testingFile = new File("testingFile.dat");
-		if(testingFile.exists())
-			testingFile.delete();
-		
-		File testing = new File("testing.dat");
-		if(testing.exists())
-			testing.delete();
-    	
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
-        IdentifierDatabase identDB = new IdentifierDatabase(file2);
-        
-        Field field1 = new Field("Hope This works","a");
-        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
-        
-         
-        assertEquals(database.fetch(field1),null);
-        
-        
-    }
-    
+
     @Test
     public void testSingleFieldMultipleIdentifiers()
     {
+    	
 		File testingFile = new File("testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
@@ -139,9 +123,10 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
+		
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -175,7 +160,7 @@ public class IntergratedAVLWithRAFile {
         assertEquals(identifier2, results.get(6));
         assertEquals(identifier1, results.get(7));
     }
-	
+
     @Test
     public void testRemovingIdentifierBasicCase()
     {
@@ -188,9 +173,10 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
+		
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -207,7 +193,7 @@ public class IntergratedAVLWithRAFile {
         results = database.fetch(field);
         assertEquals(null, results);
     }
-    
+
     @Test
     public void testRemovingIdentifierNotThere()
     {
@@ -220,11 +206,12 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
+		
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
-
+        
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
         Field field = new Field("name", "value");
         String identifier1 = "filename1";
@@ -241,10 +228,11 @@ public class IntergratedAVLWithRAFile {
         assertEquals(1, results.size());
         assertEquals(identifier1, results.get(0));
     }
-    
+
     @Test
     public void testRemovingIdentifierTwice()
     {
+    	
 		File testingFile = new File("testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
@@ -253,9 +241,10 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
+		
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -275,7 +264,7 @@ public class IntergratedAVLWithRAFile {
         results = database.fetch(field);
         assertEquals(null, results);
     }
-    
+
     @Test
     public void testRemovingFirstIdentifier()
     {
@@ -288,9 +277,10 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
+		
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -309,31 +299,6 @@ public class IntergratedAVLWithRAFile {
         results = database.fetch(field);
         assertEquals(1, results.size());
         assertEquals(identifier1, results.get(0));
-    }
-    
-    @Test
-    public void testRemoveFieldNullPointerCatch(){
-    	
-    	
-		File testingFile = new File("testingFile.dat");
-		if(testingFile.exists())
-			testingFile.delete();
-		
-		File testing = new File("testing.dat");
-		if(testing.exists())
-			testing.delete();
-		
-		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
-        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
-        IdentifierDatabase identDB = new IdentifierDatabase(file2);
-        
-        String identifier1 = "filename1";
-        Field field1 = new Field("Hope This works","a");
-        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
-        
-        database.delete(field1, identifier1);
         
     }
-	}
+}
