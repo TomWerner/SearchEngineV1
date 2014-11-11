@@ -3,11 +3,7 @@ package org.uiowa.cs2820.engine.tests;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.Database;
-import org.uiowa.cs2820.engine.Field;
-import org.uiowa.cs2820.engine.FieldSearch;
-import org.uiowa.cs2820.engine.Indexer;
-import org.uiowa.cs2820.engine.LinearMemoryDatabase;
+import org.uiowa.cs2820.engine.*;
 
 public class IntegrationTests
 {
@@ -15,7 +11,7 @@ public class IntegrationTests
     @Test
     public void testEmptyDatabaseReturnsNothing()
     {
-        Database database = new LinearMemoryDatabase();
+        Database database = new IntegratedFileDatabase(new AVLFieldDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)), new IdentifierDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)));
         FieldSearch fieldSearch = new FieldSearch(database);
         Field F1 = new Field("1", new Integer(45));
         assertEquals(fieldSearch.findEquals(F1).length, 0);
