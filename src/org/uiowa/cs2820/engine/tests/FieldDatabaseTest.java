@@ -19,10 +19,10 @@ public abstract class FieldDatabaseTest
         ChunkedAccess file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
-        BinaryFileNode node = new BinaryFileNode(new Field("name", "value"), 0);
+        BinaryFileNode node = new BinaryFileNode(new Field("name", "value"), 11);
         fieldDB.add(node);
 
-        assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "value")));
+        assertEquals(11, fieldDB.getIdentifierPosition(new Field("name", "value")));
     }
 
     @Test
@@ -61,14 +61,14 @@ public abstract class FieldDatabaseTest
         ChunkedAccess file = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
 
         fieldDB = getDatabase(file);
-        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 0);
+        BinaryFileNode node1 = new BinaryFileNode(new Field("name", "a"), 11);
         BinaryFileNode node2 = new BinaryFileNode(new Field("name", "a"), 1);
         fieldDB.add(node1);
         fieldDB.add(node2);
 
-        assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "a")));
+        assertEquals(11, fieldDB.getIdentifierPosition(new Field("name", "a")));
         // We won't overwrite data
-        assertEquals(0, fieldDB.getIdentifierPosition(new Field("name", "a")));
+        assertEquals(11, fieldDB.getIdentifierPosition(new Field("name", "a")));
     }
 
     @Test

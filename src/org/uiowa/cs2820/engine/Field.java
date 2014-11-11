@@ -110,5 +110,10 @@ public class Field implements Comparable<Field>
         return new Field(fieldName, comp);
     }
     
+    public int hashCode()
+    {
+    	return toString().hashCode();
+    }
+    
     
 }

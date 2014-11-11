@@ -124,6 +124,16 @@ public abstract class ChunkedAccess
         return result;
     }
 
+    public int nextAvailableChunk(int start)
+    {
+        for (int i = start; i < numberOfChunks; i++)
+            if (get(i) == null)
+                return i;
+        int result = numberOfChunks;
+        doubleCapacity();
+        return result;
+    }
+
     /**
      * Double the capacity of the file.
      */
