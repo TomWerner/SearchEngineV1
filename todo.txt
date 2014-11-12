@@ -39,6 +39,8 @@ __________
 Zach
 ----------
 
+Working on integration tests as well as just making sure that the RA file works with data base
+
 __________
 _________________________________________________________________________
 
