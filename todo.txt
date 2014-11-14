@@ -76,13 +76,13 @@ Tests remaining for 100% coverage:
 		- toString
 	ValueFileNode
 		- toString
-	Field
-		- getFieldName
-		- getFieldValue
+	X Field
+		X - getFieldName
+		X - getFieldValue
 		- equals 
 			- doesn't test if "other" isn't a Field object
-	RAFile
-		- still being developed
+	X RAFile
+		X - still being developed
 	ChunkedAccess
 		- set
 			- doesn't check if the byte array is too long
@@ -97,8 +97,8 @@ Tests remaining for 100% coverage:
 		- getAllIdentifiers
 			- doesn't check the quick loop break
 
-	IntegratedFileDatabase
-		- fetch
+	X IntegratedFileDatabase
+		X - fetch
 			- if the field isn't in the database
-		- delete
+		X - delete
 			- if the field isn't in the database
