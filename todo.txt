@@ -27,7 +27,18 @@ __________
 
 Tom
 ----------
+Implemented abstract database level of the search engine.
+Wrote tests for database level.
 
+Uses/Used by: RAFile (Austin)
+              BinaryTreeIntegratedWithRAFile (Zach)
+      	 	  HashmapFieldDatabase (Austin)
+      		  HashmapFieldDatabaseTest (Austin)
+      		  IntergratedAVLWithRAFile (Zach)
+      		  RAFileTest (Brandon)
+      		  Utilities (Professor Herman)
+      		  Field (Professor Herman)
+           
 __________
 Brandon
 ----------
