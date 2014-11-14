@@ -38,8 +38,8 @@ public class IntegrationTests
          
         String[] S = search.findEquals(F3);
         assertEquals(2, S.length);
-        assertEquals(S[0], "abc");
-        assertEquals(S[1], "def");
+        assertEquals(S[1], "abc");
+        assertEquals(S[0], "def");
     }
     
     @Test
@@ -109,13 +109,34 @@ public class IntegrationTests
         indexer.addField(field6);
         indexer.addField(field7);
         
+        String[] results = search.findEquals(field1);
         
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
       
-        assertEquals(search.findEquals(field3),"e");
-        assertEquals(search.findEquals(field4),"b");
-        assertEquals(search.findEquals(field5),"f");
-        assertEquals(search.findEquals(field6),"c");
-        assertEquals(search.findEquals(field7),"g");
+        results = search.findEquals(field2);
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
+        
+        results = search.findEquals(field3);
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
+        
+        results = search.findEquals(field4);
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
+        
+        results = search.findEquals(field5);
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
+        
+        results = search.findEquals(field6);
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
+        
+        results = search.findEquals(field7);
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
         
     }
 }
