@@ -46,6 +46,8 @@ Wrote tests in RAFileTest -- readLargeChunk, writeLargeChunk
     Tests Use: BinaryFileNode (Tom), Utilities (Tom/ Professor Herman)
 Wrote tests in NodeTest -- addNode, deleteNode
     Tests Use: Node (Tom), Utilities (Tom/ Professor Herman)
+Wrote test in Integration Test -- testEmptyDatabase returns nothing
+    Tests Use: AVLFieldDatabase, MockChunkRandomAccessFile
 __________
 Zach
 ----------
