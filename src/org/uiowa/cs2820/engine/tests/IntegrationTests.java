@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.uiowa.cs2820.engine.*;
 
+import sun.reflect.FieldAccessor;
+
 public class IntegrationTests
 {
 
@@ -312,8 +314,75 @@ public class IntegrationTests
         assertEquals(0,results.length);
     }
 
-
+    @Test
+    public void AVLIntegrationTesting1(){
+		File testingFile = new File("testingFile.dat");
+		if(testingFile.exists())
+			testingFile.delete();
+		
+		File testing = new File("testing.dat");
+		if(testing.exists())
+			testing.delete();
+		
+		
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new AVLFieldDatabase(file1);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
+        IdentifierDatabase identDB = new IdentifierDatabase(file2);
+        
+        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
+        String identifier = "filename1";
+        Indexer indexer = new Indexer(database, identifier);
+        FieldSearch search = new FieldSearch(database);
+        
+        Field field1 = new Field("Zackery", "Milder");
+        indexer.addField(field1);
+        
+        String[] results = search.findEquals(field1);
+        
+        String name = field1.getFieldName();
+        Comparable value = field1.getFieldValue();
+        
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
+        assertEquals("Zackery", name);
+        assertEquals("Milder", value);
+        
+    }
     
-    
-    
+    @Test
+    public void BinaryIntegrationTesting1(){
+		File testingFile = new File("testingFile.dat");
+		if(testingFile.exists())
+			testingFile.delete();
+		
+		File testing = new File("testing.dat");
+		if(testing.exists())
+			testing.delete();
+		
+		
+        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, BinaryFileNode.MAX_SIZE);
+        FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
+        IdentifierDatabase identDB = new IdentifierDatabase(file2);
+        
+        IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
+        String identifier = "filename1";
+        Indexer indexer = new Indexer(database, identifier);
+        FieldSearch search = new FieldSearch(database);
+        
+        Field field1 = new Field("Zackery", "Milder");
+        indexer.addField(field1);
+        
+        String[] results = search.findEquals(field1);
+        
+        String name = field1.getFieldName();
+        Comparable value = field1.getFieldValue();
+        
+        assertEquals(1, results.length);
+        assertEquals(identifier, results[0]);
+        assertEquals("Zackery", name);
+        assertEquals("Milder", value);
+        
+    }
 }
