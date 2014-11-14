@@ -12,7 +12,7 @@ public class IntegrationTests
 {
 
     @Test
-    public void testEmptyDatabaseReturnsNothing()
+    public void testEmptyDatabaseReturnsNothingAVL()
     {
         Database database = new IntegratedFileDatabase(new AVLFieldDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)), new IdentifierDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)));
         FieldSearch fieldSearch = new FieldSearch(database);
@@ -21,9 +21,40 @@ public class IntegrationTests
     }
 
     @Test
-    public void testSameFieldDifferentIdentifiers()
+    public void testEmptyDatabaseReturnsNothingBinary()
+    {
+        Database database = new IntegratedFileDatabase(new BinaryTreeFieldDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)), new IdentifierDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)));
+        FieldSearch fieldSearch = new FieldSearch(database);
+        Field F1 = new Field("1", new Integer(45));
+        assertEquals(fieldSearch.findEquals(F1).length, 0);
+    }
+    
+    @Test
+    public void testSameFieldDifferentIdentifiersAVL()
     {
         Database database = new IntegratedFileDatabase(new AVLFieldDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)), new IdentifierDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)));
+        FieldSearch search = new FieldSearch(database);
+        Indexer indexer = new Indexer(database, "abc");
+        
+        Field F1 = new Field("1", new Integer(45));
+        Field F2 = new Field("check", new Integer(30) );
+        indexer.addField(F1);
+        indexer.addField(F2); 
+        
+        indexer = new Indexer(database, "def");
+        Field F3 = new Field("check", new Integer(30));
+        indexer.addField(F3);
+         
+        String[] S = search.findEquals(F3);
+        assertEquals(2, S.length);
+        assertEquals(S[1], "abc");
+        assertEquals(S[0], "def");
+    }
+    
+    @Test
+    public void testSameFieldDifferentIdentifiersBinary()
+    {
+        Database database = new IntegratedFileDatabase(new BinaryTreeFieldDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)), new IdentifierDatabase(new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE)));
         FieldSearch search = new FieldSearch(database);
         Indexer indexer = new Indexer(database, "abc");
         
