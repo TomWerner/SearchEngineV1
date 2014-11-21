@@ -1,4 +1,11 @@
-package org.uiowa.cs2820.engine;
+package org.uiowa.cs2820.engine.databases;
+
+import java.util.Iterator;
+
+import org.uiowa.cs2820.engine.BinaryTreeIterator;
+import org.uiowa.cs2820.engine.ChunkedAccess;
+import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.FieldFileNode;
 
 
 
@@ -69,42 +76,43 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
         super(file);
     }
 
-    public void add(BinaryFileNode data)
+    public void add(FieldFileNode data)
     {
-        insert(0, data);
+        insert(0, FieldFileNode.NULL_ADDRESS, data);
     }
     
-    private int insert(int rootIndex, BinaryFileNode node)
+    private int insert(int rootIndex, int parent, FieldFileNode node)
     {
-        BinaryFileNode root = (BinaryFileNode) getFileHandle().get(rootIndex);
+        FieldFileNode root = (FieldFileNode) getFileHandle().get(rootIndex);
         if (root == null)
         {
             rootIndex = getFileHandle().nextAvailableChunk();
             node.setAddress(rootIndex);
+            node.setParentPosition(parent);
             getFileHandle().set(node.convert(), rootIndex);
             return rootIndex;
         }
         else if (node.getField().compareTo(root.getField()) < 0)
         {
-            if (root.getLeftPosition() == BinaryFileNode.NULL_ADDRESS)
+            if (root.getLeftPosition() == FieldFileNode.NULL_ADDRESS)
             {
-                rootIndex = insert(root.getLeftPosition(), node);
+                rootIndex = insert(root.getLeftPosition(), root.getAddress(), node);
                 root.setLeftPosition(rootIndex);
                 getFileHandle().set(root.convert(), root.getAddress());
             }
             else
-                insert(root.getLeftPosition(), node);
+                insert(root.getLeftPosition(), root.getAddress(), node);
         }
         else if (node.getField().compareTo(root.getField()) > 0)
         {
-            if (root.getRightPosition() == BinaryFileNode.NULL_ADDRESS)
+            if (root.getRightPosition() == FieldFileNode.NULL_ADDRESS)
             {
-                rootIndex = insert(root.getRightPosition(), node);
+                rootIndex = insert(root.getRightPosition(), root.getAddress(), node);
                 root.setRightPosition(rootIndex);
                 getFileHandle().set(root.convert(), root.getAddress());
             }
             else
-                insert(root.getRightPosition(), node);
+                insert(root.getRightPosition(), root.getAddress(), node);
         }
         
         return rootIndex;
@@ -114,7 +122,7 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
     public int getIdentifierPosition(Field field)
     {
         int index = 0;
-        BinaryFileNode currentNode = (BinaryFileNode) getFileHandle().get(index);
+        FieldFileNode currentNode = (FieldFileNode) getFileHandle().get(index);
         if (currentNode == null)
             return -1;
         while (currentNode != null)
@@ -125,7 +133,7 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
                 index = currentNode.getLeftPosition();
             else
                 index = currentNode.getRightPosition();
-            currentNode = (BinaryFileNode) getFileHandle().get(index);
+            currentNode = (FieldFileNode) getFileHandle().get(index);
         }
         
         return -1;
@@ -135,7 +143,7 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
     public void setIdentifierPosition(Field field, int headOfLinkedListPosition)
     {
         int index = 0;
-        BinaryFileNode currentNode = (BinaryFileNode) getFileHandle().get(index);
+        FieldFileNode currentNode = (FieldFileNode) getFileHandle().get(index);
         if (currentNode == null)
             return;
         while (currentNode != null)
@@ -150,7 +158,20 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
                 index = currentNode.getLeftPosition();
             else
                 index = currentNode.getRightPosition();
-            currentNode = (BinaryFileNode) getFileHandle().get(index);
+            currentNode = (FieldFileNode) getFileHandle().get(index);
         }
     }
+
+    @Override
+    public Iterator<Field> iterator()
+    {
+        return new BinaryTreeIterator(this, 0);
+    }
+    
+    public String toString()
+    {
+        return getFileHandle().toString();
+    }
+    
+    
 }

@@ -2,6 +2,9 @@ package org.uiowa.cs2820.engine;
 
 import java.util.ArrayList;
 
+import org.uiowa.cs2820.engine.databases.FieldDatabase;
+import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
+
 /**
  * This class combines the FieldDatabase and IdentiferDatabase to implement the functionality
  * specified in the Database interface.
@@ -59,7 +62,7 @@ public class IntegratedFileDatabase implements Database
         if (linkedListHeadPosition == -1)
         {
             linkedListHeadPosition = identDB.addIdentifier(identifier);
-            fieldDB.add(new BinaryFileNode(field, linkedListHeadPosition));
+            fieldDB.add(new FieldFileNode(field, linkedListHeadPosition));
         }
         else
         {

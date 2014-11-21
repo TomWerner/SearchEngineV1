@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.*;
+import org.uiowa.cs2820.engine.databases.AVLFieldDatabase;
+import org.uiowa.cs2820.engine.databases.FieldDatabase;
+import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 public class IntergratedAVLWithRAFile {
 	
 	//Integration with AVL tree and RA File
@@ -22,9 +25,9 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile( new File("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile( new File("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -53,7 +56,7 @@ public class IntergratedAVLWithRAFile {
 		
 		
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
@@ -116,7 +119,7 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
     	
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
@@ -141,7 +144,7 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
@@ -190,7 +193,7 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
@@ -222,7 +225,7 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
@@ -255,7 +258,7 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
@@ -290,7 +293,7 @@ public class IntergratedAVLWithRAFile {
 		if(testing.exists())
 			testing.delete();
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
@@ -326,7 +329,7 @@ public class IntergratedAVLWithRAFile {
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File ("testingFile.dat"), 16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
         ChunkedAccess file2 = new RAFile(new File ("testing.dat"), 16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);

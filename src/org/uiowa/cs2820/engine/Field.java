@@ -9,8 +9,8 @@ import org.uiowa.cs2820.engine.utilities.Utilities;
 public class Field implements Comparable<Field>
 {
     private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
-    private static final int MAX_NAME_SIZE = BinaryFileNode.MAX_FIELD_SIZE / 4 - INTEGER_SIZE - ByteConverter.EXISTS_SIZE;
-    private static final int MAX_VALUE_SIZE = BinaryFileNode.MAX_FIELD_SIZE / 2 * 3 - INTEGER_SIZE;
+    private static final int MAX_NAME_SIZE = FieldFileNode.MAX_FIELD_SIZE / 4 - INTEGER_SIZE - ByteConverter.EXISTS_SIZE;
+    private static final int MAX_VALUE_SIZE = FieldFileNode.MAX_FIELD_SIZE / 2 * 3 - INTEGER_SIZE;
     private static final int NAME_LENGTH_POSITION = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
     private static final int NAME_POSITION = NAME_LENGTH_POSITION + INTEGER_SIZE;
     private static final int VALUE_LENGTH_POSITION = NAME_POSITION + MAX_NAME_SIZE;
@@ -63,7 +63,7 @@ public class Field implements Comparable<Field>
 
     public byte[] convert()
     {
-        byte[] result = new byte[BinaryFileNode.MAX_FIELD_SIZE];
+        byte[] result = new byte[FieldFileNode.MAX_FIELD_SIZE];
         
         for (int i = 0; i < ByteConverter.EXISTS_SIZE; i++)
             result[i + ByteConverter.EXISTS_POSITION] = ByteConverter.FIELD[i];

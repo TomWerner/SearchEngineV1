@@ -1,6 +1,11 @@
-package org.uiowa.cs2820.engine;
+package org.uiowa.cs2820.engine.databases;
 
-public abstract class FieldDatabase
+import org.uiowa.cs2820.engine.ChunkedAccess;
+import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.FieldFileNode;
+
+
+public abstract class FieldDatabase implements Iterable<Field>
 {
     protected ChunkedAccess fileHandle;
 
@@ -22,7 +27,7 @@ public abstract class FieldDatabase
      * @param node
      *            the node to add
      */
-    public abstract void add(BinaryFileNode node);
+    public abstract void add(FieldFileNode node);
 
     /**
      * Get the position of the head of the linked list of identifiers for the
@@ -44,10 +49,14 @@ public abstract class FieldDatabase
      *            The new position of the identifier linked list
      */
     public abstract void setIdentifierPosition(Field field, int headOfLinkedListPosition);
-
+    
+    public FieldFileNode getElementAt(int chunkPosition)
+    {
+        return (FieldFileNode) getFileHandle().get(chunkPosition); 
+    }
     
     protected ChunkedAccess getFileHandle()
     {
         return fileHandle;
-    }
+    }    
 }

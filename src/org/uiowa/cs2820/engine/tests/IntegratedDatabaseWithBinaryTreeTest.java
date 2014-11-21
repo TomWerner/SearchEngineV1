@@ -5,23 +5,23 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.BinaryFileNode;
-import org.uiowa.cs2820.engine.BinaryTreeFieldDatabase;
+import org.uiowa.cs2820.engine.FieldFileNode;
 import org.uiowa.cs2820.engine.ChunkedAccess;
 import org.uiowa.cs2820.engine.Field;
-import org.uiowa.cs2820.engine.FieldDatabase;
-import org.uiowa.cs2820.engine.IdentifierDatabase;
 import org.uiowa.cs2820.engine.IntegratedFileDatabase;
 import org.uiowa.cs2820.engine.ValueFileNode;
+import org.uiowa.cs2820.engine.databases.BinaryTreeFieldDatabase;
+import org.uiowa.cs2820.engine.databases.FieldDatabase;
+import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 
 public class IntegratedDatabaseWithBinaryTreeTest
 {
     @Test
     public void testSingleAddRetrieveCycle()
     {
-        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -38,7 +38,7 @@ public class IntegratedDatabaseWithBinaryTreeTest
     @Test
     public void testMultipleFieldsOneIdentifier()
     {
-        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
         ChunkedAccess file2 = new MockChunkRandomAccessFile(16, ValueFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
@@ -93,9 +93,9 @@ public class IntegratedDatabaseWithBinaryTreeTest
     @Test
     public void testSingleFieldMultipleIdentifiers()
     {
-        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -133,9 +133,9 @@ public class IntegratedDatabaseWithBinaryTreeTest
     @Test
     public void testRemovingIdentifierBasicCase()
     {
-        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -156,9 +156,9 @@ public class IntegratedDatabaseWithBinaryTreeTest
     @Test
     public void testRemovingIdentifierNotThere()
     {
-        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -181,9 +181,9 @@ public class IntegratedDatabaseWithBinaryTreeTest
     @Test
     public void testRemovingIdentifierTwice()
     {
-        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -207,9 +207,9 @@ public class IntegratedDatabaseWithBinaryTreeTest
     @Test
     public void testRemovingFirstIdentifier()
     {
-        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, BinaryFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
 
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);

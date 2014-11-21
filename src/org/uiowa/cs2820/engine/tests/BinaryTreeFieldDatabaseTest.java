@@ -1,8 +1,8 @@
 package org.uiowa.cs2820.engine.tests;
 
-import org.uiowa.cs2820.engine.BinaryTreeFieldDatabase;
 import org.uiowa.cs2820.engine.ChunkedAccess;
-import org.uiowa.cs2820.engine.FieldDatabase;
+import org.uiowa.cs2820.engine.databases.BinaryTreeFieldDatabase;
+import org.uiowa.cs2820.engine.databases.FieldDatabase;
 
 
 public class BinaryTreeFieldDatabaseTest extends FieldDatabaseTest

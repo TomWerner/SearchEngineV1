@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
-public class BinaryFileNode implements Comparable<BinaryFileNode>
+public class FieldFileNode implements Comparable<FieldFileNode>
 {
     /*
      * Constants used for serialization
@@ -12,12 +12,13 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
     public static final int MAX_SIZE = 256;
     private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
     
-    public static final int MAX_FIELD_SIZE = MAX_SIZE - ByteConverter.EXISTS_SIZE - INTEGER_SIZE * 4;
+    public static final int MAX_FIELD_SIZE = MAX_SIZE - ByteConverter.EXISTS_SIZE - INTEGER_SIZE * 5;
     
     private static final int IDENT_POINTER_POS = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
     private static final int LEFT_CHILD_POSITION = IDENT_POINTER_POS + INTEGER_SIZE;
     private static final int RIGHT_CHILD_POSITION = LEFT_CHILD_POSITION + INTEGER_SIZE;
-    private static final int ADDRESS_POSITION = RIGHT_CHILD_POSITION + INTEGER_SIZE;
+    private static final int PARENT_POSITION = RIGHT_CHILD_POSITION + INTEGER_SIZE;
+    private static final int ADDRESS_POSITION = PARENT_POSITION + INTEGER_SIZE;
     private static final int FIELD_POSITION = ADDRESS_POSITION + INTEGER_SIZE;
     
     public static final int NULL_ADDRESS = -1;
@@ -29,6 +30,7 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
     private int headOfLinkedListPosition;
     private int leftChildPosition = NULL_ADDRESS;
     private int rightChildPosition = NULL_ADDRESS;
+    private int parentPosition = NULL_ADDRESS;
     private int address = NULL_ADDRESS;
 
     /**
@@ -37,7 +39,7 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
      * @param field The field of the node
      * @param headOfLinkedListPosition the position of the head node of the identifier linked list in the IdentifierDatabase
      */
-    public BinaryFileNode(Field field, int headOfLinkedListPosition)
+    public FieldFileNode(Field field, int headOfLinkedListPosition)
     {
         this.field = field;
         this.headOfLinkedListPosition = headOfLinkedListPosition;
@@ -79,14 +81,14 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
     
     public boolean equals(Object other)
     { 
-        if (other instanceof BinaryFileNode)
-            return ((BinaryFileNode)other).field.equals(field);
+        if (other instanceof FieldFileNode)
+            return ((FieldFileNode)other).field.equals(field);
         return false;
     }
     
     public String toString()
     {
-        return field.toString() + " -> " + headOfLinkedListPosition;
+        return field.toString() + " -> " + headOfLinkedListPosition + "\tparent: " + parentPosition + "\tleft: " + leftChildPosition + "\tright: " + rightChildPosition;
     }
 
     /**
@@ -102,11 +104,13 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
         byte[] identPointSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(headOfLinkedListPosition).array();
         byte[] leftSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(leftChildPosition).array();
         byte[] rightSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(rightChildPosition).array();
+        byte[] parentSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(parentPosition).array();
         byte[] addrSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(address).array();
         byte[] fieldSection = field.convert();
         System.arraycopy(identPointSection, 0, result, IDENT_POINTER_POS, identPointSection.length);
         System.arraycopy(leftSection, 0, result, LEFT_CHILD_POSITION, leftSection.length);
         System.arraycopy(rightSection, 0, result, RIGHT_CHILD_POSITION, rightSection.length);
+        System.arraycopy(parentSection, 0, result, PARENT_POSITION, parentSection.length);
         System.arraycopy(addrSection, 0, result, ADDRESS_POSITION, addrSection.length);
         System.arraycopy(fieldSection, 0, result, FIELD_POSITION, fieldSection.length);
         return result;
@@ -137,6 +141,11 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
         wrapped = ByteBuffer.wrap(rightSection);
         int right = wrapped.getInt();
         
+        byte[] parentSection = new byte[INTEGER_SIZE];
+        System.arraycopy(byteArray, PARENT_POSITION, parentSection, 0, INTEGER_SIZE);
+        wrapped = ByteBuffer.wrap(parentSection);
+        int parent = wrapped.getInt();
+        
         byte[] addrSection = new byte[INTEGER_SIZE];
         System.arraycopy(byteArray, ADDRESS_POSITION, addrSection, 0, INTEGER_SIZE);
         wrapped = ByteBuffer.wrap(addrSection);
@@ -146,16 +155,17 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
         System.arraycopy(byteArray, FIELD_POSITION, fieldSection, 0, MAX_FIELD_SIZE);
         Field field = (Field) ByteConverter.revert(fieldSection);
         
-        BinaryFileNode result = new BinaryFileNode(field, address);
+        FieldFileNode result = new FieldFileNode(field, address);
         result.setAddress(addr);
         result.setLeftPosition(left);
         result.setRightPosition(right);
+        result.setParentPosition(parent);
         
         return result;
     }
 
     @Override
-    public int compareTo(BinaryFileNode o)
+    public int compareTo(FieldFileNode o)
     {
         return field.compareTo(o.field);
     }
@@ -169,6 +179,11 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
     {
         return rightChildPosition;
     }
+    
+    public int getParentPosition()
+    {
+        return parentPosition;
+    }
 
     public void setLeftPosition(int left)
     {
@@ -179,6 +194,12 @@ public class BinaryFileNode implements Comparable<BinaryFileNode>
     {
         this.rightChildPosition = right;
     }
+    
+    public void setParentPosition(int parent)
+    {
+        this.parentPosition = parent;
+    }
+    
     public int hashCode()
     {
     	return field.hashCode();

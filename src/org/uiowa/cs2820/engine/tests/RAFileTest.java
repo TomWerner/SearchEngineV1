@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.BinaryFileNode;
+import org.uiowa.cs2820.engine.FieldFileNode;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.RAFile;
 
@@ -15,11 +15,11 @@ public class RAFileTest
     public void testSimpleReadWriteCycle()
     {
     	File fileTest = doesFileExist();
-        RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
-        BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
+        RAFile file = new RAFile(fileTest, 16, FieldFileNode.MAX_SIZE);
+        FieldFileNode testObject = new FieldFileNode(new Field("name", "value"), 0);
 
         file.set(testObject.convert(), 1);
-        BinaryFileNode result = (BinaryFileNode) file.get(1);
+        FieldFileNode result = (FieldFileNode) file.get(1);
 
         assertEquals(testObject, result);
     }
@@ -28,12 +28,12 @@ public class RAFileTest
     public void testChunkDeletion()
     {
     	File fileTest = doesFileExist();
-    	RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
-    	BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"),1);
+    	RAFile file = new RAFile(fileTest, 16, FieldFileNode.MAX_SIZE);
+    	FieldFileNode testObject = new FieldFileNode(new Field("name", "value"),1);
 
     	file.set(testObject.convert(), 1);
     	file.free(1);
-    	BinaryFileNode result = (BinaryFileNode) file.get(1);
+    	FieldFileNode result = (FieldFileNode) file.get(1);
     	assertEquals(null, result);
     }
 
@@ -41,7 +41,7 @@ public class RAFileTest
     public void readLargeChunkTest()
     {
     	File fileTest = doesFileExist();
-        RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
+        RAFile file = new RAFile(fileTest, 16, FieldFileNode.MAX_SIZE);
         //BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
         // ^^ shouldn't need this line since you aren't actually adding the testObject
 
@@ -53,11 +53,11 @@ public class RAFileTest
     public void writeLargeChunkTest()
     {
     	File fileTest = doesFileExist();
-        RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
-        BinaryFileNode testObject = new BinaryFileNode(new Field("name", "value"), 0);
+        RAFile file = new RAFile(fileTest, 16, FieldFileNode.MAX_SIZE);
+        FieldFileNode testObject = new FieldFileNode(new Field("name", "value"), 0);
 
         file.set(testObject.convert(), 25);
-        BinaryFileNode result = (BinaryFileNode) file.get(25);
+        FieldFileNode result = (FieldFileNode) file.get(25);
 
         assertEquals(result, file.get(25));
     }
@@ -66,14 +66,14 @@ public class RAFileTest
     public void testOverwriteOccupiedChunk()
     {
     	File fileTest = doesFileExist();
-    	RAFile file = new RAFile(fileTest, 16, BinaryFileNode.MAX_SIZE);
-    	BinaryFileNode testObject = new BinaryFileNode(new Field("name","value"),1);
+    	RAFile file = new RAFile(fileTest, 16, FieldFileNode.MAX_SIZE);
+    	FieldFileNode testObject = new FieldFileNode(new Field("name","value"),1);
     	file.set(testObject.convert(), 1);
     	
-    	BinaryFileNode overwriteObject = new BinaryFileNode(new Field("number","value"),1);
+    	FieldFileNode overwriteObject = new FieldFileNode(new Field("number","value"),1);
     	file.set(overwriteObject.convert(), 1);
 
-    	BinaryFileNode result = (BinaryFileNode) file.get(1);
+    	FieldFileNode result = (FieldFileNode) file.get(1);
     	assertEquals(overwriteObject, result);
     }
     
@@ -81,8 +81,8 @@ public class RAFileTest
     public void testNextAvailableChunk()
     {
     	File fileTest = doesFileExist();
-    	RAFile file = new RAFile(fileTest, 4, BinaryFileNode.MAX_SIZE);
-    	BinaryFileNode testObject = new BinaryFileNode(new Field("name","value"),1);
+    	RAFile file = new RAFile(fileTest, 4, FieldFileNode.MAX_SIZE);
+    	FieldFileNode testObject = new FieldFileNode(new Field("name","value"),1);
     	file.set(testObject.convert(), 0);
     	assertEquals(1, file.nextAvailableChunk());
     	
@@ -92,13 +92,13 @@ public class RAFileTest
     public void testIsFileSizeDoubled()
     {
     	File fileTest = doesFileExist();
-    	RAFile file = new RAFile(fileTest, 1, BinaryFileNode.MAX_SIZE);
-    	BinaryFileNode testObject = new BinaryFileNode(new Field("name","value"),1);
+    	RAFile file = new RAFile(fileTest, 1, FieldFileNode.MAX_SIZE);
+    	FieldFileNode testObject = new FieldFileNode(new Field("name","value"),1);
     	file.set(testObject.convert(), 0);
     	
-    	BinaryFileNode testObject2 = new BinaryFileNode(new Field("number","variable"),2);
+    	FieldFileNode testObject2 = new FieldFileNode(new Field("number","variable"),2);
     	file.set(testObject2.convert(), 1);
-    	BinaryFileNode result = (BinaryFileNode) file.get(1);
+    	FieldFileNode result = (FieldFileNode) file.get(1);
     	
     	assertEquals(2, file.nextAvailableChunk());	
     	assertEquals(testObject2, result);

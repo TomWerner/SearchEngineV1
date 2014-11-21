@@ -2,7 +2,7 @@ package org.uiowa.cs2820.engine.utilities;
 
 import java.util.Arrays;
 
-import org.uiowa.cs2820.engine.BinaryFileNode;
+import org.uiowa.cs2820.engine.FieldFileNode;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.ValueFileNode;
 
@@ -35,7 +35,7 @@ public class ByteConverter
         System.arraycopy(byteRepr, EXISTS_POSITION, objType, 0, EXISTS_SIZE);
         
         if (Arrays.equals(objType, BINARY_FILE_NODE))
-            return BinaryFileNode.revert(byteRepr);
+            return FieldFileNode.revert(byteRepr);
         else if (Arrays.equals(objType, VALUE_FILE_NODE))
             return ValueFileNode.revert(byteRepr);
         else if (Arrays.equals(objType, FIELD))

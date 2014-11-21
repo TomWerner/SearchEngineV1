@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.ChunkedAccess;
-import org.uiowa.cs2820.engine.FieldDatabase;
-import org.uiowa.cs2820.engine.HashmapFieldDatabase;
+import org.uiowa.cs2820.engine.databases.FieldDatabase;
+import org.uiowa.cs2820.engine.databases.HashmapFieldDatabase;
 
 public class HashmapFieldDatabaseTest extends FieldDatabaseTest {
 

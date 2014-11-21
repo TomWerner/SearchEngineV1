@@ -3,11 +3,11 @@ package org.uiowa.cs2820.engine.tests;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.AVLFieldDatabase;
-import org.uiowa.cs2820.engine.BinaryFileNode;
+import org.uiowa.cs2820.engine.FieldFileNode;
 import org.uiowa.cs2820.engine.ChunkedAccess;
 import org.uiowa.cs2820.engine.Field;
-import org.uiowa.cs2820.engine.FieldDatabase;
+import org.uiowa.cs2820.engine.databases.AVLFieldDatabase;
+import org.uiowa.cs2820.engine.databases.FieldDatabase;
 
 public class AVLFieldDatabaseTest extends FieldDatabaseTest
 {
@@ -51,13 +51,13 @@ public class AVLFieldDatabaseTest extends FieldDatabaseTest
     @Test
     public void testHeightOfTreeStructureRandomData()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, FieldFileNode.MAX_SIZE);
 
         FieldDatabase fieldDB = getDatabase(file);
 
         int number = 100;
         for (int i = 0; i < number; i++)
-            fieldDB.add(new BinaryFileNode(new Field("name", Math.random()), 0));
+            fieldDB.add(new FieldFileNode(new Field("name", Math.random()), 0));
 
         int theoretical = (int) (Math.log(number) / Math.log(2) + .5);
         int actual = ((AVLFieldDatabase) fieldDB).depth(0);
@@ -67,13 +67,13 @@ public class AVLFieldDatabaseTest extends FieldDatabaseTest
     @Test
     public void testHeightOfTreeStructureSortedData()
     {
-        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, BinaryFileNode.MAX_SIZE);
+        MockChunkRandomAccessFile file = new MockChunkRandomAccessFile(6, FieldFileNode.MAX_SIZE);
 
         FieldDatabase fieldDB = getDatabase(file);
 
         int number = 100;
         for (int i = 0; i < number; i++)
-            fieldDB.add(new BinaryFileNode(new Field("name", i), 0));
+            fieldDB.add(new FieldFileNode(new Field("name", i), 0));
 
         int theoretical = (int) (Math.log(number) / Math.log(2) + .5);
         int actual = ((AVLFieldDatabase) fieldDB).depth(0);

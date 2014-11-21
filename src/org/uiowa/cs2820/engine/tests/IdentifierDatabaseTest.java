@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.ChunkedAccess;
-import org.uiowa.cs2820.engine.IdentifierDatabase;
 import org.uiowa.cs2820.engine.ValueFileNode;
+import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 
 public class IdentifierDatabaseTest
 {
