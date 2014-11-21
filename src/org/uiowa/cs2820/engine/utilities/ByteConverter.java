@@ -2,9 +2,9 @@ package org.uiowa.cs2820.engine.utilities;
 
 import java.util.Arrays;
 
-import org.uiowa.cs2820.engine.FieldFileNode;
 import org.uiowa.cs2820.engine.Field;
-import org.uiowa.cs2820.engine.ValueFileNode;
+import org.uiowa.cs2820.engine.databases.FieldFileNode;
+import org.uiowa.cs2820.engine.databases.ValueFileNode;
 
 public class ByteConverter
 {

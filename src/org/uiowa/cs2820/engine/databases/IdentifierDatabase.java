@@ -2,8 +2,7 @@ package org.uiowa.cs2820.engine.databases;
 
 import java.util.ArrayList;
 
-import org.uiowa.cs2820.engine.ChunkedAccess;
-import org.uiowa.cs2820.engine.ValueFileNode;
+import org.uiowa.cs2820.engine.fileoperations.ChunkedAccess;
 
 /**
  * This database holds all of the identifiers that have been added to our database.

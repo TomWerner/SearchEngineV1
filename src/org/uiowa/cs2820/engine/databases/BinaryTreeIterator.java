@@ -1,9 +1,9 @@
-package org.uiowa.cs2820.engine;
+package org.uiowa.cs2820.engine.databases;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.uiowa.cs2820.engine.databases.FieldDatabase;
+import org.uiowa.cs2820.engine.Field;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 

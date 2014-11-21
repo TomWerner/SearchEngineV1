@@ -3,7 +3,9 @@ package org.uiowa.cs2820.engine;
 import java.util.ArrayList;
 
 import org.uiowa.cs2820.engine.databases.FieldDatabase;
+import org.uiowa.cs2820.engine.databases.FieldFileNode;
 import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
+import org.uiowa.cs2820.engine.databases.ValueFileNode;
 
 /**
  * This class combines the FieldDatabase and IdentiferDatabase to implement the functionality

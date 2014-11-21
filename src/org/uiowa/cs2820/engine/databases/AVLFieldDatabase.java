@@ -2,10 +2,8 @@ package org.uiowa.cs2820.engine.databases;
 
 import java.util.Iterator;
 
-import org.uiowa.cs2820.engine.BinaryTreeIterator;
-import org.uiowa.cs2820.engine.ChunkedAccess;
 import org.uiowa.cs2820.engine.Field;
-import org.uiowa.cs2820.engine.FieldFileNode;
+import org.uiowa.cs2820.engine.fileoperations.ChunkedAccess;
 
 public class AVLFieldDatabase extends FieldDatabase
 {
@@ -194,7 +192,10 @@ public class AVLFieldDatabase extends FieldDatabase
         FieldFileNode b = (FieldFileNode) getFileHandle().get(p.getRightPosition());
 
         q.setAddress(p.getAddress());
+        int oldParent = q.getParentPosition();
+        q.setParentPosition(p.getParentPosition());
         p.setAddress(index);
+        p.setParentPosition(oldParent);
 
         p.setLeftPosition(getAddressOfNodeWithDefault(q));
         if (q != null)
@@ -231,7 +232,10 @@ public class AVLFieldDatabase extends FieldDatabase
         FieldFileNode b = (FieldFileNode) getFileHandle().get(p.getRightPosition());
 
         q.setAddress(p.getAddress());
+        int oldParent = q.getParentPosition();
+        q.setParentPosition(p.getParentPosition());
         p.setAddress(index);
+        p.setParentPosition(oldParent);
 
         p.setLeftPosition(getAddressOfNodeWithDefault(a));
         if (a != null)

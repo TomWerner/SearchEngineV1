@@ -1,7 +1,8 @@
-package org.uiowa.cs2820.engine;
+package org.uiowa.cs2820.engine.databases;
 
 import java.nio.ByteBuffer;
 
+import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
 public class FieldFileNode implements Comparable<FieldFileNode>

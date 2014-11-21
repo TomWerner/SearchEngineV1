@@ -2,6 +2,7 @@ package org.uiowa.cs2820.engine;
 
 import java.nio.ByteBuffer;
 
+import org.uiowa.cs2820.engine.databases.FieldFileNode;
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 import org.uiowa.cs2820.engine.utilities.Utilities;
 

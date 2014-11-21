@@ -5,9 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.FieldFileNode;
 import org.uiowa.cs2820.engine.Field;
-import org.uiowa.cs2820.engine.RAFile;
+import org.uiowa.cs2820.engine.databases.FieldFileNode;
+import org.uiowa.cs2820.engine.fileoperations.RAFile;
 
 public class RAFileTest
 {

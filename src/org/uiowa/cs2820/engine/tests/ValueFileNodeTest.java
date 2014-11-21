@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.ValueFileNode;
+import org.uiowa.cs2820.engine.databases.ValueFileNode;
 import org.uiowa.cs2820.engine.utilities.ByteConverter;
 
 public class ValueFileNodeTest

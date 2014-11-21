@@ -3,9 +3,8 @@ package org.uiowa.cs2820.engine.databases;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.uiowa.cs2820.engine.ChunkedAccess;
 import org.uiowa.cs2820.engine.Field;
-import org.uiowa.cs2820.engine.FieldFileNode;
+import org.uiowa.cs2820.engine.fileoperations.ChunkedAccess;
 
 public class HashmapFieldDatabase extends FieldDatabase
 {
