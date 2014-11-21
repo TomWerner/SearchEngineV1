@@ -9,16 +9,17 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.FieldFileNode;
 import org.uiowa.cs2820.engine.Database;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.FieldSearch;
 import org.uiowa.cs2820.engine.Indexer;
 import org.uiowa.cs2820.engine.IntegratedFileDatabase;
 import org.uiowa.cs2820.engine.databases.AVLFieldDatabase;
+import org.uiowa.cs2820.engine.databases.FieldFileNode;
 import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
+import org.uiowa.cs2820.engine.fileoperations.MockChunkRandomAccessFile;
 
-public class FieldDataFileTest
+public class LargeScaleDataTest
 {
     @Test
     public void testSameFieldDifferentIdentifiersAVL() throws FileNotFoundException

@@ -6,19 +6,20 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.junit.Test;
-import org.uiowa.cs2820.engine.FieldFileNode;
-import org.uiowa.cs2820.engine.ChunkedAccess;
 import org.uiowa.cs2820.engine.Database;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.FieldSearch;
 import org.uiowa.cs2820.engine.Indexer;
 import org.uiowa.cs2820.engine.IntegratedFileDatabase;
-import org.uiowa.cs2820.engine.RAFile;
 import org.uiowa.cs2820.engine.databases.AVLFieldDatabase;
 import org.uiowa.cs2820.engine.databases.BinaryTreeFieldDatabase;
 import org.uiowa.cs2820.engine.databases.FieldDatabase;
+import org.uiowa.cs2820.engine.databases.FieldFileNode;
 import org.uiowa.cs2820.engine.databases.HashmapFieldDatabase;
 import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
+import org.uiowa.cs2820.engine.fileoperations.ChunkedAccess;
+import org.uiowa.cs2820.engine.fileoperations.MockChunkRandomAccessFile;
+import org.uiowa.cs2820.engine.fileoperations.RAFile;
 
 public class IntegrationTests
 {
@@ -515,13 +516,11 @@ public class IntegrationTests
         
         String[] results = search.findEquals(field1);
         
-        String name = field1.getFieldName();
-        Comparable value = field1.getFieldValue();
         
         assertEquals(1, results.length);
         assertEquals(identifier, results[0]);
-        assertEquals("Zackery", name);
-        assertEquals("Milder", value);
+        assertEquals("Zackery", field1.getFieldName());
+        assertEquals("Milder", field1.getFieldValue());
         
     }
     
@@ -551,13 +550,10 @@ public class IntegrationTests
         
         String[] results = search.findEquals(field1);
         
-        String name = field1.getFieldName();
-        Comparable value = field1.getFieldValue();
-        
         assertEquals(1, results.length);
         assertEquals(identifier, results[0]);
-        assertEquals("Zackery", name);
-        assertEquals("Milder", value);
+        assertEquals("Zackery", field1.getFieldName());
+        assertEquals("Milder", field1.getFieldValue());
         
     }
     
@@ -587,13 +583,10 @@ public class IntegrationTests
         
         String[] results = search.findEquals(field1);
         
-        String name = field1.getFieldName();
-        Comparable value = field1.getFieldValue();
-        
         assertEquals(1, results.length);
         assertEquals(identifier, results[0]);
-        assertEquals("Zackery", name);
-        assertEquals("Milder", value);
+        assertEquals("Zackery", field1.getFieldName());
+        assertEquals("Milder", field1.getFieldValue());
         
     }
 }
