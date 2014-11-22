@@ -10,22 +10,14 @@ public class BinaryTreeIterator implements Iterator<Field>
     private FieldDatabase database;
     private int lastReturned = -1;
     private int nextPointer;
+    private int initialRootPosition;
 
     public BinaryTreeIterator(FieldDatabase database, int rootPosition)
     {
         this.database = database;
+        this.initialRootPosition = rootPosition;
 
-        nextPointer = rootPosition;
-        FieldFileNode next = (FieldFileNode) database.getElementAt(nextPointer);
-
-        // Go all the way left
-        if (next == null)
-            return;
-        while (next.getLeftPosition() != FieldFileNode.NULL_ADDRESS)
-        {
-            nextPointer = next.getLeftPosition();
-            next = (FieldFileNode) database.getElementAt(next.getLeftPosition());
-        }
+        resetIterator(rootPosition);
     }
 
     @Override
@@ -63,6 +55,7 @@ public class BinaryTreeIterator implements Iterator<Field>
                     lastReturned = originalNext.getAddress();
                     return originalNext.getField();
                 }
+                
                 if (((FieldFileNode) database.getElementAt(next.getParentPosition())).getLeftPosition() == nextPointer)
                 {
                     nextPointer = next.getParentPosition();
@@ -86,6 +79,23 @@ public class BinaryTreeIterator implements Iterator<Field>
         
         database.removeElement(lastReturned);
         lastReturned = -1;
+        
+        resetIterator(initialRootPosition);
+    }
+    
+    protected void resetIterator(int rootPosition)
+    {
+        nextPointer = rootPosition;
+        FieldFileNode next = (FieldFileNode) database.getElementAt(nextPointer);
+
+        // Go all the way left
+        if (next == null)
+            return;
+        while (next.getLeftPosition() != FieldFileNode.NULL_ADDRESS)
+        {
+            nextPointer = next.getLeftPosition();
+            next = (FieldFileNode) database.getElementAt(next.getLeftPosition());
+        }
     }
 
 }

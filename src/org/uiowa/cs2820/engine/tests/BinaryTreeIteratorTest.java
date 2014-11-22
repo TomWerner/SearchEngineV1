@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.junit.Test;
@@ -165,8 +167,42 @@ public class BinaryTreeIteratorTest
         assertFalse(iterator.hasNext());
     }
     
+    @Test
+    public void testIteratorRemove()
+    {
+        FieldDatabase database = getDatabase();
+        ArrayList<Field> mockDatabase = new ArrayList<Field>();
+        
+        int numElements = 5;
+        for (int i = 0; i < numElements; i++)
+        {
+            int num = i;
+            database.add(new FieldFileNode(new Field("a", num), 0));
+            mockDatabase.add(new Field("a", num));
+        }
+        Collections.sort(mockDatabase);
+        
+        
+        Iterator<Field> dbIter = database.iterator();
+        Iterator<Field> mockDbIter = mockDatabase.iterator();
+        
+        int counter = 0;
+        while (dbIter.hasNext() && mockDbIter.hasNext())
+        {
+            assertEquals(counter, dbIter.next().getFieldValue());
+            assertEquals(counter, mockDbIter.next().getFieldValue());
+            dbIter.remove();
+            mockDbIter.remove();
+            counter++;
+        }
+        assertEquals(numElements, counter);
+        assertFalse(mockDbIter.hasNext());
+        assertFalse(dbIter.hasNext());
+    }
+    
+    
     protected FieldDatabase getDatabase()
     {
-        return new BinaryTreeFieldDatabase(new MockChunkRandomAccessFile(16, FieldFileNode.MAX_SIZE));
+        return new BinaryTreeFieldDatabase(new MockChunkRandomAccessFile(4, FieldFileNode.MAX_SIZE));
     }
 }

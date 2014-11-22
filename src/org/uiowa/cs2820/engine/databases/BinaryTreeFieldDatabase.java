@@ -66,7 +66,7 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
         insert(0, FieldFileNode.NULL_ADDRESS, data);
     }
 
-    private int insert(int rootIndex, int parent, FieldFileNode node)
+    protected int insert(int rootIndex, int parent, FieldFileNode node)
     {
         FieldFileNode root = (FieldFileNode) getFileHandle().get(rootIndex);
         if (root == null)
@@ -189,6 +189,20 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
                 child.setParentPosition(FieldFileNode.NULL_ADDRESS);
                 // Save the new node
                 getFileHandle().set(child.convert(), child.getAddress());
+                
+                // Update the children of the child to reflect their new parent position
+                if (child.getLeftPosition() != FieldFileNode.NULL_ADDRESS)
+                {
+                    FieldFileNode childsLeft = (FieldFileNode) getFileHandle().get(child.getLeftPosition());
+                    childsLeft.setParentPosition(child.getAddress());
+                    getFileHandle().set(childsLeft.convert(), childsLeft.getAddress());
+                }
+                if (child.getRightPosition() != FieldFileNode.NULL_ADDRESS)
+                {
+                    FieldFileNode childsRight = (FieldFileNode) getFileHandle().get(child.getRightPosition());
+                    childsRight.setParentPosition(child.getAddress());
+                    getFileHandle().set(childsRight.convert(), childsRight.getAddress());
+                }
             }
             else
             {
@@ -224,7 +238,6 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
             getFileHandle().set(currentNode.convert(), currentNode.getAddress());
             removeElement(newRoot.getAddress());
         }
-
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.fileoperations.ChunkedAccess;
 
-public class AVLFieldDatabase extends FieldDatabase
+public class AVLFieldDatabase extends BinaryTreeFieldDatabase
 {
     /*
      * ONE RULE. The ROOT MUST ALWAYS BE AT 0
@@ -34,6 +34,8 @@ public class AVLFieldDatabase extends FieldDatabase
     private int balanceNumber(int index)
     {
         FieldFileNode node = (FieldFileNode) getFileHandle().get(index);
+        if (node == null)
+            return 0;
         int leftDepth = depth(node.getLeftPosition());
         int rightDepth = depth(node.getRightPosition());
 
@@ -44,7 +46,7 @@ public class AVLFieldDatabase extends FieldDatabase
         return 0;
     }
 
-    private int insert(int rootIndex, int parent, FieldFileNode node)
+    protected int insert(int rootIndex, int parent, FieldFileNode node)
     {
         // Get the node at the position given. It is the root of a subtree.
         FieldFileNode root = (FieldFileNode) getFileHandle().get(rootIndex);
@@ -124,91 +126,22 @@ public class AVLFieldDatabase extends FieldDatabase
     }
 
     @Override
-    public int getIdentifierPosition(Field field)
-    {
-        int index = 0;
-        FieldFileNode currentNode = (FieldFileNode) getFileHandle().get(index);
-
-        // If the node is null there's nothing in the database
-        if (currentNode == null)
-            return -1;
-
-        // Do a standard binary tree search
-        while (currentNode != null)
-        {
-            if (currentNode.getField().equals(field))
-                return currentNode.getHeadOfLinkedListPosition();
-            else if (field.compareTo(currentNode.getField()) < 0)
-                index = currentNode.getLeftPosition();
-            else
-                index = currentNode.getRightPosition();
-            currentNode = (FieldFileNode) getFileHandle().get(index);
-        }
-
-        return -1;
-    }
-
-    @Override
-    public void setIdentifierPosition(Field field, int headOfLinkedListPosition)
-    {
-        int index = 0;
-        FieldFileNode currentNode = (FieldFileNode) getFileHandle().get(index);
-        if (currentNode == null)
-            return;
-        while (currentNode != null)
-        {
-            if (currentNode.getField().equals(field))
-            {
-                currentNode.setHeadOfLinkedListPosition(headOfLinkedListPosition);
-                getFileHandle().set(currentNode.convert(), index);
-                return;
-            }
-            else if (field.compareTo(currentNode.getField()) < 0)
-                index = currentNode.getLeftPosition();
-            else
-                index = currentNode.getRightPosition();
-            currentNode = (FieldFileNode) getFileHandle().get(index);
-        }
-    }
-
-    @Override
     public void removeElement(int index)
     {
-        FieldFileNode currentNode = (FieldFileNode) getFileHandle().get(index);
-        getFileHandle().free(index);
+        super.removeElement(index);
 
-        FieldFileNode parent = (FieldFileNode) getFileHandle().get(currentNode.getParentPosition());
-
-        // Case 1 - the node has no children
-        if (currentNode.getLeftPosition() == FieldFileNode.NULL_ADDRESS && currentNode.getRightPosition() == FieldFileNode.NULL_ADDRESS)
+        // Check the balance of our sub tree
+        switch (balanceNumber(index))
         {
-            // We just need to determine if we need to null out the left or the
-            // right child of the parent
-            if (parent.getLeftPosition() == currentNode.getAddress())
-                parent.setLeftPosition(FieldFileNode.NULL_ADDRESS);
-            else
-                parent.setRightPosition(FieldFileNode.NULL_ADDRESS);
-
-            getFileHandle().set(parent.convert(), parent.getAddress());
+        case 1:
+            rotateLeft(index);
+            break;
+        case -1:
+            rotateRight(index);
+            break;
+        default:
+            break;
         }
-        // Case 2 - the node has only one child
-        if (currentNode.getLeftPosition() == FieldFileNode.NULL_ADDRESS || currentNode.getRightPosition() == FieldFileNode.NULL_ADDRESS)
-        {
-            // Determine the address of the child node
-            // One of them the addresses is -1, so the max
-            // gives us the node we want
-            int childAddresss = Math.max(currentNode.getLeftPosition(), currentNode.getRightPosition());
-            FieldFileNode child = (FieldFileNode) getFileHandle().get(childAddresss);
-            if (parent.getLeftPosition() == currentNode.getAddress())
-                parent.setLeftPosition(child.getAddress());
-            else
-                parent.setRightPosition(child.getAddress());
-
-            child.setParentPosition(parent.getAddress());
-            getFileHandle().set(parent.convert(), parent.getAddress());
-            getFileHandle().set(parent.convert(), child.getAddress());
-        }
-
     }
 
     /*
@@ -315,10 +248,4 @@ public class AVLFieldDatabase extends FieldDatabase
     {
         return new BinaryTreeIterator(this, 0);
     }
-
-    public String toString()
-    {
-        return getFileHandle().toString();
-    }
-
 }
