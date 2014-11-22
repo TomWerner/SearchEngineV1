@@ -105,6 +105,12 @@ public class HashmapFieldDatabase extends FieldDatabase
     }
 
     @Override
+    public void removeElement(int lastReturned)
+    {
+        return;
+    }
+
+    @Override
     public Iterator<Field> iterator()
     {
         return null;

@@ -1,17 +1,21 @@
 package org.uiowa.cs2820.engine;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import org.uiowa.cs2820.engine.databases.AVLFieldDatabase;
 import org.uiowa.cs2820.engine.databases.FieldDatabase;
 import org.uiowa.cs2820.engine.databases.FieldFileNode;
 import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 import org.uiowa.cs2820.engine.databases.ValueFileNode;
+import org.uiowa.cs2820.engine.fileoperations.RAFile;
 
 /**
- * This class combines the FieldDatabase and IdentiferDatabase to implement the functionality
- * specified in the Database interface.
+ * This class combines the FieldDatabase and IdentiferDatabase to implement the
+ * functionality specified in the Database interface.
+ * 
  * @author Tom
- *
+ * 
  */
 public class IntegratedFileDatabase implements Database
 {
@@ -23,16 +27,26 @@ public class IntegratedFileDatabase implements Database
         this.fieldDB = fieldDB;
         this.identDB = identDB;
     }
-    
+
+    /**
+     * A default constructor that uses the RAFile so that the users don't NEED
+     * to have any knowledge of the underlying database structure
+     */
+    public IntegratedFileDatabase()
+    {
+        this(new AVLFieldDatabase(new RAFile(new File("fieldDatabase.dat"), 16, FieldFileNode.MAX_SIZE)), 
+                new IdentifierDatabase(new RAFile(new File("identifierDatabase.dat"), 16, ValueFileNode.MAX_SIZE)));
+    }
+
     @Override
     public ArrayList<String> fetch(Field field)
     {
         int position = fieldDB.getIdentifierPosition(field);
-        
+
         // If position is -1 it didn't find the field
         if (position == -1)
             return null;
-        
+
         return identDB.getAllIdentifiers(position);
     }
 
@@ -40,15 +54,16 @@ public class IntegratedFileDatabase implements Database
     public void delete(Field field, String identifier)
     {
         int position = fieldDB.getIdentifierPosition(field);
-        
+
         // If position is -1 we didn't find the field
         if (position == -1)
             return;
-        
+
         int location = identDB.removeIdentifier(position, identifier);
-        
+
         // if location isn't NULL_ADDRESS it means we have a new
-        // position for the identifer linked list head node and need to adjust it
+        // position for the identifer linked list head node and need to adjust
+        // it
         // accordingly
         if (location != ValueFileNode.NULL_ADDRESS)
             fieldDB.setIdentifierPosition(field, location);

@@ -5,11 +5,10 @@ import java.util.NoSuchElementException;
 
 import org.uiowa.cs2820.engine.Field;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class BinaryTreeIterator implements Iterator<Field>
 {
     private FieldDatabase database;
+    private int lastReturned = -1;
     private int nextPointer;
 
     public BinaryTreeIterator(FieldDatabase database, int rootPosition)
@@ -61,25 +60,32 @@ public class BinaryTreeIterator implements Iterator<Field>
                 if (next.getParentPosition() == FieldFileNode.NULL_ADDRESS)
                 {
                     nextPointer = FieldFileNode.NULL_ADDRESS;
+                    lastReturned = originalNext.getAddress();
                     return originalNext.getField();
                 }
                 if (((FieldFileNode) database.getElementAt(next.getParentPosition())).getLeftPosition() == nextPointer)
                 {
                     nextPointer = next.getParentPosition();
                     next = (FieldFileNode) database.getElementAt(next.getParentPosition());
+                    lastReturned = originalNext.getAddress();
                     return originalNext.getField();
                 }
                 nextPointer = next.getParentPosition();
                 next = (FieldFileNode) database.getElementAt(next.getParentPosition());
             }
         }
+        lastReturned = originalNext.getAddress();
         return originalNext.getField();
     }
 
     @Override
     public void remove()
     {
-        throw new NotImplementedException();
+        if (lastReturned < 0)
+            throw new IllegalStateException();
+        
+        database.removeElement(lastReturned);
+        lastReturned = -1;
     }
 
 }

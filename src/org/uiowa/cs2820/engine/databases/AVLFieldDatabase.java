@@ -171,6 +171,46 @@ public class AVLFieldDatabase extends FieldDatabase
         }
     }
 
+    @Override
+    public void removeElement(int index)
+    {
+        FieldFileNode currentNode = (FieldFileNode) getFileHandle().get(index);
+        getFileHandle().free(index);
+
+        FieldFileNode parent = (FieldFileNode) getFileHandle().get(currentNode.getParentPosition());
+
+        // Case 1 - the node has no children
+        if (currentNode.getLeftPosition() == FieldFileNode.NULL_ADDRESS && currentNode.getRightPosition() == FieldFileNode.NULL_ADDRESS)
+        {
+            // We just need to determine if we need to null out the left or the
+            // right child of the parent
+            if (parent.getLeftPosition() == currentNode.getAddress())
+                parent.setLeftPosition(FieldFileNode.NULL_ADDRESS);
+            else
+                parent.setRightPosition(FieldFileNode.NULL_ADDRESS);
+
+            getFileHandle().set(parent.convert(), parent.getAddress());
+        }
+        // Case 2 - the node has only one child
+        if (currentNode.getLeftPosition() == FieldFileNode.NULL_ADDRESS || currentNode.getRightPosition() == FieldFileNode.NULL_ADDRESS)
+        {
+            // Determine the address of the child node
+            // One of them the addresses is -1, so the max
+            // gives us the node we want
+            int childAddresss = Math.max(currentNode.getLeftPosition(), currentNode.getRightPosition());
+            FieldFileNode child = (FieldFileNode) getFileHandle().get(childAddresss);
+            if (parent.getLeftPosition() == currentNode.getAddress())
+                parent.setLeftPosition(child.getAddress());
+            else
+                parent.setRightPosition(child.getAddress());
+
+            child.setParentPosition(parent.getAddress());
+            getFileHandle().set(parent.convert(), parent.getAddress());
+            getFileHandle().set(parent.convert(), child.getAddress());
+        }
+
+    }
+
     /*
      * ------------------------------------------------------------------------
      * Rotate Methods
@@ -275,7 +315,7 @@ public class AVLFieldDatabase extends FieldDatabase
     {
         return new BinaryTreeIterator(this, 0);
     }
-    
+
     public String toString()
     {
         return getFileHandle().toString();

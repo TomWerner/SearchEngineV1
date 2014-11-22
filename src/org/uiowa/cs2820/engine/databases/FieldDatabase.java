@@ -57,5 +57,7 @@ public abstract class FieldDatabase implements Iterable<Field>
     protected ChunkedAccess getFileHandle()
     {
         return fileHandle;
-    }    
+    }
+
+    public abstract void removeElement(int index); 
 }

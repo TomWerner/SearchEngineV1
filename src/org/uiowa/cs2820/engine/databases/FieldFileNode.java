@@ -205,5 +205,10 @@ public class FieldFileNode implements Comparable<FieldFileNode>
     {
     	return field.hashCode();
     }
+
+    public void setField(Field field)
+    {
+        this.field = field;
+    }
     
 }
