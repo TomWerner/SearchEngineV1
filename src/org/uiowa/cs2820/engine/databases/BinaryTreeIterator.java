@@ -55,7 +55,7 @@ public class BinaryTreeIterator implements Iterator<Field>
                     lastReturned = originalNext.getAddress();
                     return originalNext.getField();
                 }
-                
+
                 if (((FieldFileNode) database.getElementAt(next.getParentPosition())).getLeftPosition() == nextPointer)
                 {
                     nextPointer = next.getParentPosition();
@@ -76,13 +76,24 @@ public class BinaryTreeIterator implements Iterator<Field>
     {
         if (lastReturned < 0)
             throw new IllegalStateException();
-        
+        FieldFileNode node = (FieldFileNode) database.getElementAt(lastReturned);
         database.removeElement(lastReturned);
         lastReturned = -1;
-        
+
+        // Because the removal of elements can change the
+        // tree structure we need to reset the cursor
+        // and move it back to where it should be
         resetIterator(initialRootPosition);
+        while (hasNext())
+        {
+            if (next().compareTo(node.getField()) >= 0)
+            {
+                nextPointer = lastReturned;
+                break;
+            }
+        }
     }
-    
+
     protected void resetIterator(int rootPosition)
     {
         nextPointer = rootPosition;

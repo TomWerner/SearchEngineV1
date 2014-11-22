@@ -10,6 +10,7 @@ public class ValueFileNode
      * Constants used to conversion to a byte array
      */
     public static final int MAX_SIZE = 256;
+    public static final String NULL_VALUE = null;
     private static final int INTEGER_SIZE = Integer.SIZE / Byte.SIZE;
     private static final int ADDRESS_POSITION = ByteConverter.EXISTS_POSITION + ByteConverter.EXISTS_SIZE;
     private static final int NEXT_NODE_POSITION = ADDRESS_POSITION + INTEGER_SIZE;
@@ -106,7 +107,9 @@ public class ValueFileNode
         
         byte[] addrSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(address).array();
         byte[] nextNodeSection = ByteBuffer.allocate(INTEGER_SIZE).putInt(nextNode).array();
-        byte[] identSection = identifier.getBytes();
+        byte[] identSection = new byte[0];
+        if (identifier != null)
+             identSection = identifier.getBytes();
         byte[] identSectionLength = ByteBuffer.allocate(INTEGER_SIZE).putInt(identSection.length).array(); 
         
         if (identSection.length > MAX_IDENTIFIER_SIZE)
@@ -147,7 +150,11 @@ public class ValueFileNode
         
         byte[] identSection = new byte[identLength];
         System.arraycopy(byteArray, IDENTIFIER_POSITION, identSection, 0, identSection.length);
-        String ident = new String(identSection);
+        String ident;
+        if (identLength == 0)
+            ident = null;
+        else
+            ident = new String(identSection);
         
         ValueFileNode node = new ValueFileNode(ident, nextNode);
         node.setAddress(address);

@@ -49,9 +49,9 @@ public abstract class FieldDatabase implements Iterable<Field>
      */
     public abstract void setIdentifierPosition(Field field, int headOfLinkedListPosition);
     
-    public FieldFileNode getElementAt(int chunkPosition)
+    public FieldFileNode getElementAt(int index)
     {
-        return (FieldFileNode) getFileHandle().get(chunkPosition); 
+        return (FieldFileNode) getFileHandle().get(index); 
     }
     
     protected ChunkedAccess getFileHandle()

@@ -73,7 +73,7 @@ public class IdentifierDatabaseTest
         identDB.removeIdentifier(location, "filename1");
 
         results = identDB.getAllIdentifiers(location);
-        assertEquals(null, results);
+        assertEquals(0, results.size());
     }
 
     @Test

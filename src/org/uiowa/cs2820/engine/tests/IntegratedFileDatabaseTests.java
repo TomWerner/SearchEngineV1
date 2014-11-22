@@ -169,7 +169,7 @@ public class IntegratedFileDatabaseTests
                 database.delete(field, identifier1);
 
                 results = database.fetch(field);
-                assertEquals(null, results);
+                assertEquals(0, results.size());
             }
         }
     }
@@ -218,11 +218,11 @@ public class IntegratedFileDatabaseTests
 
                 database.delete(field, identifier1);
                 results = database.fetch(field);
-                assertEquals(null, results);
+                assertEquals(0, results.size());
 
                 database.delete(field, identifier1);
                 results = database.fetch(field);
-                assertEquals(null, results);
+                assertEquals(0, results.size());
             }
         }
     }
