@@ -9,9 +9,10 @@ import org.uiowa.cs2820.engine.databases.tests.HashmapFieldDatabaseTest;
 import org.uiowa.cs2820.engine.databases.tests.IdentifierDatabaseTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AVLFieldDatabaseTest.class, FieldFileNodeTest.class, BinaryTreeFieldDatabaseTest.class, BinaryTreeIteratorTest.class, FieldTest.class,
-        HashmapFieldDatabaseTest.class, IdentifierDatabaseTest.class, IntegratedFileDatabaseTests.class, IntegrationTests.class, RAFileTest.class,
-        ValueFileNodeTest.class, AVLIteratorTest.class, IntegratedFileDatabaseTestsWithRAFile.class })
+@SuiteClasses({ AVLFieldDatabaseTest.class, AVLIteratorTest.class, BinaryTreeIteratorTest.class, BinaryTreeFieldDatabaseTest.class, FieldFileNodeTest.class,
+        FieldTest.class, HashmapFieldDatabaseTest.class, IntegratedFileDatabaseTests.class, IntegratedFileDatabaseTestsWithRAFile.class,
+        IdentifierDatabaseTest.class, IntegrationTests.class, IdentifierDatabaseTest.class, LinkedListIteratorTest.class, RAFileTest.class,
+        ValueFileNodeTest.class })
 public class AllTests
 {
 

@@ -42,7 +42,7 @@ public class LinkedListIterator implements Iterator<String>
     {
         if (lastReturned < 0)
             throw new IllegalStateException();
-        System.out.println(lastReturned);
+        
         database.removeElement(lastReturned);
         nextPosition = lastReturned;
         lastReturned = -1;
