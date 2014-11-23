@@ -137,25 +137,16 @@ public class IdentifierDatabase
         }
         else
         {
-            int next = start.getNextNode();
-            if (next == ValueFileNode.NULL_ADDRESS)
-                return ValueFileNode.NULL_ADDRESS;
-            ValueFileNode node = (ValueFileNode) fileHandle.get(next);
-            ValueFileNode previous = start;
-            while (!node.getIdentifier().equals(identifier))
+            Iterator<String> iterator = iterator(linkedListHeadPosition);
+            while (iterator.hasNext())
             {
-                previous = node;
-
-                // Break out of quick loop
-                if (node.getNextNode() == next)
+                String ident = iterator.next();
+                if (ident.equals(identifier))
+                {
+                    iterator.remove();
                     break;
-                next = node.getNextNode();
-                node = (ValueFileNode) fileHandle.get(next);
+                }
             }
-            // Node is now the node to remove, previous is the one before it
-            previous.setNextNode(node.getNextNode());
-            fileHandle.set(previous.convert(), previous.getAddress());
-            fileHandle.free(node.getAddress());
 
             return ValueFileNode.NULL_ADDRESS;
         }

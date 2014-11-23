@@ -173,12 +173,7 @@ public class IdentifierDatabaseTest
         assertEquals("filename1", results.get(1));
 
         location = identDB.addIdentifier("other thing");
-        // It was
-        // node1 node2 node3
-        // then
-        // node1 node3
-        // so position 1 is the first open one
-        assertEquals(1, location);
+
         results = identDB.getAllIdentifiers(location);
         assertEquals("other thing", results.get(0));
     }
